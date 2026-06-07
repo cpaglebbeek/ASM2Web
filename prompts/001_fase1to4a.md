@@ -1,8 +1,12 @@
 ---
 date: 2026-06-08
 repo: ASM2Web
-status: open
-resume: "verder met ASM2Web fase 4b — structured control-flow (jumps/calls/push-pop op shadow-stack in linear memory). Daarna fase 5 TECHNO-uitbreiding: ontbrekende mnemonics (mul/div/imul/idiv/rep/rol/ror/xchg/jcxz/jg/jl/jge/jle/lds/les/movsx/movzx/neg/popf/pushf/rcl/rcr/sar) + OBK-data-parser (OMF) + DIS-engine port of libxmp-lite WASM. v0.2.0-Backus."
+status: done
+resume: ""
+---
+
+> **Status update 2026-06-08 (latere sessie)**: fase 4b + alle mnemonics + OBK-parser + KOEA-compile gedaan in sessie `002_fase4b_techno_progress.md` (v0.2.0-Backus). Resume-haak doorgeschoven.
+
 ---
 
 # Sessie 2026-06-08 — ASM2Web fase 1-4a (autonoom doorbouwen tot mini-demo)
