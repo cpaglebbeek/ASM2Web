@@ -117,6 +117,19 @@ export function emitIR(ast, opts = {}) {
       case "jae":   return emitJump(fn, operands, "ncf");
       case "js":    return emitJump(fn, operands, "sf");
       case "jns":   return emitJump(fn, operands, "nsf");
+      case "jg":
+      case "jnle":  return emitJump(fn, operands, "gt_s");
+      case "jge":
+      case "jnl":   return emitJump(fn, operands, "ge_s");
+      case "jl":
+      case "jnge":  return emitJump(fn, operands, "lt_s");
+      case "jle":
+      case "jng":   return emitJump(fn, operands, "le_s");
+      case "ja":
+      case "jnbe":  return emitJump(fn, operands, "gt_u");
+      case "jbe":
+      case "jna":   return emitJump(fn, operands, "le_u");
+      case "jcxz":  return emitJump(fn, operands, "cx_zero");
       case "call":  return emitCall(fn, operands);
       case "ret":
       case "retn":
@@ -130,7 +143,55 @@ export function emitIR(ast, opts = {}) {
       case "cld":
       case "std":
       case "clc":
-      case "stc":   return addOp(fn, { op: "flagop", which: mn });
+      case "stc":
+      case "cmc":   return addOp(fn, { op: "flagop", which: mn });
+      case "neg":   return emitNeg(fn, operands);
+      case "not":   return emitBitNot(fn, operands);
+      case "xchg":  return emitXchg(fn, operands);
+      case "mul":   return emitMulDiv(fn, "mul", operands);
+      case "imul":  return emitMulDiv(fn, "imul", operands);
+      case "div":   return emitMulDiv(fn, "div", operands);
+      case "idiv":  return emitMulDiv(fn, "idiv", operands);
+      case "rol":   return emitRotate(fn, "rol", operands);
+      case "ror":   return emitRotate(fn, "ror", operands);
+      case "rcl":   return emitRotate(fn, "rcl", operands);  // through carry — approximated as rol
+      case "rcr":   return emitRotate(fn, "rcr", operands);
+      case "sar":   return emitShift(fn, "sar", operands);
+      case "loop":  return emitLoop(fn, operands);
+      case "loope":
+      case "loopz": return emitLoop(fn, operands);
+      case "loopne":
+      case "loopnz":return emitLoop(fn, operands);
+      case "movsx":
+      case "movzx": return emitBinaryMove(fn, operands);  // size-extending handled in storeTo
+      case "lds":
+      case "les":
+      case "lfs":
+      case "lgs":
+      case "lss":   return emitBinaryMove(fn, operands);  // ignore segment-load
+      case "pushf": return addOp(fn, { op: "push", src: operandToValue(fn, { kind: "reg", name: "ax" }) });
+      case "popf":  return addOp(fn, { op: "pop",  dest: operandToValue(fn, { kind: "reg", name: "ax" }) });
+      case "pusha": return emitPushAll(fn);
+      case "popa":  return emitPopAll(fn);
+      case "rep":
+      case "repe":
+      case "repz":
+      case "repne":
+      case "repnz":
+        // String-op prefix — emit comment-marker; the next instr is the actual string op.
+        return addOp(fn, { op: "nop", note: "rep-prefix" });
+      case "movsb":
+      case "movsw":
+      case "stosb":
+      case "stosw":
+      case "lodsb":
+      case "lodsw":
+      case "cmpsb":
+      case "cmpsw":
+      case "scasb":
+      case "scasw":
+        // String-ops without rep: single iteration (approx).
+        return addOp(fn, { op: "nop", note: "string-op-" + mn });
       default:
         mod.stats.unknownOps++;
         mod.stats.unknownMnemonics.add(mn);
@@ -264,6 +325,60 @@ export function emitIR(ast, opts = {}) {
     addOp(fn, { op: "out", port, src });
   }
 
+  function emitNeg(fn, operands) {
+    if (operands.length < 1) return;
+    const dst = operandToValue(fn, operands[0]);
+    addOp(fn, { op: "sub", dest: dst, a: { kind: "const", value: 0 }, b: dst });
+  }
+
+  function emitBitNot(fn, operands) {
+    if (operands.length < 1) return;
+    const dst = operandToValue(fn, operands[0]);
+    // not = xor with 0xFFFF
+    addOp(fn, { op: "xor", dest: dst, a: dst, b: { kind: "const", value: 0xFFFF } });
+  }
+
+  function emitXchg(fn, operands) {
+    if (operands.length < 2) return;
+    const a = operandToValue(fn, operands[0]);
+    const b = operandToValue(fn, operands[1]);
+    addOp(fn, { op: "xchg", a, b });
+  }
+
+  function emitMulDiv(fn, kind, operands) {
+    // mul/div have implicit AX/DX:AX operand. We emit a single op.
+    addOp(fn, { op: kind, src: operandToValue(fn, operands[0]) });
+  }
+
+  function emitRotate(fn, kind, operands) {
+    if (operands.length < 2) return;
+    addOp(fn, {
+      op: kind, dest: operandToValue(fn, operands[0]),
+      a: operandToValue(fn, operands[0]),
+      count: operandToValue(fn, operands[1]),
+    });
+  }
+
+  function emitLoop(fn, operands) {
+    // loop label: cx--; if cx != 0 jump to label.
+    if (operands.length < 1) return;
+    const t = operands[0];
+    const target = t.kind === "label" ? t.name : "?";
+    addOp(fn, { op: "loop_dec_cx", target });
+  }
+
+  function emitPushAll(fn) {
+    for (const r of ["ax", "cx", "dx", "bx", "sp", "bp", "si", "di"]) {
+      addOp(fn, { op: "push", src: operandToValue(fn, { kind: "reg", name: r }) });
+    }
+  }
+
+  function emitPopAll(fn) {
+    for (const r of ["di", "si", "bp", "sp", "bx", "dx", "cx", "ax"]) {
+      addOp(fn, { op: "pop", dest: operandToValue(fn, { kind: "reg", name: r }) });
+    }
+  }
+
   function emitInt(fn, operands) {
     if (operands.length < 1) return addOp(fn, { op: "int", num: 0 });
     const num = operands[0].kind === "imm" ? Number(operands[0].value) : 0;
@@ -313,7 +428,12 @@ function formatOp(op) {
     case "or":
     case "xor":     return `${fmtVal(op.dest)} = ${op.op} ${fmtVal(op.a)}, ${fmtVal(op.b)}`;
     case "shl":
-    case "shr":     return `${fmtVal(op.dest)} = ${op.op} ${fmtVal(op.a)}, ${fmtVal(op.count)}`;
+    case "shr":
+    case "sar":
+    case "rol":
+    case "ror":
+    case "rcl":
+    case "rcr":     return `${fmtVal(op.dest)} = ${op.op} ${fmtVal(op.a)}, ${fmtVal(op.count)}`;
     case "cmp":     return `cmp ${fmtVal(op.a)}, ${fmtVal(op.b)}`;
     case "test":    return `test ${fmtVal(op.a)}, ${fmtVal(op.b)}`;
     case "jump":    return `jump .${op.target}`;
@@ -325,8 +445,14 @@ function formatOp(op) {
     case "in":      return `${fmtVal(op.dest)} = io.in ${fmtVal(op.port)}`;
     case "out":     return `io.out ${fmtVal(op.port)}, ${fmtVal(op.src)}`;
     case "int":     return `int 0x${op.num.toString(16)}`;
-    case "nop":     return `nop`;
+    case "nop":     return `nop${op.note ? " ; " + op.note : ""}`;
     case "flagop":  return `${op.which}`;
+    case "xchg":    return `xchg ${fmtVal(op.a)}, ${fmtVal(op.b)}`;
+    case "mul":
+    case "imul":
+    case "div":
+    case "idiv":    return `${op.op} ${fmtVal(op.src)}`;
+    case "loop_dec_cx": return `loop_dec_cx .${op.target}`;
     case "unknown": return `; UNKNOWN ${op.mnemonic} ${op.operands.length} operands`;
     default:        return `; ?? ${JSON.stringify(op)}`;
   }

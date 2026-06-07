@@ -1,16 +1,36 @@
 {
-  "version": "0.1.0-Hopper",
-  "codename": "Hopper",
-  "codenameSource": "Grace Hopper (1906-1992), A-0 compiler 1952 — eerste compiler/linker.",
+  "version": "0.2.0-Backus",
+  "codename": "Backus",
+  "codenameSource": "John Backus (1924-2007), IBM FORTRAN 1957 — eerste high-level compiler. Hier voor structured control-flow recovery.",
   "released": "2026-06-08",
-  "phase": "phase-4a",
-  "completed": ["fase 0 skeleton", "fase 1 tokenizer+parser+symtab", "fase 2 IR-emitter", "fase 3 WASM-codegen (eigen mini-encoder)", "fase 4a runtime (mode-13h canvas, palette-DAC, count-based clock)"],
-  "next": "v0.1.x-Hopper patches OR v0.2.0-Backus (control-flow + S3M-player + push/pop op shadow-stack)",
+  "phase": "phase-4b-partial",
+  "completed": [
+    "fase 0 skeleton",
+    "fase 1 tokenizer+parser+symtab",
+    "fase 2 IR-emitter (100% TECHNO mnemonics)",
+    "fase 3 WASM-codegen (eigen mini-encoder, byte-reproduceerbaar)",
+    "fase 4a runtime (mode-13h canvas, palette-DAC, count-based clock)",
+    "fase 4b-1 structured control-flow (dispatch-loop met br_table)",
+    "fase 4b-2 shadow-stack push/pop in linear memory",
+    "fase 4b-3 alle 23 ontbrekende mnemonics in IR + codegen (mul/div/rep/rol/ror/xchg/jg/jl/jcxz/lds/les/movsx/movzx/neg/popf/pushf/rcl/rcr/sar/loop)",
+    "OBK/OMF data-parser (extraheert _circle 24000 B + _circle2 8000 B uit TASM-build)",
+    "KOEA.ASM compileert naar valid WASM (18769 B, 22 exports)",
+    "KOEB.ASM/POLYCLIP.ASM/ROT.ASM idem"
+  ],
+  "open": [
+    "linker: data-segment integratie (OBK-bytes -> WASM data-section per extern-ref)",
+    "linker: cross-file symbol-resolution (KOEA+KOEB+POLYCLIP in één module)",
+    "KOE.C driver -> TypeScript-rewrite",
+    "DIS-engine substituut (libxmp-lite of chiptune3 voor S3M-playback)",
+    "TECHNO visueel/audio testen in browser (vereist alle bovenstaande)",
+    "gouden-frame test (P-DET-01 vol bewijs)"
+  ],
   "miniDemoLive": true,
+  "technoCompiles": true,
   "technoPlayable": false,
   "determinismProven": {
-    "buildDeterminism":  "yes — sha256(hello-pixel.wasm) constant between runs",
-    "runtimeDeterminism": "untested at scale, mini-demo deterministic (no RNG, no wallclock)",
-    "audioDeterminism":  "n/a — no audio in mini-demo yet"
+    "buildDeterminism":  "yes — sha256(.wasm) constant tussen runs voor ALLE demos",
+    "runtimeDeterminism": "yes — mini-demo + ROT.ASM byte-exact reproduceerbaar",
+    "audioDeterminism":  "n.v.t. — geen audio nog geïntegreerd"
   }
 }

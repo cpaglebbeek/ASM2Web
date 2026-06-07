@@ -52,11 +52,32 @@
     "env.dis_waitb (function)"
   ],
   "exports": [
-    "main -> fn#8"
+    "init -> fn#8",
+    "asminit -> fn#9",
+    "asmdoit -> fn#10",
+    "asmdoit2 -> fn#11",
+    "blitinit -> fn#12",
+    "blit16 -> fn#13",
+    "blit16b -> fn#14",
+    "drawline -> fn#15",
+    "asmbox -> fn#16",
+    "bltline -> fn#17",
+    "bltlinerev -> fn#18",
+    "resetmode13 -> fn#19",
+    "outpal -> fn#20",
+    "waitb -> fn#21",
+    "rotate1 -> fn#22",
+    "init_interference -> fn#23",
+    "do_interference -> fn#24",
+    "initinterference -> fn#25",
+    "dointerference -> fn#26",
+    "inittwk -> fn#27",
+    "lineblit -> fn#28",
+    "setpalarea -> fn#29"
   ],
   "memoryPages": 16,
   "stats": {
-    "ops": 32,
+    "ops": 675,
     "unknownOps": 0,
     "unknownMnemonics": []
   }

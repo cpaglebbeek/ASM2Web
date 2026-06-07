@@ -1,0 +1,530 @@
+[
+  {
+    "type": "IDENT",
+    "value": "code",
+    "line": 1,
+    "col": 1
+  },
+  {
+    "type": "IDENT",
+    "value": "SEGMENT",
+    "line": 1,
+    "col": 7
+  },
+  {
+    "type": "IDENT",
+    "value": "para",
+    "line": 1,
+    "col": 15
+  },
+  {
+    "type": "IDENT",
+    "value": "public",
+    "line": 1,
+    "col": 20
+  },
+  {
+    "type": "STRING",
+    "value": "CODE",
+    "line": 1,
+    "col": 27
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 1,
+    "col": 34
+  },
+  {
+    "type": "IDENT",
+    "value": "ASSUME",
+    "line": 2,
+    "col": 2
+  },
+  {
+    "type": "LABEL",
+    "value": "cs",
+    "line": 2,
+    "col": 9
+  },
+  {
+    "type": "IDENT",
+    "value": "code",
+    "line": 2,
+    "col": 12
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 2,
+    "col": 17
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 3,
+    "col": 3
+  },
+  {
+    "type": "IDENT",
+    "value": "start",
+    "line": 4,
+    "col": 1
+  },
+  {
+    "type": "IDENT",
+    "value": "call",
+    "line": 4,
+    "col": 7
+  },
+  {
+    "type": "IDENT",
+    "value": "rol",
+    "line": 4,
+    "col": 12
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 4,
+    "col": 16
+  },
+  {
+    "type": "IDENT",
+    "value": "mov",
+    "line": 5,
+    "col": 2
+  },
+  {
+    "type": "IDENT",
+    "value": "ax",
+    "line": 5,
+    "col": 6
+  },
+  {
+    "type": "PUNCT",
+    "value": ",",
+    "line": 5,
+    "col": 8
+  },
+  {
+    "type": "NUMBER",
+    "value": 19456,
+    "line": 5,
+    "col": 9
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 5,
+    "col": 15
+  },
+  {
+    "type": "IDENT",
+    "value": "int",
+    "line": 6,
+    "col": 2
+  },
+  {
+    "type": "NUMBER",
+    "value": 33,
+    "line": 6,
+    "col": 6
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 6,
+    "col": 10
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 7,
+    "col": 3
+  },
+  {
+    "type": "IDENT",
+    "value": "waitb",
+    "line": 8,
+    "col": 1
+  },
+  {
+    "type": "IDENT",
+    "value": "PROC",
+    "line": 8,
+    "col": 7
+  },
+  {
+    "type": "IDENT",
+    "value": "NEAR",
+    "line": 8,
+    "col": 12
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 8,
+    "col": 17
+  },
+  {
+    "type": "IDENT",
+    "value": "mov",
+    "line": 9,
+    "col": 2
+  },
+  {
+    "type": "IDENT",
+    "value": "dx",
+    "line": 9,
+    "col": 6
+  },
+  {
+    "type": "PUNCT",
+    "value": ",",
+    "line": 9,
+    "col": 8
+  },
+  {
+    "type": "NUMBER",
+    "value": 986,
+    "line": 9,
+    "col": 9
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 9,
+    "col": 14
+  },
+  {
+    "type": "LABEL",
+    "value": "@@1",
+    "line": 10,
+    "col": 1
+  },
+  {
+    "type": "IDENT",
+    "value": "in",
+    "line": 10,
+    "col": 6
+  },
+  {
+    "type": "IDENT",
+    "value": "al",
+    "line": 10,
+    "col": 9
+  },
+  {
+    "type": "PUNCT",
+    "value": ",",
+    "line": 10,
+    "col": 11
+  },
+  {
+    "type": "IDENT",
+    "value": "dx",
+    "line": 10,
+    "col": 12
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 10,
+    "col": 15
+  },
+  {
+    "type": "IDENT",
+    "value": "test",
+    "line": 11,
+    "col": 2
+  },
+  {
+    "type": "IDENT",
+    "value": "al",
+    "line": 11,
+    "col": 7
+  },
+  {
+    "type": "PUNCT",
+    "value": ",",
+    "line": 11,
+    "col": 9
+  },
+  {
+    "type": "NUMBER",
+    "value": 8,
+    "line": 11,
+    "col": 10
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 11,
+    "col": 12
+  },
+  {
+    "type": "IDENT",
+    "value": "jnz",
+    "line": 12,
+    "col": 2
+  },
+  {
+    "type": "IDENT",
+    "value": "@@1",
+    "line": 12,
+    "col": 6
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 12,
+    "col": 10
+  },
+  {
+    "type": "LABEL",
+    "value": "@@2",
+    "line": 13,
+    "col": 1
+  },
+  {
+    "type": "IDENT",
+    "value": "in",
+    "line": 13,
+    "col": 6
+  },
+  {
+    "type": "IDENT",
+    "value": "al",
+    "line": 13,
+    "col": 9
+  },
+  {
+    "type": "PUNCT",
+    "value": ",",
+    "line": 13,
+    "col": 11
+  },
+  {
+    "type": "IDENT",
+    "value": "dx",
+    "line": 13,
+    "col": 12
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 13,
+    "col": 15
+  },
+  {
+    "type": "IDENT",
+    "value": "test",
+    "line": 14,
+    "col": 2
+  },
+  {
+    "type": "IDENT",
+    "value": "al",
+    "line": 14,
+    "col": 7
+  },
+  {
+    "type": "PUNCT",
+    "value": ",",
+    "line": 14,
+    "col": 9
+  },
+  {
+    "type": "NUMBER",
+    "value": 8,
+    "line": 14,
+    "col": 10
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 14,
+    "col": 12
+  },
+  {
+    "type": "IDENT",
+    "value": "jnz",
+    "line": 15,
+    "col": 2
+  },
+  {
+    "type": "IDENT",
+    "value": "@@2",
+    "line": 15,
+    "col": 6
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 15,
+    "col": 10
+  },
+  {
+    "type": "IDENT",
+    "value": "ret",
+    "line": 16,
+    "col": 2
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 16,
+    "col": 6
+  },
+  {
+    "type": "IDENT",
+    "value": "waitb",
+    "line": 17,
+    "col": 1
+  },
+  {
+    "type": "IDENT",
+    "value": "ENDP",
+    "line": 17,
+    "col": 7
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 17,
+    "col": 12
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 18,
+    "col": 2
+  },
+  {
+    "type": "IDENT",
+    "value": "rol",
+    "line": 19,
+    "col": 1
+  },
+  {
+    "type": "IDENT",
+    "value": "PROC",
+    "line": 19,
+    "col": 5
+  },
+  {
+    "type": "IDENT",
+    "value": "NEAR",
+    "line": 19,
+    "col": 10
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 19,
+    "col": 15
+  },
+  {
+    "type": "IDENT",
+    "value": "call",
+    "line": 20,
+    "col": 2
+  },
+  {
+    "type": "IDENT",
+    "value": "waitb",
+    "line": 20,
+    "col": 7
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 20,
+    "col": 13
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 21,
+    "col": 3
+  },
+  {
+    "type": "IDENT",
+    "value": "ret",
+    "line": 22,
+    "col": 2
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 22,
+    "col": 6
+  },
+  {
+    "type": "IDENT",
+    "value": "rol",
+    "line": 23,
+    "col": 1
+  },
+  {
+    "type": "IDENT",
+    "value": "ENDP",
+    "line": 23,
+    "col": 5
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 23,
+    "col": 10
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 24,
+    "col": 3
+  },
+  {
+    "type": "IDENT",
+    "value": "code",
+    "line": 25,
+    "col": 1
+  },
+  {
+    "type": "IDENT",
+    "value": "ENDS",
+    "line": 25,
+    "col": 6
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 25,
+    "col": 11
+  },
+  {
+    "type": "IDENT",
+    "value": "END",
+    "line": 26,
+    "col": 2
+  },
+  {
+    "type": "IDENT",
+    "value": "start",
+    "line": 26,
+    "col": 6
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\n",
+    "line": 26,
+    "col": 12
+  },
+  {
+    "type": "EOF",
+    "value": null,
+    "line": 27,
+    "col": 2
+  }
+]

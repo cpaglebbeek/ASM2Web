@@ -52,11 +52,13 @@
     "env.dis_waitb (function)"
   ],
   "exports": [
-    "main -> fn#8"
+    "init -> fn#8",
+    "waitb -> fn#9",
+    "rol -> fn#10"
   ],
   "memoryPages": 16,
   "stats": {
-    "ops": 32,
+    "ops": 12,
     "unknownOps": 0,
     "unknownMnemonics": []
   }

@@ -56,6 +56,7 @@ test("WASM instantiates and main() writes expected pixels", async () => {
     memory,
     io_out: () => {}, io_in: () => 0, exit: () => {},
     mode13h_setpixel: () => {}, dis_musrow: () => 0, waitb: () => {},
+    dis_init: () => {}, dis_waitb: () => {},
   };
   const { instance } = await WebAssembly.instantiate(wasm, { env });
   assert.ok(typeof instance.exports.main === "function", "main export present");

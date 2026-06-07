@@ -70,5 +70,16 @@ export function makeAbi(memory, vga) {
       // Here we just record a request; the host frame-loop honors it.
       vga.waitbCounter++;
     },
+
+    dis_init(offset, len) {
+      // S3M-player init hook — implemented later via libxmp/chiptune3.
+      vga.disInitOffset = offset | 0;
+      vga.disInitLen    = len | 0;
+    },
+
+    dis_waitb() {
+      // music-tick wait — same semantics as waitb for now.
+      vga.waitbCounter++;
+    },
   };
 }

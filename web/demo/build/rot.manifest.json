@@ -1,0 +1,18 @@
+{
+  "name": "rot",
+  "built": "2026-06-07",
+  "source": {
+    "path": "demos/rot.asm",
+    "bytes": 297,
+    "sha256": "c39ef80478bd67a2e1f1ab688714b1fe06f9281258dc37fddc5a63605bff84c3"
+  },
+  "wasm": {
+    "bytes": 449,
+    "sha256": "b4941e182ea9c3a2b1070a32e304c628b1bbf5516451fa3db9628c20b7f599aa"
+  },
+  "stats": {
+    "ops": 12,
+    "unknownOps": 0,
+    "unknownMnemonics": []
+  }
+}

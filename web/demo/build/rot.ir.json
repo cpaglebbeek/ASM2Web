@@ -1,0 +1,148 @@
+{
+  "name": "rot",
+  "stats": {
+    "ops": 12,
+    "unknownOps": 0,
+    "unknownMnemonics": []
+  },
+  "functions": [
+    {
+      "name": "__init",
+      "attr": "near",
+      "locals": 12,
+      "ops": [
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 19456
+          }
+        },
+        {
+          "op": "int",
+          "num": 33
+        }
+      ]
+    },
+    {
+      "name": "waitb",
+      "attr": "near",
+      "locals": 12,
+      "ops": [
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 3,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 986
+          }
+        },
+        {
+          "op": "label",
+          "name": "@@1",
+          "local": true
+        },
+        {
+          "op": "in",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "port": {
+            "kind": "local",
+            "index": 3,
+            "size": 16,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "test",
+          "a": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "b": {
+            "kind": "const",
+            "value": 8
+          }
+        },
+        {
+          "op": "jcond",
+          "cond": "nzf",
+          "target": "@@1"
+        },
+        {
+          "op": "label",
+          "name": "@@2",
+          "local": true
+        },
+        {
+          "op": "in",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "port": {
+            "kind": "local",
+            "index": 3,
+            "size": 16,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "test",
+          "a": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "b": {
+            "kind": "const",
+            "value": 8
+          }
+        },
+        {
+          "op": "jcond",
+          "cond": "nzf",
+          "target": "@@2"
+        },
+        {
+          "op": "ret"
+        }
+      ]
+    },
+    {
+      "name": "rol",
+      "attr": "near",
+      "locals": 12,
+      "ops": [
+        {
+          "op": "call",
+          "target": "waitb"
+        },
+        {
+          "op": "ret"
+        }
+      ]
+    }
+  ],
+  "data": []
+}

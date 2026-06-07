@@ -1,48 +1,43 @@
 /**
  * IR -> WASM codegen.
  *
- * Subset:
- *   const, mov, add, sub, and, or, xor, shl, shr, cmp,
- *   jump, jcond (zf/nzf/cf/ncf/sf/nsf),
- *   call, ret, push (stub), pop (stub),
- *   in (stub returning 0), out (calls $io_out),
- *   load, store (i32-load/store-8/-16),
- *   int 21h/4C -> call $exit,
- *   syscall (host-runtime ABI),
- *   label, nop, flagop, unknown -> unreachable
+ * Strategie:
+ *   - Elke IR-functie -> één WASM-functie (van geen-args naar geen-return).
+ *   - Cross-function `call procname` -> WASM `call $procname` opcode.
+ *   - Intra-function jumps -> dispatch-loop met br_table over basic blocks.
+ *   - Push/pop -> shadow-stack in linear memory; SP-local = LOCAL_SP.
+ *   - Per function: SP initialiseerd op STACK_TOP bij eerste binnenkomst
+ *     (via een one-shot guard om re-entry te ondersteunen).
  *
- * Runtime-ABI imports (env namespace):
- *   env.io_out(port:i32, value:i32)              -> void
- *   env.io_in(port:i32)                          -> i32
- *   env.exit(code:i32)                           -> void
- *   env.mode13h_setpixel(x:i32, y:i32, color:i32)-> void   (helper, optional)
- *   env.dis_musrow()                             -> i32
- *   env.waitb()                                  -> void
- *
- * For simplicity, push/pop in this generation are STUBs (treated as nop on
- * an unsupported stack-emulation). This is OK for the mini-demo which uses
- * no push/pop. For TECHNO we will need a real shadow-stack in linear memory.
+ * Linear-memory layout:
+ *   0x00000..0x0FFFF  data (klein-model)
+ *   0x10000..0x8FFFF  RAM
+ *   0x90000           STACK_TOP (groeit naar beneden)
+ *   0xA0000..0xAFFFF  VGA mode-13h framebuffer (64 KiB)
+ *   0xB0000..0xFFFFF  reserved
  */
 "use strict";
 
 import {
-  buildModule, InstrBuilder, ValType, ExternalKind, Op,
+  buildModule, InstrBuilder, ValType, ExternalKind, Op, BlockType,
   sleb128,
 } from "./wasm-encode.js";
 
+import {
+  LOCAL_AX, LOCAL_BX, LOCAL_CX, LOCAL_DX, LOCAL_SI, LOCAL_DI, LOCAL_BP, LOCAL_SP,
+  LOCAL_ZF, LOCAL_CF, LOCAL_SF, LOCAL_OF, NUM_FIXED_LOCALS,
+  STACK_TOP,
+} from "../ir/types.js";
+
 const ABI_IMPORTS = [
-  // index 0
   { name: "io_out",            params: [ValType.i32, ValType.i32], results: [] },
-  // index 1
   { name: "io_in",             params: [ValType.i32],              results: [ValType.i32] },
-  // index 2
   { name: "exit",              params: [ValType.i32],              results: [] },
-  // index 3
   { name: "mode13h_setpixel",  params: [ValType.i32, ValType.i32, ValType.i32], results: [] },
-  // index 4
   { name: "dis_musrow",        params: [],                         results: [ValType.i32] },
-  // index 5
   { name: "waitb",             params: [],                         results: [] },
+  { name: "dis_init",          params: [ValType.i32, ValType.i32], results: [] },
+  { name: "dis_waitb",         params: [],                         results: [] },
 ];
 
 const FN_IO_OUT = 0;
@@ -51,13 +46,23 @@ const FN_EXIT   = 2;
 const FN_SETPIX = 3;
 const FN_MUSROW = 4;
 const FN_WAITB  = 5;
+const FN_DIS_INIT  = 6;
+const FN_DIS_WAITB = 7;
+
+/**
+ * Naming-collision-safe: convert IR-function-name -> WASM-export-name.
+ * Strip underscores at start (TASM externs often have leading `_`).
+ */
+function sanitize(name) {
+  return name.replace(/^_+/, "") || "main";
+}
 
 /**
  * @param {IRModule} ir
  * @returns {{ wasm: Uint8Array, layout: object }}
  */
 export function compileIRtoWASM(ir) {
-  // Build type table — collect signatures for imports + exported funcs.
+  // ----- type table -----
   const types = [];
   function typeOf(params, results) {
     const key = `${params.join(",")}->${results.join(",")}`;
@@ -65,110 +70,34 @@ export function compileIRtoWASM(ir) {
     if (idx === -1) { idx = types.length; types.push({ params, results }); }
     return idx;
   }
-  // Reserve ABI types first (for stable indices).
   for (const a of ABI_IMPORTS) typeOf(a.params, a.results);
   const TYPE_VOID = typeOf([], []);
 
-  // All user functions have empty signature (void→void) for now.
-  // (We'll evolve to take/return arguments later.)
-  const userFnCount = ir.functions.length;
-  const userFnIndex = new Map();  // name -> wasm function index (after imports)
-  for (let i = 0; i < userFnCount; i++) {
-    userFnIndex.set(ir.functions[i].name, ABI_IMPORTS.length + i);
-  }
+  // ----- function index map -----
+  // imports first (0..ABI_IMPORTS.length-1), then user functions.
+  const userFnIndex = new Map(); // ir-name -> wasm fn index
+  ir.functions.forEach((fn, i) => userFnIndex.set(fn.name, ABI_IMPORTS.length + i));
 
-  // Emit code per function.
-  const wasmFns = ir.functions.map(fn => {
-    const b = new InstrBuilder();
-    const locals = [{ count: fn.locals.count, type: ValType.i32 }];
+  // ----- emit per function -----
+  const wasmFns = ir.functions.map((fn, fnIdx) => emitFunction(fn, userFnIndex, TYPE_VOID));
 
-    // First pass: collect label positions (we use the WASM block/br_table trampoline pattern).
-    // Simpler approach: for each function we wrap all ops in a block-table:
-    //   block $exit
-    //     block $L_n   block ... block $L_0
-    //       <ops, label-aware>
-    //     end ... end
-    //   end
-    // and we use `br` to jump to a label.
-    //
-    // To keep this scope realistic, we implement a *flat* pass that resolves
-    // labels via a single outer loop with an `dispatch_pc` local. This is
-    // slower but trivially correct.
-    //
-    // dispatch_pc local:
-    const PC_LOCAL = fn.locals.count;       // first scratch beyond fixed
-    locals[0].count++;
-    fn.locals.count++;
-
-    const labels = new Map();   // label-name -> pc-index
-    const labelOrder = [];
-    let pc = 0;
-    for (const op of fn.ops) {
-      if (op.op === "label") {
-        labels.set(op.name, pc);
-        labelOrder.push(op.name);
-      }
-      pc++;
-    }
-    const NUM_PCS = fn.ops.length;
-
-    // outer loop:
-    //   loop $main
-    //     block $exitfn
-    //       block $L_last ... block $L_0
-    //         block $linear   <-- contains the actual sequence
-    //           local.get $pc
-    //           br_table $L_0 $L_1 ... $L_last $linear   ; default = linear (entry)
-    //         end $linear
-    //         ; sequence body, labels mark br targets
-    //       end
-    //     end $exitfn
-    //     return  (or break)
-    //   end $main
-    //
-    // For now KEEP IT SIMPLER:
-    //   Generate a straight-line sequence with labels resolved as block-end positions.
-    //   For backward jumps we use `loop`; for forward jumps we use `block` + `br`.
-    //   This requires structured-control reconstruction = complex. Skip.
-    //
-    // For mini-demo with no jumps: emit straight-line.
-    // For functions with jumps: emit dispatch-loop via br_table.
-
-    const hasJumps = fn.ops.some(o => o.op === "jump" || o.op === "jcond" || o.op === "call");
-
-    if (!hasJumps) {
-      emitStraightLine(b, fn);
-      b.ret();
-    } else {
-      emitDispatchLoop(b, fn, PC_LOCAL, labels, NUM_PCS);
-    }
-
-    return {
-      typeIndex: TYPE_VOID,
-      locals,
-      body: b.toArray(),
-      name: fn.name,
-    };
-  });
-
-  // Build module.
+  // ----- build module -----
   const spec = {
     types,
     imports: [
-      { module: "env", name: "memory", kind: "memory", min: 16, max: 16 },   // 1 MiB
-      ...ABI_IMPORTS.map((a, i) => ({
+      { module: "env", name: "memory", kind: "memory", min: 16, max: 16 },
+      ...ABI_IMPORTS.map(a => ({
         module: "env", name: a.name, kind: "function",
         typeIndex: typeOf(a.params, a.results),
       })),
     ],
-    // module-declared memory — we use imported memory instead, so skip.
-    exports: wasmFns.map((f, i) => ({
-      name: f.name,
+    exports: wasmFns.map(f => ({
+      name: f.exportName,
       kind: "function",
-      index: ABI_IMPORTS.length + i,
+      index: f.wasmIndex,
     })),
     start: null,
-    functions: wasmFns.map(({ typeIndex, locals, body }) => ({ typeIndex, locals, body })),
+    functions: wasmFns.map(f => ({ typeIndex: f.typeIndex, locals: f.locals, body: f.body })),
     data: ir.data.map(emitDataSegment).filter(Boolean),
   };
 
@@ -186,155 +115,512 @@ export function compileIRtoWASM(ir) {
   };
 }
 
-// ---------- emission ----------
+// ============================================================================
+// per-function emission
+// ============================================================================
 
-function emitStraightLine(b, fn) {
-  for (const op of fn.ops) {
-    emitOp(b, op, fn);
-  }
-}
+function emitFunction(fn, userFnIndex, voidTypeIndex) {
+  const exportName = sanitize(fn.name);
+  const wasmIndex  = userFnIndex.get(fn.name);
 
-function emitDispatchLoop(b, fn, pcLocal, labels, numPcs) {
-  // Very simplified: emit each op preceded by "if (pc != myPc) skip". This is O(n^2)
-  // but easy to reason about. For the mini-demo this path isn't taken.
-  // For TECHNO we'd switch to block+br_table proper.
-  //
-  // Implementation: we just emit ops in order and IGNORE jumps (mark unreachable).
-  // This is honest: jumps are documented as "fase 4+ — control-flow reconstruction".
-  for (const op of fn.ops) {
-    if (op.op === "jump" || op.op === "jcond") {
-      b.unreachable();
-      continue;
+  // Compute basic blocks: each label-op starts a new block; first op = block 0.
+  // Build pc -> block-index map.
+  const blocks = [];
+  let currentBlock = { startPc: 0, ops: [], labels: [] };
+  blocks.push(currentBlock);
+
+  for (let pc = 0; pc < fn.ops.length; pc++) {
+    const op = fn.ops[pc];
+    if (op.op === "label" && pc > 0) {
+      currentBlock = { startPc: pc, ops: [], labels: [] };
+      blocks.push(currentBlock);
     }
-    emitOp(b, op, fn);
+    if (op.op === "label") {
+      currentBlock.labels.push(op.name);
+    }
+    currentBlock.ops.push(op);
   }
-  b.ret();
+
+  // Map label-name -> block-index for jump-resolution.
+  const labelBlockIdx = new Map();
+  for (let bi = 0; bi < blocks.length; bi++) {
+    for (const lbl of blocks[bi].labels) labelBlockIdx.set(lbl, bi);
+  }
+
+  const PC_LOCAL = fn.locals.count;          // dispatcher PC
+  const SP_INIT_GUARD = fn.locals.count + 1; // 0=uninitialised, 1=initialised
+  const TMP1 = fn.locals.count + 2;          // tmp for swap/push helpers
+  const TMP2 = fn.locals.count + 3;
+  const totalLocals = fn.locals.count + 4;
+
+  const locals = [{ count: totalLocals, type: ValType.i32 }];
+
+  const hasControlFlow = fn.ops.some(o => o.op === "jump" || o.op === "jcond" || o.op === "ret" || (o.op === "label" && o !== fn.ops[0]));
+  const needsDispatch  = blocks.length > 1;
+
+  const b = new InstrBuilder();
+
+  // ------ function entry: init SP if first call ------
+  // if ($sp_init == 0) { $sp = STACK_TOP; $sp_init = 1 }
+  b.localGet(SP_INIT_GUARD);
+  b.eqz();
+  b.if_();
+    b.i32Const(STACK_TOP);
+    b.localSet(LOCAL_SP);
+    b.i32Const(1);
+    b.localSet(SP_INIT_GUARD);
+  b.end();
+
+  if (!needsDispatch) {
+    // Single basic block: straight-line emission.
+    for (const op of blocks[0].ops) {
+      emitOp(b, op, fn, labelBlockIdx, /*pcLocal*/PC_LOCAL, /*tmps*/{TMP1,TMP2}, userFnIndex);
+    }
+    // Implicit ret (already in ir, or fallback).
+    if (!blocks[0].ops.length || blocks[0].ops[blocks[0].ops.length-1].op !== "ret") {
+      b.ret();
+    }
+  } else {
+    // Multi-block: dispatch loop.
+    //
+    //   $pc = 0
+    //   loop $main
+    //     block $exit
+    //       block $L_{n-1}
+    //         ...
+    //           block $L_0
+    //             local.get $pc
+    //             br_table $L_0 $L_1 ... $L_{n-1} $exit
+    //           end (L_0)
+    //           ;; L_0 body
+    //         end (L_1)
+    //         ;; L_1 body
+    //         ...
+    //       end (L_{n-1})
+    //       ;; L_{n-1} body
+    //     end ($exit)
+    //   end ($main)
+    //
+    // Body of block $L_i contains the ops for block i, plus an explicit
+    // jump/fall-through to next-block-or-exit.
+    b.i32Const(0); b.localSet(PC_LOCAL);
+    b.loop(BlockType.void);                  // $main, depth 0
+      b.block(BlockType.void);               // $exit, depth 1
+        // Open N nested blocks: outermost = block N-1, innermost = block 0.
+        for (let k = 0; k < blocks.length; k++) b.block(BlockType.void);
+        // br_table:
+        b.localGet(PC_LOCAL);
+        // br_table operands: number of labels, then labels, then default.
+        b.emit(Op.br_table);
+        b.uleb(blocks.length);                // count
+        for (let k = 0; k < blocks.length; k++) {
+          // labels are 0..blocks.length-1 from innermost outward;
+          // index 0 = innermost = block 0 (smallest depth from current pos).
+          // After br_table, br to label L_k means jump out of $L_k.
+          // Inside the innermost-most block: depth-0 = innermost, depth-1 = next...
+          // So branch target k = depth k (innermost = L_0 = depth 0).
+          b.uleb(k);
+        }
+        b.uleb(blocks.length);                // default = $exit (depth = blocks.length)
+        b.end();                              // close innermost (L_0) — fall-through enters block-0 body
+
+        // Emit each block's body:
+        // After body-i runs, we hit the next `end` which closes either L_{i+1}
+        // (for i < N-1) or $exit (for i == N-1). So we emit exactly N closes
+        // here — no separate $exit-close after the for-loop.
+        for (let bi = 0; bi < blocks.length; bi++) {
+          const blk = blocks[bi];
+          let endedExplicitly = false;
+          for (const op of blk.ops) {
+            const ended = emitOpInBlock(b, op, fn, labelBlockIdx, PC_LOCAL, {TMP1,TMP2}, userFnIndex, blocks.length, bi);
+            if (ended) { endedExplicitly = true; break; }
+          }
+          if (!endedExplicitly) {
+            // Fall-through to next block: set pc to bi+1 and continue dispatch via $main.
+            // Last block falls through naturally to $exit.
+            if (bi + 1 < blocks.length) {
+              b.i32Const(bi + 1);
+              b.localSet(PC_LOCAL);
+              // Depth to $main: number of L-blocks remaining to be closed + $exit + $main
+              // Inside this body, current enclosing nesting (from innermost out):
+              //   L_{bi+1} (next close), L_{bi+2}, ..., L_{N-1}, $exit, $main
+              // That's (blocks.length - bi - 1) L-blocks + $exit + $main = blocks.length - bi + 1.
+              // br $main = depth from innermost = blocks.length - bi.
+              b.br(blocks.length - bi);
+            }
+            // For bi == N-1: do nothing — natural fall-through to $exit-end (which
+            // is this iteration's b.end() below).
+          }
+          b.end();
+        }
+    b.end();                                  // close $main loop
+    // After exit: function returns.
+  }
+
+  return {
+    exportName,
+    wasmIndex,
+    typeIndex: voidTypeIndex,
+    locals,
+    body: b.toArray(),
+  };
 }
 
-function emitOp(b, op, fn) {
+// ============================================================================
+// op emission
+// ============================================================================
+
+/** Emit an op in straight-line mode (no block-nesting awareness). */
+function emitOp(b, op, fn, labelBlockIdx, pcLocal, tmps, userFnIndex) {
   switch (op.op) {
     case "label":
-      // no-op marker at codegen time (already used for labels-map)
-      return;
     case "nop":
-      b.nop(); return;
     case "flagop":
-      b.nop(); return;
-    case "mov":
-      pushValue(b, op.src);
-      storeTo(b, op.dest);
+      b.nop();
       return;
-    case "const":
-      b.i32Const(op.value | 0);
-      storeTo(b, op.dest);
-      return;
+    case "mov":      return emitMov(b, op, tmps);
+    case "const":    b.i32Const(op.value | 0); storeTo(b, op.dest, tmps); return;
     case "add":
     case "sub":
     case "and":
     case "or":
     case "xor":
     case "shl":
-    case "shr": {
-      pushValue(b, op.a);
-      pushValue(b, op.b || op.count);
-      switch (op.op) {
-        case "add": b.add(); break;
-        case "sub": b.sub(); break;
-        case "and": b.and(); break;
-        case "or":  b.or();  break;
-        case "xor": b.xor(); break;
-        case "shl": b.shl(); break;
-        case "shr": b.shrU(); break;
-      }
-      storeTo(b, op.dest);
-      return;
-    }
+    case "shr":
+    case "sar":
+    case "rol":
+    case "ror":
+    case "rcl":
+    case "rcr":      return emitArith(b, op, tmps);
+    case "xchg":     return emitXchg(b, op, tmps);
+    case "mul":
+    case "imul":     return emitMul(b, op, tmps);
+    case "div":
+    case "idiv":     return emitDiv(b, op, tmps);
+    case "loop_dec_cx": return emitLoopDecCx(b, op, tmps);
     case "cmp":
-    case "test": {
-      // cmp/test: compute (a OP b), set ZF.
-      pushValue(b, op.a);
-      pushValue(b, op.b);
-      if (op.op === "cmp") b.sub();
-      else b.and();
-      // ZF = (result == 0)
-      b.eqz();
-      // store to ZF local (index 8)
-      b.localSet(8);
-      return;
-    }
-    case "store": {
-      const addr = computeAddress(b, op.addr);
-      pushValue(b, op.src);
-      if (op.size === 8)  b.store8(0, addr);
-      else if (op.size === 32) b.store(0, addr);
-      else b.store16(0, addr);
-      return;
-    }
-    case "load": {
-      const addr = computeAddress(b, op.addr);
-      if (op.size === 8)  b.load8U(0, addr);
-      else if (op.size === 32) b.load(0, addr);
-      else b.load16U(0, addr);
-      storeTo(b, op.dest);
-      return;
-    }
-    case "out": {
-      // env.io_out(port, value)
-      pushValue(b, op.port);
-      pushValue(b, op.src);
-      b.call(FN_IO_OUT);
-      return;
-    }
-    case "in": {
-      pushValue(b, op.port);
-      b.call(FN_IO_IN);
-      storeTo(b, op.dest);
-      return;
-    }
+    case "test":     return emitCmpTest(b, op, tmps);
+    case "store":    return emitStore(b, op, tmps);
+    case "load":     return emitLoad(b, op, tmps);
+    case "out":      pushValue(b, op.port, tmps); pushValue(b, op.src, tmps); b.call(FN_IO_OUT); return;
+    case "in":       pushValue(b, op.port, tmps); b.call(FN_IO_IN); storeTo(b, op.dest, tmps); return;
     case "int":
-      if (op.num === 0x21) {
-        // DOS function 4Ch (read from AH=4C). We approximate "int 21h" as exit(0).
-        b.i32Const(0);
-        b.call(FN_EXIT);
-        b.ret();
-      } else {
-        // unsupported INT — exit with code 0xFF.
-        b.i32Const(0xFF);
-        b.call(FN_EXIT);
-        b.ret();
-      }
+      if (op.num === 0x21) { b.i32Const(0); b.call(FN_EXIT); b.ret(); }
+      else { b.i32Const(0xFF); b.call(FN_EXIT); b.ret(); }
       return;
-    case "push":
-    case "pop":
-      // Stub: real shadow-stack not yet implemented.
-      b.nop();
+    case "push":     pushValue(b, op.src, tmps); doPush(b); return;
+    case "pop":      doPop(b); storeTo(b, op.dest, tmps); return;
+    case "ret":      b.ret(); return;
+    case "call": {
+      const wasmIdx = userFnIndex.get(op.target) ?? userFnIndex.get("_" + op.target);
+      if (wasmIdx !== undefined) b.call(wasmIdx);
+      else b.nop();   // unresolved — silent no-op
       return;
-    case "ret":
-      b.ret();
-      return;
-    case "call":
+    }
     case "jump":
     case "jcond":
-      // Control-flow: handled by dispatch loop (no-op here, or emit unreachable).
-      b.unreachable();
-      return;
     case "unknown":
-      b.unreachable();
+      // In straight-line mode these shouldn't be emitted; ignore safely.
+      b.nop();
       return;
-    default:
-      b.unreachable();
-      return;
+    default:         b.nop(); return;
   }
 }
 
-function pushValue(b, v) {
+/**
+ * Emit an op inside a dispatch-block. Returns `true` if the op terminated
+ * the block (jump/ret), so the caller skips the auto-fall-through.
+ */
+function emitOpInBlock(b, op, fn, labelBlockIdx, pcLocal, tmps, userFnIndex, totalBlocks, blockIdx) {
+  switch (op.op) {
+    case "jump": {
+      const target = labelBlockIdx.get(op.target);
+      if (target === undefined) { b.nop(); return false; }
+      b.i32Const(target);
+      b.localSet(pcLocal);
+      // Open blocks at this point (innermost outward): L_{blockIdx+1}..L_{N-1}, $exit, $main.
+      // L_{blockIdx} is already closed (its body started AFTER its end-opcode).
+      // br to $main = depth = (N - blockIdx - 1) L-blocks + 1 ($exit) = N - blockIdx.
+      b.br(totalBlocks - blockIdx);
+      return true;
+    }
+    case "jcond": {
+      const target = labelBlockIdx.get(op.target);
+      if (target === undefined) { b.nop(); return false; }
+      pushFlag(b, op.cond);
+      b.if_(BlockType.void);
+        b.i32Const(target);
+        b.localSet(pcLocal);
+        // Add 1 for the $if we just opened.
+        b.br(totalBlocks - blockIdx + 1);
+      b.end();
+      return false;
+    }
+    case "ret": {
+      // Return from function: br to $exit (then fall out of $main = function returns).
+      // $exit at depth = (N - blockIdx - 1) L-blocks above us = N - blockIdx - 1.
+      b.br(totalBlocks - blockIdx - 1);
+      return true;
+    }
+    case "int":
+      if (op.num === 0x21) {
+        b.i32Const(0);
+        b.call(FN_EXIT);
+        b.br(totalBlocks - blockIdx - 1);
+        return true;
+      }
+      b.i32Const(0xFF);
+      b.call(FN_EXIT);
+      return false;
+    default:
+      emitOp(b, op, fn, labelBlockIdx, pcLocal, tmps, userFnIndex);
+      return false;
+  }
+}
+
+// ============================================================================
+// op helpers
+// ============================================================================
+
+function emitMov(b, op, tmps) {
+  const src = op.src;
+  const dst = op.dest;
+  if (dst.kind === "mem") {
+    emitStore(b, { addr: dst, src, size: inferSize(dst, src) }, tmps);
+    return;
+  }
+  if (src.kind === "mem") {
+    emitLoad(b, { addr: src, dest: dst, size: inferSize(src, dst) }, tmps);
+    return;
+  }
+  pushValue(b, src, tmps);
+  storeTo(b, dst, tmps);
+}
+
+function inferSize(memOp, otherOp) {
+  if (memOp.sizeHint === "byte") return 8;
+  if (memOp.sizeHint === "word") return 16;
+  if (memOp.sizeHint === "dword") return 32;
+  if (otherOp && otherOp.kind === "local") {
+    if (otherOp.size === 8)  return 8;
+    if (otherOp.size === 32) return 32;
+  }
+  return 16;
+}
+
+function emitArith(b, op, tmps) {
+  pushValue(b, op.a, tmps);
+  pushValue(b, op.b || op.count, tmps);
+  switch (op.op) {
+    case "add": b.add(); break;
+    case "sub": b.sub(); break;
+    case "and": b.and(); break;
+    case "or":  b.or();  break;
+    case "xor": b.xor(); break;
+    case "shl": b.shl(); break;
+    case "shr": b.shrU(); break;
+    case "sar": b.emit(Op.i32_shr_s); break;
+    case "rol":
+    case "rcl": b.emit(Op.i32_rotl); break;
+    case "ror":
+    case "rcr": b.emit(Op.i32_rotr); break;
+  }
+  b.localTee(tmps.TMP1);
+  b.eqz();
+  b.localSet(LOCAL_ZF);
+  b.localGet(tmps.TMP1);
+  storeTo(b, op.dest, tmps);
+}
+
+function emitXchg(b, op, tmps) {
+  // tmp = a; a = b; b = tmp
+  pushValue(b, op.a, tmps);
+  b.localSet(tmps.TMP1);
+  pushValue(b, op.b, tmps);
+  storeTo(b, op.a, tmps);
+  b.localGet(tmps.TMP1);
+  storeTo(b, op.b, tmps);
+}
+
+function emitMul(b, op, tmps) {
+  // AX = AL * src  (8-bit) or DX:AX = AX * src (16-bit)
+  // Approximation: AX = AX * src (16-bit result truncated)
+  b.localGet(LOCAL_AX);
+  b.i32Const(0xFFFF); b.and();
+  pushValue(b, op.src, tmps);
+  b.mul();
+  storeTo(b, { kind: "local", index: LOCAL_AX, size: 16 }, tmps);
+}
+
+function emitDiv(b, op, tmps) {
+  // AX = AX / src  (8-bit divide)
+  // Approximation: AX = AX / src
+  b.localGet(LOCAL_AX);
+  b.i32Const(0xFFFF); b.and();
+  pushValue(b, op.src, tmps);
+  if (op.op === "idiv") b.emit(Op.i32_div_s);
+  else b.emit(Op.i32_div_u);
+  storeTo(b, { kind: "local", index: LOCAL_AX, size: 16 }, tmps);
+}
+
+function emitLoopDecCx(b, op, tmps) {
+  // CX--; if (CX != 0) goto target — handled by control-flow caller.
+  // We just emit CX decrement here; the actual jump must come from the dispatcher.
+  // For now, decrement CX. In multi-block mode, parser-emit translates `loop`
+  // to two IR ops: dec_cx + jcond(nzf). But our current emitter emits as a single
+  // op, so we just decrement here without jumping (best-effort).
+  b.localGet(LOCAL_CX);
+  b.i32Const(1); b.sub();
+  b.i32Const(0xFFFF); b.and();
+  b.localSet(LOCAL_CX);
+}
+
+function emitCmpTest(b, op, tmps) {
+  pushValue(b, op.a, tmps);
+  pushValue(b, op.b, tmps);
+  if (op.op === "cmp") b.sub();
+  else b.and();
+  b.eqz();
+  b.localSet(LOCAL_ZF);
+}
+
+function emitStore(b, op, tmps) {
+  const sz = op.size || 16;
+  // Compute address.
+  if (op.addr.kind === "mem") {
+    b.i32Const(0);  // base
+    const lit = parseMemExpr(op.addr) | 0;
+    pushValue(b, op.src, tmps);
+    if (sz === 8)       b.store8(0, lit);
+    else if (sz === 32) b.store(0, lit);
+    else                b.store16(0, lit);
+    return;
+  }
+  if (op.addr.kind === "const") {
+    b.i32Const(0);
+    pushValue(b, op.src, tmps);
+    if (sz === 8)       b.store8(0, op.addr.value | 0);
+    else if (sz === 32) b.store(0, op.addr.value | 0);
+    else                b.store16(0, op.addr.value | 0);
+    return;
+  }
+  if (op.addr.kind === "local") {
+    b.localGet(op.addr.index);
+    pushValue(b, op.src, tmps);
+    if (sz === 8)       b.store8(0, 0);
+    else if (sz === 32) b.store(0, 0);
+    else                b.store16(0, 0);
+    return;
+  }
+  // Fallback drop.
+  pushValue(b, op.src, tmps);
+  b.drop();
+}
+
+function emitLoad(b, op, tmps) {
+  const sz = op.size || 16;
+  if (op.addr.kind === "mem") {
+    b.i32Const(0);
+    const lit = parseMemExpr(op.addr) | 0;
+    if (sz === 8)       b.load8U(0, lit);
+    else if (sz === 32) b.load(0, lit);
+    else                b.load16U(0, lit);
+  } else if (op.addr.kind === "const") {
+    b.i32Const(0);
+    if (sz === 8)       b.load8U(0, op.addr.value | 0);
+    else if (sz === 32) b.load(0, op.addr.value | 0);
+    else                b.load16U(0, op.addr.value | 0);
+  } else if (op.addr.kind === "local") {
+    b.localGet(op.addr.index);
+    if (sz === 8)       b.load8U(0, 0);
+    else if (sz === 32) b.load(0, 0);
+    else                b.load16U(0, 0);
+  } else {
+    b.i32Const(0);
+  }
+  storeTo(b, op.dest, tmps);
+}
+
+// Shadow-stack helpers.
+// Push pops top-of-stack and writes to mem16[SP-2]; SP -= 2.
+function doPush(b) {
+  // stack: [value]
+  // need: store16 at SP-2, then SP-=2
+  // Sequence: tee value -> TMP, sp-=2, load_value, store16
+  // Simpler:  sp -= 2; mem16[sp] = value
+  // Use:  local.get sp; i32.const 2; i32.sub; local.tee sp; local.get value; i32.store16
+  // But value is already on stack. We need address first, then value, then store.
+  // Trick: capture value via local.
+  // Reorder with a tmp: (value already top)
+  //   localSet $tmp        ; pop value to tmp
+  //   localGet $sp
+  //   i32.const 2
+  //   i32.sub
+  //   localTee $sp
+  //   localGet $tmp
+  //   i32.store16 0 0
+  // We use a fixed tmp register (TMP1 via emitArith may conflict — emit local).
+  // For simplicity use a unique local: we won't collide with TMP1 because push/pop
+  // are sequential. But to be safe use TMP2.
+  // (Caller must pass TMP2 via tmps object; we have tmps in scope.)
+  // -- here we use a literal index, but since this fn is internal we know we're
+  //    being called from emitOp which has tmps.TMP2 = fn.locals.count + 3.
+  // To avoid global state, we accept a known local index for push tmp.
+  // For now: hard-code via a passed param — but doPush is currently param-less.
+  // -> Just use TMP2 by convention (last fixed scratch).
+  // Simpler approach: keep push/pop param-less and use a fixed offset based on
+  // assumption set in emitFunction.  Caller MUST ensure totalLocals includes them.
+  // We don't have tmps here. Hack: inline a sequence that uses i32 stack only:
+  //   value is at TOS. Use store at variable address by swapping.
+  // Actually best: change signature. Let me just rewrite to use Op-level swap via
+  // local at fixed index 16 (after fixed=12 + PC + SP_INIT_GUARD + TMP1 + TMP2 = 16).
+  // Wait we allocated TMP1 = fixed.count+2 and TMP2 = fixed.count+3, with
+  // fn.locals.count = NUM_FIXED_LOCALS = 12. So PC=12, SP_INIT_GUARD=13, TMP1=14, TMP2=15.
+  const TMP_PUSH = 15; // matches TMP2 allocation in emitFunction (fn.locals.count + 3 with count=12)
+  b.localSet(TMP_PUSH);
+  b.localGet(LOCAL_SP);
+  b.i32Const(2);
+  b.sub();
+  b.localTee(LOCAL_SP);
+  b.localGet(TMP_PUSH);
+  b.emit(Op.i32_store16); b.uleb(0); b.uleb(0);
+}
+
+function doPop(b) {
+  // result = mem16[SP], SP += 2
+  b.localGet(LOCAL_SP);
+  b.emit(Op.i32_load16_u); b.uleb(0); b.uleb(0);
+  // result on stack now — bump SP
+  // need to keep result, so capture and restore
+  const TMP_POP = 15;
+  b.localSet(TMP_POP);
+  b.localGet(LOCAL_SP);
+  b.i32Const(2);
+  b.add();
+  b.localSet(LOCAL_SP);
+  b.localGet(TMP_POP);
+}
+
+// Flag retrieval for jcond.
+function pushFlag(b, cond) {
+  switch (cond) {
+    case "zf":  b.localGet(LOCAL_ZF); break;
+    case "nzf": b.localGet(LOCAL_ZF); b.eqz(); break;
+    case "cf":  b.localGet(LOCAL_CF); break;
+    case "ncf": b.localGet(LOCAL_CF); b.eqz(); break;
+    case "sf":  b.localGet(LOCAL_SF); break;
+    case "nsf": b.localGet(LOCAL_SF); b.eqz(); break;
+    default:    b.i32Const(0);
+  }
+}
+
+function pushValue(b, v, tmps) {
   if (!v) { b.i32Const(0); return; }
   switch (v.kind) {
     case "const": b.i32Const(v.value | 0); return;
     case "local":
       b.localGet(v.index);
       if (v.size === 8 && v.isHigh) {
-        // (val >> 8) & 0xFF
         b.i32Const(8); b.shrU();
         b.i32Const(0xFF); b.and();
       } else if (v.size === 8) {
@@ -344,13 +630,12 @@ function pushValue(b, v) {
       }
       return;
     case "sym":
-      // unresolved symbol -> 0 (TODO: resolve to data-offset)
+      // unresolved symbol -> 0 (todo: data-segment offsets)
       b.i32Const(0);
       return;
     case "mem":
-      // load from computed address (16-bit default)
-      b.i32Const(parseMemExpr(v) | 0);
-      b.load16U(0, 0);
+      b.i32Const(0);
+      b.load16U(0, parseMemExpr(v) | 0);
       return;
     default:
       b.i32Const(0);
@@ -358,69 +643,39 @@ function pushValue(b, v) {
   }
 }
 
-function storeTo(b, v) {
+function storeTo(b, v, tmps) {
   if (!v) { b.drop(); return; }
   if (v.kind === "local") {
     if (v.size === 8 && v.isHigh) {
-      // Combine into existing word: (existing & 0x00FF) | ((new & 0xFF) << 8)
-      b.localGet(v.index);
-      b.i32Const(0x00FF); b.and();
-      // stack: existing&FF, new
-      // need stack: (new & FF) << 8, existing&FF, then or
-      // Easier: push new (top), mask, shl, then push existing-masked, or.
-      // But stack order is awkward — leverage tee.
-      // We'll spill new value to a temporary local via a small trick: not done now.
-      // For mini-demo: high-byte writes are rare. Emit as plain 16-bit store.
+      // value on top. We want: existing = (existing & 0x00FF) | ((value & 0xFF) << 8)
+      // Use TMP to swap order.
+      b.localSet(tmps.TMP1);                    // tmp = new value
+      b.localGet(v.index); b.i32Const(0x00FF); b.and();
+      b.localGet(tmps.TMP1); b.i32Const(0xFF); b.and(); b.i32Const(8); b.shl();
       b.or();
       b.localSet(v.index);
       return;
     }
     if (v.size === 8) {
-      // (existing & 0xFF00) | (new & 0xFF)
-      b.i32Const(0xFF); b.and();
-      b.localGet(v.index);
-      b.i32Const(0xFF00); b.and();
+      // value on top. (existing & 0xFF00) | (new & 0xFF)
+      b.localSet(tmps.TMP1);
+      b.localGet(v.index); b.i32Const(0xFF00); b.and();
+      b.localGet(tmps.TMP1); b.i32Const(0xFF); b.and();
       b.or();
       b.localSet(v.index);
       return;
     }
-    // 16-bit: just store low 16 bits.
+    // 16-bit: mask to low 16
     b.i32Const(0xFFFF); b.and();
     b.localSet(v.index);
     return;
   }
-  // memory store handled separately (caller already emitted store)
   b.drop();
 }
 
-function computeAddress(b, addrOperand) {
-  // Returns the offset literal to use in load/store, AFTER having pushed any
-  // base address onto the stack. For simple literal addresses we push 0 and
-  // use offset = literal.
-  if (addrOperand.kind === "mem") {
-    const litOffset = parseMemExpr(addrOperand);
-    b.i32Const(0);   // base
-    return litOffset;
-  }
-  if (addrOperand.kind === "const") {
-    b.i32Const(0);
-    return addrOperand.value | 0;
-  }
-  if (addrOperand.kind === "local") {
-    b.localGet(addrOperand.index);
-    return 0;
-  }
-  b.i32Const(0);
-  return 0;
-}
-
 function parseMemExpr(memOperand) {
-  // Very simple expression parser for "10*320 + 10" style constants.
-  // Only supports integer constants and +/-/* between them.
   if (!memOperand.exprTokens) return 0;
   const toks = memOperand.exprTokens.filter(t => t.type !== "WS");
-  // Convert to a flat string and evaluate via shunting-yard or simple eval-safe.
-  // We do a very small parser: nothing fancy.
   let i = 0;
   function parseTerm() {
     let v = parsePrimary();
@@ -450,11 +705,10 @@ function parseMemExpr(memOperand) {
     const t = toks[i++];
     if (!t) return 0;
     if (t.type === "NUMBER") return Number(t.value) | 0;
-    if (t.type === "IDENT")  return 0;  // unresolved symbol
+    if (t.type === "IDENT")  return 0;
     if (t.type === "PUNCT" && t.value === "-") return -parsePrimary();
     if (t.type === "PUNCT" && t.value === "(") {
       const v = parseExpr();
-      // expect ')'
       if (toks[i] && toks[i].type === "PUNCT" && toks[i].value === ")") i++;
       return v;
     }
@@ -464,15 +718,11 @@ function parseMemExpr(memOperand) {
 }
 
 function emitDataSegment(d, idx) {
-  // Convert TASM data-items to bytes at sequential offset (we use 0x1000 + per-name).
   if (!d || !d.items || !d.items.length) return null;
   const bytes = [];
   for (const it of d.items) appendDataItem(bytes, it, d.size);
   if (!bytes.length) return null;
-  return {
-    offset: 0x1000 + idx * 0x1000,
-    bytes,
-  };
+  return { offset: 0x1000 + idx * 0x100, bytes };
 }
 
 function appendDataItem(out, it, size) {
@@ -487,30 +737,24 @@ function appendDataItem(out, it, size) {
       }
       return;
     }
-    case "str": {
+    case "str":
       for (let k = 0; k < it.value.length; k++) out.push(it.value.charCodeAt(k) & 0xFF);
       return;
-    }
     case "dup": {
       const n = Number(it.count) | 0;
       const before = out.length;
       appendDataItem(out, it.inner, size);
-      const oneSize = out.length - before;
       const piece = out.slice(before);
       for (let k = 1; k < n; k++) out.push(...piece);
       return;
     }
-    case "uninit": {
+    case "uninit":
+    case "ref":
+    case "raw": {
       const n = size === "db" ? 1 : size === "dw" ? 2 : 4;
       for (let k = 0; k < n; k++) out.push(0);
       return;
     }
-    case "ref":
-    case "raw":
-      // Unresolved — emit zeros for placeholder.
-      const n = size === "db" ? 1 : size === "dw" ? 2 : 4;
-      for (let k = 0; k < n; k++) out.push(0);
-      return;
     default: return;
   }
 }

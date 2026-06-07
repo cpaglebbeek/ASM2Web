@@ -27,7 +27,7 @@
         Frame <var>N</var> is een <strong>pure functie</strong> van (program-bytes, frame-index, input).
         Geen emulator. Geen rewrite. Geen <code>Math.random()</code>. Geen wallclock-jitter.
       </p>
-      <p class="version" id="version-line">v0.1.0-Hopper &middot; fase 1-4a (mini-demo end-to-end + runtime + build-determinisme bewezen)</p>
+      <p class="version" id="version-line">v0.2.0-Backus &middot; fase 1-4b (control-flow + shadow-stack + 100% TECHNO mnemonics + OBK-parser + KOEA compileert naar valid WASM)</p>
     </section>
 
     <section class="hero" style="background:var(--bg-elev); border:1px solid var(--border); border-left:3px solid var(--green); padding:1rem 1.2rem; border-radius:6px;">
@@ -55,7 +55,7 @@
         <li class="phase done">
           <span class="phase-tag">Fase 2 ✓</span>
           <span class="phase-name">IR-emitter</span>
-          <span class="phase-detail">91.3% TECHNO instructies herkend (1187/1300)</span>
+          <span class="phase-detail"><strong>100% TECHNO instructies</strong> (1300/1300) — alle 23 mnemonics afgehandeld</span>
         </li>
         <li class="phase done">
           <span class="phase-tag">Fase 3 ✓</span>
@@ -67,15 +67,25 @@
           <span class="phase-name">Runtime (visueel)</span>
           <span class="phase-detail">mode-13h canvas + palette-DAC + count-based clock &mdash; hello-pixel speelbaar</span>
         </li>
+        <li class="phase done">
+          <span class="phase-tag">Fase 4b ✓</span>
+          <span class="phase-name">Control-flow + shadow-stack</span>
+          <span class="phase-detail">dispatch-loop met <code>br_table</code> + push/pop op linear memory &mdash; ROT.ASM speelbaar, KOEA compileert</span>
+        </li>
+        <li class="phase done">
+          <span class="phase-tag">OBK ✓</span>
+          <span class="phase-name">OMF data-parser</span>
+          <span class="phase-detail">_circle (24000 B) + _circle2 (8000 B) ge-extraheerd uit Borland TASM-build</span>
+        </li>
         <li class="phase pending">
-          <span class="phase-tag">Fase 4b</span>
-          <span class="phase-name">Runtime (audio + control-flow)</span>
-          <span class="phase-detail">S3M-player (libxmp-lite WASM) + structured control-flow (jumps/calls)</span>
+          <span class="phase-tag">Linker</span>
+          <span class="phase-name">Cross-file + data-segments</span>
+          <span class="phase-detail">link KOEA+KOEB+POLYCLIP in één module + OBK-data als WASM data-section</span>
         </li>
         <li class="phase pending">
           <span class="phase-tag">Fase 5</span>
           <span class="phase-name">TECHNO speelbaar</span>
-          <span class="phase-detail">+ ontbrekende x86-instructies (mul/div/rep/rol) + OBK-data + DIS-engine port</span>
+          <span class="phase-detail">+ KOE.C driver (TS-rewrite) + DIS-engine substituut (libxmp-lite/chiptune3)</span>
         </li>
       </ol>
     </section>

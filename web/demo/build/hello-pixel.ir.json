@@ -9,7 +9,7 @@
     {
       "name": "main",
       "attr": "near",
-      "locals": 13,
+      "locals": 12,
       "ops": [
         {
           "op": "mov",
