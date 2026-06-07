@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ASM2Web — deterministische x86-assembly naar browser</title>
+  <meta name="description" content="ASM2Web: per-instructie TASM &rarr; WebAssembly transpilatie van klassieke 16-bit demoscene-modules. Frame N = pure functie van (program, frame-index, input). Eerste module: TECHNO uit Second Reality (Future Crew, 1993).">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <span class="logo">ASM<span class="logo-accent">2</span>Web</span>
+      <span class="tagline">deterministische x86-asm &rarr; browser</span>
+    </div>
+    <nav class="nav">
+      <a href="architecture/">Architecture viewer</a>
+      <a href="https://github.com/cpaglebbeek/ASM2Web" rel="noopener">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Per-instructie TASM &rarr; WebAssembly</h1>
+      <p class="lead">
+        ASM2Web compileert historische 16-bit x86 assembly (TASM-dialect) deterministisch naar WebAssembly.
+        Frame <var>N</var> is een <strong>pure functie</strong> van (program-bytes, frame-index, input).
+        Geen emulator. Geen rewrite. Geen <code>Math.random()</code>. Geen wallclock-jitter.
+      </p>
+      <p class="version" id="version-line">v0.0.1-Booth &middot; fase 0 (skeleton)</p>
+    </section>
+
+    <section class="status">
+      <h2>Bouwstatus</h2>
+      <ol class="phases">
+        <li class="phase done">
+          <span class="phase-tag">Fase 0</span>
+          <span class="phase-name">Skeleton</span>
+          <span class="phase-detail">repo + docs + TECHNO inventaris + viewer + deploy</span>
+        </li>
+        <li class="phase pending">
+          <span class="phase-tag">Fase 1</span>
+          <span class="phase-name">TASM-parser + AST</span>
+          <span class="phase-detail">v0.0.2-Wheeler &mdash; tokenizer, parser, cross-file symbol-table</span>
+        </li>
+        <li class="phase pending">
+          <span class="phase-tag">Fase 2</span>
+          <span class="phase-name">IR-emitter</span>
+          <span class="phase-detail">v0.0.3-Wheeler &mdash; typed SSA-achtig, expliciete flags</span>
+        </li>
+        <li class="phase pending">
+          <span class="phase-tag">Fase 3</span>
+          <span class="phase-name">WASM-codegen</span>
+          <span class="phase-detail">v0.1.0-Hopper &mdash; reproducible <code>.wasm</code></span>
+        </li>
+        <li class="phase pending">
+          <span class="phase-tag">Fase 4</span>
+          <span class="phase-name">Runtime + TECHNO live</span>
+          <span class="phase-detail">v0.2.0-Backus &mdash; mode-13h canvas + DIS&rarr;WebAudio + gouden-frame tests</span>
+        </li>
+      </ol>
+    </section>
+
+    <section class="modules">
+      <h2>Modules</h2>
+      <p class="modules-intro">Elke module is een ASM-set die deterministisch ge-transpileerd wordt. Klik door voor inventaris &amp; bronnen.</p>
+      <div id="modules-list" class="modules-list" aria-live="polite">
+        <p class="loading">modules.json laden&hellip;</p>
+      </div>
+    </section>
+
+    <section class="determinisme">
+      <h2>Drie bewijslast-niveaus</h2>
+      <dl>
+        <dt>Build-determinisme</dt>
+        <dd>Zelfde source &rarr; byte-identieke <code>.wasm</code>. Bewijs: <code>sha256(build1)&nbsp;==&nbsp;sha256(build2)</code>.</dd>
+        <dt>Runtime-determinisme</dt>
+        <dd>Zelfde program + input-trace + frame-<var>N</var> &rarr; byte-identieke pixel-bytes. Bewijs: gouden-frame snapshots.</dd>
+        <dt>Audio-determinisme</dt>
+        <dd>Zelfde program + frame-<var>N</var> &rarr; byte-identieke sample-buffer. Bewijs: WAV-checksum per N seconden.</dd>
+      </dl>
+    </section>
+
+    <section class="links">
+      <h2>Verder lezen</h2>
+      <ul>
+        <li><a href="architecture/">Architecture viewer</a> &mdash; pipeline + componenten + runtime-ABI</li>
+        <li><a href="https://github.com/cpaglebbeek/ASM2Web/blob/main/ARCHITECTURE.md" rel="noopener">ARCHITECTURE.md</a></li>
+        <li><a href="https://github.com/cpaglebbeek/ASM2Web/blob/main/BUILD_PLAN.md" rel="noopener">BUILD_PLAN.md</a> (fase-roadmap)</li>
+        <li><a href="https://github.com/cpaglebbeek/ASM2Web/blob/main/PRINCIPLES.md" rel="noopener">PRINCIPLES.md</a> (determinisme-eisen)</li>
+        <li><a href="https://github.com/cpaglebbeek/ASM2Web/blob/main/modules/techno/INVENTORY.md" rel="noopener">TECHNO INVENTORY.md</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="bottom">
+    <p>
+      ASM2Web &mdash; AGPL-3.0 &middot;
+      bron-werk <a href="https://github.com/mtuomi/SecondReality" rel="noopener">mtuomi/SecondReality</a> (Unlicense, 1993&ndash;2013) &middot;
+      onderdeel van ecosysteem <em>Retro_Computing</em>
+    </p>
+    <p>
+      Codenaam-thema: pioniers van de assembler &mdash; v0.0.x <strong>Booth</strong> (Kathleen Booth, 1947, eerste assembleertaal voor de ARC-machine).
+    </p>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>

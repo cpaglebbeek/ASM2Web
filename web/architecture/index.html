@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ASM2Web &mdash; architectuur</title>
+  <meta name="description" content="Architectuur-viewer: TASM-bron via tokenizer/parser/IR/WASM-codegen naar deterministische runtime in de browser.">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .arch-wrap { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+    .arch-svg-box {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg-elev);
+      padding: 0.6rem;
+      overflow-x: auto;
+    }
+    .arch-svg-box svg { display: block; width: 100%; height: auto; max-width: 1040px; margin: 0 auto; }
+    .abi-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--mono);
+      font-size: 0.88rem;
+      margin-top: 0.6rem;
+    }
+    .abi-table th, .abi-table td {
+      text-align: left;
+      padding: 0.4rem 0.7rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .abi-table th { color: var(--fg-dim); font-weight: 400; background: var(--bg-elev); }
+    .abi-table td.fn { color: var(--accent); }
+    .abi-table td.args { color: var(--accent-2); white-space: nowrap; }
+    .abi-table td.purpose { color: var(--fg); font-family: var(--sans); font-size: 0.88rem; }
+    .legend { font-size: 0.85rem; color: var(--fg-dim); margin-top: 0.6rem; }
+    .legend span { display: inline-block; margin-right: 1.2rem; }
+    .legend .dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; vertical-align: middle; margin-right: 0.4rem; }
+    .dot.bron { background: #6e5a2e; }
+    .dot.build { background: #2a5a8a; }
+    .dot.runtime { background: #5a8a4a; }
+    .dot.contract { background: #8a4a4a; }
+    .dot.output { background: #6a4a8a; }
+    .mod-list-arch { list-style: none; padding: 0; }
+    .mod-list-arch li {
+      font-family: var(--mono);
+      font-size: 0.88rem;
+      padding: 0.3rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .mod-list-arch li:last-child { border-bottom: 0; }
+    .mod-list-arch .mod-name { color: var(--fg-strong); font-weight: 600; }
+    .mod-list-arch .mod-status { color: var(--amber); }
+    .mod-list-arch .mod-stats { color: var(--fg-dim); margin-left: 0.7rem; }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <a href="../" style="text-decoration:none">
+        <span class="logo">ASM<span class="logo-accent">2</span>Web</span>
+      </a>
+      <span class="tagline">architectuur-viewer (statisch, hand-crafted SVG)</span>
+    </div>
+    <nav class="nav">
+      <a href="../">&laquo; home</a>
+      <a href="https://github.com/cpaglebbeek/ASM2Web/blob/main/ARCHITECTURE.md" rel="noopener">ARCHITECTURE.md</a>
+      <a href="https://github.com/cpaglebbeek/ASM2Web" rel="noopener">GitHub</a>
+    </nav>
+  </header>
+
+  <main class="arch-wrap">
+    <section>
+      <h1 style="font-size:1.5rem; margin:0 0 0.3rem;">Pipeline: TASM-bron &rarr; WASM &rarr; browser</h1>
+      <p style="color:var(--fg-dim); margin:0 0 1rem;">
+        Route B (gekozen 2026-06-08): per-instructie transpilatie, geen x86-emulator.
+        Onderstaande tekening is statisch &mdash; geen layout-engine, geen RNG, geen font-metric afhankelijke positionering.
+      </p>
+
+      <div class="arch-svg-box">
+        <!--
+          SVG architectuur — hand-positioned, deterministic.
+          Coordinaten in viewBox-units. Geen libs, geen JS.
+          Kleur-legenda: zie .legend hieronder.
+        -->
+        <svg viewBox="0 0 1040 640" role="img" aria-labelledby="archtitle archdesc" xmlns="http://www.w3.org/2000/svg">
+          <title id="archtitle">ASM2Web architectuur (pipeline + runtime + contract + bron)</title>
+          <desc id="archdesc">Bron (TASM .ASM en assets) gaat via tokenizer, parser, IR-emitter en WASM-codegen naar een .wasm-module die in een deterministische browser-runtime draait. De runtime-ABI is een stabiel contract tussen WASM-modules en host.</desc>
+
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 Z" fill="#8b949e"/>
+            </marker>
+            <style>
+              .b { stroke: #2a3340; stroke-width: 1.2; }
+              .lbl { font: 600 13px ui-monospace, "SF Mono", Menlo, Consolas, monospace; fill: #f0f6fc; }
+              .sub { font: 11px ui-monospace, "SF Mono", Menlo, Consolas, monospace; fill: #c9d1d9; }
+              .tag { font: 10px ui-monospace, "SF Mono", Menlo, Consolas, monospace; fill: #8b949e; }
+              .arr { stroke: #8b949e; stroke-width: 1.8; fill: none; }
+              .arr-dash { stroke: #8b949e; stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; }
+              .head { font: 700 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; fill: #f0f6fc; }
+            </style>
+          </defs>
+
+          <!-- Row 1: Bron-laag -->
+          <text x="20" y="28" class="head">Bron-laag (read-only, SHA-vastgelegd)</text>
+          <g>
+            <rect x="20" y="40" width="220" height="80" rx="6" fill="#6e5a2e" class="b"/>
+            <text x="30" y="60" class="lbl">vendor/SecondReality_source/</text>
+            <text x="30" y="78" class="sub">.ASM + .C + .OBK + .S3M</text>
+            <text x="30" y="94" class="sub">commit 071a82e &middot; Unlicense</text>
+            <text x="30" y="110" class="tag">SHA-mismatch &rarr; fail-hard</text>
+          </g>
+
+          <!-- Right of bron: module-data -->
+          <g>
+            <rect x="270" y="40" width="220" height="80" rx="6" fill="#6e5a2e" class="b"/>
+            <text x="280" y="60" class="lbl">modules/&lt;name&gt;/INVENTORY.md</text>
+            <text x="280" y="78" class="sub">per-file SHA + procs + rol</text>
+            <text x="280" y="94" class="sub">+ docs/modules.json (machine)</text>
+            <text x="280" y="110" class="tag">P-ARC-01 expliciete vastlegging</text>
+          </g>
+
+          <!-- Architecture-viewer reads modules.json -->
+          <g>
+            <rect x="520" y="40" width="220" height="80" rx="6" fill="#6a4a8a" class="b"/>
+            <text x="530" y="60" class="lbl">web/architecture/index.html</text>
+            <text x="530" y="78" class="sub">deze viewer (statische SVG)</text>
+            <text x="530" y="94" class="sub">leest modules.json</text>
+            <text x="530" y="110" class="tag">P-ARC-06 geen layout-engine</text>
+          </g>
+
+          <!-- Frontend home -->
+          <g>
+            <rect x="770" y="40" width="250" height="80" rx="6" fill="#6a4a8a" class="b"/>
+            <text x="780" y="60" class="lbl">web/index.html (home)</text>
+            <text x="780" y="78" class="sub">module-overzicht + fase-status</text>
+            <text x="780" y="94" class="sub">pure HTML/CSS/JS, geen libs</text>
+            <text x="780" y="110" class="tag">P-ARC-05</text>
+          </g>
+
+          <!-- Pijl modules.json naar viewer en home -->
+          <path d="M 490,80 L 520,80" class="arr" marker-end="url(#arrow)"/>
+          <path d="M 490,90 Q 600,170 770,90" class="arr-dash" marker-end="url(#arrow)"/>
+
+          <!-- Row 2: Build-keten -->
+          <text x="20" y="170" class="head">Build-keten (fase 1&ndash;3, deterministisch, byte-reproduceerbaar)</text>
+
+          <g>
+            <rect x="20" y="185" width="160" height="70" rx="6" fill="#2a5a8a" class="b"/>
+            <text x="100" y="210" text-anchor="middle" class="lbl">Tokenizer</text>
+            <text x="100" y="228" text-anchor="middle" class="sub">TASM-tokens</text>
+            <text x="100" y="244" text-anchor="middle" class="tag">fase 1 (Wheeler)</text>
+          </g>
+
+          <g>
+            <rect x="210" y="185" width="160" height="70" rx="6" fill="#2a5a8a" class="b"/>
+            <text x="290" y="210" text-anchor="middle" class="lbl">Parser + AST</text>
+            <text x="290" y="228" text-anchor="middle" class="sub">SEGMENT, PROC,</text>
+            <text x="290" y="244" text-anchor="middle" class="sub">extrn, public</text>
+          </g>
+
+          <g>
+            <rect x="400" y="185" width="160" height="70" rx="6" fill="#2a5a8a" class="b"/>
+            <text x="480" y="210" text-anchor="middle" class="lbl">IR-emitter</text>
+            <text x="480" y="228" text-anchor="middle" class="sub">typed SSA</text>
+            <text x="480" y="244" text-anchor="middle" class="tag">fase 2</text>
+          </g>
+
+          <g>
+            <rect x="590" y="185" width="160" height="70" rx="6" fill="#2a5a8a" class="b"/>
+            <text x="670" y="210" text-anchor="middle" class="lbl">WASM-codegen</text>
+            <text x="670" y="228" text-anchor="middle" class="sub">vaste opcode-map</text>
+            <text x="670" y="244" text-anchor="middle" class="tag">fase 3 (Hopper)</text>
+          </g>
+
+          <g>
+            <rect x="780" y="185" width="160" height="70" rx="6" fill="#6a4a8a" class="b"/>
+            <text x="860" y="210" text-anchor="middle" class="lbl">.wasm module</text>
+            <text x="860" y="228" text-anchor="middle" class="sub">sha256 = constant</text>
+            <text x="860" y="244" text-anchor="middle" class="tag">P-DET-02 reproducible</text>
+          </g>
+
+          <!-- pijlen build -->
+          <path d="M 180,220 L 210,220" class="arr" marker-end="url(#arrow)"/>
+          <path d="M 370,220 L 400,220" class="arr" marker-end="url(#arrow)"/>
+          <path d="M 560,220 L 590,220" class="arr" marker-end="url(#arrow)"/>
+          <path d="M 750,220 L 780,220" class="arr" marker-end="url(#arrow)"/>
+
+          <!-- pijl bron -> tokenizer -->
+          <path d="M 130,120 L 100,185" class="arr" marker-end="url(#arrow)"/>
+
+          <!-- Row 3: Runtime -->
+          <text x="20" y="300" class="head">Runtime (fase 4, deterministisch)</text>
+
+          <g>
+            <rect x="20" y="315" width="220" height="90" rx="6" fill="#5a8a4a" class="b"/>
+            <text x="30" y="335" class="lbl">Frame-clock</text>
+            <text x="30" y="353" class="sub">70 Hz, count-based</text>
+            <text x="30" y="370" class="sub">frame++ &mdash; geen wallclock</text>
+            <text x="30" y="388" class="tag">P-DET-01</text>
+          </g>
+
+          <g>
+            <rect x="270" y="315" width="220" height="90" rx="6" fill="#5a8a4a" class="b"/>
+            <text x="280" y="335" class="lbl">VGA mode-13h</text>
+            <text x="280" y="353" class="sub">ImageData 320&times;200</text>
+            <text x="280" y="370" class="sub">256-pal Uint32Array</text>
+            <text x="280" y="388" class="tag">canvas + blit op frame-eind</text>
+          </g>
+
+          <g>
+            <rect x="520" y="315" width="220" height="90" rx="6" fill="#5a8a4a" class="b"/>
+            <text x="530" y="335" class="lbl">DIS &rarr; WebAudio</text>
+            <text x="530" y="353" class="sub">AudioWorklet</text>
+            <text x="530" y="370" class="sub">sample-count-based scheduler</text>
+            <text x="530" y="388" class="tag">P-DET-03</text>
+          </g>
+
+          <g>
+            <rect x="770" y="315" width="250" height="90" rx="6" fill="#5a8a4a" class="b"/>
+            <text x="780" y="335" class="lbl">Linear memory (1 MiB)</text>
+            <text x="780" y="353" class="sub">DOS-segment-vlak</text>
+            <text x="780" y="370" class="sub">WebAssembly.Memory({initial:16})</text>
+            <text x="780" y="388" class="tag">door alle subsystems gedeeld</text>
+          </g>
+
+          <!-- pijl .wasm -> runtime -->
+          <path d="M 860,255 L 860,315" class="arr" marker-end="url(#arrow)"/>
+          <path d="M 800,315 Q 600,290 130,315" class="arr-dash" marker-end="url(#arrow)"/>
+
+          <!-- Row 4: Runtime-ABI contract -->
+          <text x="20" y="430" class="head">Runtime-ABI (stabiel contract — wijziging = rood)</text>
+
+          <g>
+            <rect x="20" y="445" width="1000" height="80" rx="6" fill="#8a4a4a" class="b"/>
+            <text x="30" y="467" class="lbl">mode13h_setpixel(x,y,c) &middot; mode13h_setpal(idx,r,g,b) &middot; waitb()</text>
+            <text x="30" y="487" class="lbl">dis_init(s3m_off, len) &middot; dis_musrow() &middot; dis_waitb() &middot; int_21h_4c(code)</text>
+            <text x="30" y="510" class="sub">WASM-modules roepen deze functies aan op de host. Pure functies waar mogelijk; side-effects expliciet (mode13h_setpixel, dis_init).</text>
+          </g>
+
+          <!-- Row 5: Browser -->
+          <g>
+            <rect x="400" y="555" width="240" height="70" rx="6" fill="#1c2129" stroke="#58a6ff" stroke-width="2"/>
+            <text x="520" y="582" text-anchor="middle" class="lbl">Browser</text>
+            <text x="520" y="602" text-anchor="middle" class="sub">canvas + AudioContext + keyboard</text>
+            <text x="520" y="618" text-anchor="middle" class="tag">geen frameworks (P-ARC-05)</text>
+          </g>
+
+          <path d="M 520,525 L 520,555" class="arr" marker-end="url(#arrow)"/>
+
+        </svg>
+      </div>
+
+      <div class="legend" aria-label="Kleur-legenda">
+        <span><span class="dot bron"></span>Bron / data (read-only)</span>
+        <span><span class="dot build"></span>Build-keten</span>
+        <span><span class="dot runtime"></span>Runtime-subsystem</span>
+        <span><span class="dot contract"></span>ABI-contract</span>
+        <span><span class="dot output"></span>Output / UI</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Runtime-ABI tabel (host-functies aangeroepen door WASM)</h2>
+      <table class="abi-table" id="abi-table">
+        <thead>
+          <tr><th>functie</th><th>argumenten</th><th>doel</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="fn">(wordt geladen uit modules.json...)</td><td class="args">&mdash;</td><td class="purpose">&mdash;</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Geladen modules (uit modules.json)</h2>
+      <ul class="mod-list-arch" id="mod-list-arch">
+        <li class="loading">modules.json laden&hellip;</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Determinisme-principes (verwijzingen)</h2>
+      <ul>
+        <li><strong>P-DET-01</strong> &mdash; frame = pure functie van (program, frame-index, input)</li>
+        <li><strong>P-DET-02</strong> &mdash; build is byte-reproduceerbaar (sha256 stabiel)</li>
+        <li><strong>P-DET-03</strong> &mdash; audio is sample-accurate, count-based scheduler</li>
+        <li><strong>P-ARC-01</strong> &mdash; expliciete vastlegging vóór code</li>
+        <li><strong>P-ARC-04</strong> &mdash; runtime-ABI is stabiel contract</li>
+        <li><strong>P-ARC-05</strong> &mdash; geen frameworks in runtime-frontend</li>
+        <li><strong>P-ARC-06</strong> &mdash; architectuur-viewer is statisch (deze pagina)</li>
+      </ul>
+      <p style="color:var(--fg-dim); font-size:0.85rem;">
+        Zie <a href="https://github.com/cpaglebbeek/ASM2Web/blob/main/PRINCIPLES.md" rel="noopener">PRINCIPLES.md</a> voor de volledige tekst.
+      </p>
+    </section>
+  </main>
+
+  <footer class="bottom">
+    <p>ASM2Web architecture viewer &mdash; statisch SVG &middot; AGPL-3.0</p>
+  </footer>
+
+  <script src="viewer.js"></script>
+</body>
+</html>

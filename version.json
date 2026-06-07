@@ -1,0 +1,8 @@
+{
+  "version": "0.0.1-Booth",
+  "codename": "Booth",
+  "codenameSource": "Kathleen Hylda Valerie Booth (1922-2022), schreef de eerste assembleertaal aan Birkbeck College in 1947 (voor de ARC-machine).",
+  "released": "2026-06-08",
+  "phase": "skeleton",
+  "next": "v0.0.2-Wheeler (David Wheeler, EDSAC subroutines 1949) — TASM-parser + IR-emitter"
+}

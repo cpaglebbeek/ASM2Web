@@ -1,0 +1,70 @@
+{
+  "$schema": "./modules.schema.json",
+  "generated": "2026-06-08",
+  "generator": "manual (fase 0)",
+  "upstream": {
+    "repo": "mtuomi/SecondReality",
+    "url": "https://github.com/mtuomi/SecondReality",
+    "commit": "071a82eddb7a7390dbaa491a8a473e0e923a55c2",
+    "license": "Unlicense"
+  },
+  "modules": [
+    {
+      "name": "TECHNO",
+      "ordinal": 1,
+      "status": "phase-0-inventory",
+      "sourceDir": "vendor/SecondReality_source/TECHNO",
+      "goldStandardExe": {
+        "path": "vendor/SecondReality_source/MAIN/DATA/TECHNO.EXE",
+        "bytes": 31849,
+        "sha256": "2339b059596ff0b9107e146f6bea91ca11e852ec281cbb7fc9ee2f4b21597c1f"
+      },
+      "music": [
+        {"path": "vendor/SecondReality_source/MAIN/MUSIC0.S3M", "bytes": 391312, "sha256": "aacdb968ae9ebf07bfa02af129fb43f1b15101ab3a94c95b7f5fe69840d28fe1"},
+        {"path": "vendor/SecondReality_source/MAIN/MUSIC1.S3M", "bytes": 600860, "sha256": "3393f848a4840b53aa247c4158e414bad848879e7f6059e214631c310e8dde54"}
+      ],
+      "files": [
+        {"name": "KOEA.ASM",     "type": "tasm-x86-16", "lines": 1065, "bytes": 16116, "labels": 94, "externs": 13, "procs": 21, "sha256": "7d584fe7caefdb45f98b1ed47958adebaca9e8df25720458ed812ac7b1287573", "role": "primaire rendering-engine: blitter + line-draw + box-fill"},
+        {"name": "KOEB.ASM",     "type": "tasm-x86-16", "lines": 632,  "bytes": 9619,  "labels": 54, "externs": 4,  "procs": 10, "sha256": "07fa13cb513b7146330a1980ed489314d969a73330e014c8351ddc09e135b7a4", "role": "palette + vsync + interferentie-effect"},
+        {"name": "POLYCLIP.ASM", "type": "tasm-x86-16", "lines": 273,  "bytes": 5014,  "labels": 41, "externs": 0,  "procs": 3,  "sha256": "67298057837e5fd3dd3bbc7b1677ce460754dbf80c01ee4eda2453c248e61bcc", "role": "polygon clipping tegen viewport 320x200"},
+        {"name": "ROT.ASM",      "type": "tasm-x86-16", "lines": 26,   "bytes": 297,   "labels": 1,  "externs": 0,  "procs": 2,  "sha256": "c39ef80478bd67a2e1f1ab688714b1fe06f9281258dc37fddc5a63605bff84c3", "role": "standalone test-driver (niet in TECHNO.EXE)"},
+        {"name": "KOE.C",        "type": "ms-c-large",  "lines": 728,  "bytes": 11981, "sha256": "6fec2912a9af6e4e43e6e157bd2ca2a612df8cd8d7a4cea0d438bb1c3aadc56c", "role": "driver: framebuffer + palette-management + DIS-sync"},
+        {"name": "READP.C",      "type": "ms-c-large",  "lines": 72,   "bytes": 943,   "sha256": "01040e68d4769f8c4b3917de0ad041333fe637445913643b8087faada3a97ae4", "role": "palette-read helper"},
+        {"name": "MAKEFILE",     "type": "nmake",       "lines": 26,   "bytes": 402,   "sha256": "bbda872f9d18277129ac31e8555571078d046ce5022186b6a3beadd614bfc313", "role": "build-recept (TASM + MS C + linker)"}
+      ],
+      "totalAsmLines": 1996,
+      "totalProcs": 36,
+      "externDeps": [
+        {"symbol": "_circle:byte",  "source": "_CIRCLE.OBK (OMF data module)"},
+        {"symbol": "_circle2:byte", "source": "_CIRCLE2.OBK (OMF data module)"},
+        {"symbol": "dis_musrow",    "source": "disc.obj (DIS music engine, separate subdir)"},
+        {"symbol": "dis_waitb",     "source": "disc.obj"}
+      ],
+      "phases": {
+        "phase-0": "inventory complete",
+        "phase-1": "TASM parser + AST",
+        "phase-2": "IR emitter",
+        "phase-3": "WASM codegen",
+        "phase-4": "Runtime + live playback"
+      }
+    }
+  ],
+  "pipeline": [
+    {"step": "tokenize",  "in": ".ASM source",    "out": "token-stream",  "phase": 1},
+    {"step": "parse",     "in": "token-stream",   "out": "AST",           "phase": 1},
+    {"step": "resolve",   "in": "AST",            "out": "AST+symtab",    "phase": 1},
+    {"step": "emit-ir",   "in": "AST+symtab",     "out": "typed IR",      "phase": 2},
+    {"step": "codegen",   "in": "typed IR",       "out": ".wasm bytes",   "phase": 3},
+    {"step": "load",      "in": ".wasm + ABI",    "out": "WASM-instance", "phase": 4},
+    {"step": "tick",      "in": "frame index",    "out": "ImageData(320x200) + Float32Array(audio)", "phase": 4}
+  ],
+  "runtimeAbi": [
+    {"fn": "mode13h_setpixel", "args": "x:i32, y:i32, c:i32", "purpose": "single pixel write"},
+    {"fn": "mode13h_setpal",   "args": "idx:i32, r:i32, g:i32, b:i32", "purpose": "palette entry"},
+    {"fn": "waitb",            "args": "()", "purpose": "vsync wait, count-based"},
+    {"fn": "dis_musrow",       "args": "() -> i32", "purpose": "current music pattern row (pure function of sample-count)"},
+    {"fn": "dis_init",         "args": "s3m_offset:i32, s3m_len:i32", "purpose": "init music engine"},
+    {"fn": "dis_waitb",        "args": "()", "purpose": "wait for music-tick"},
+    {"fn": "int_21h_4c",       "args": "code:i32", "purpose": "DOS exit signal"}
+  ]
+}
