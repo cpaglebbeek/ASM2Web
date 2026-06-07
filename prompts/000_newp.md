@@ -1,8 +1,12 @@
 ---
 date: 2026-06-08
 repo: ASM2Web
-status: open
-resume: "verder met ASM2Web fase 1 — TASM-tokenizer + parser voor TECHNO (KOEA/KOEB/POLYCLIP/ROT). v0.0.2-Wheeler. Akkoord op route B (per-instructie .ASM→WASM, geen emulator) is genomen 2026-06-08."
+status: done
+resume: ""
+---
+
+> **Status update 2026-06-08**: fase 1-4a afgehandeld in sessie `001_fase1to4a.md` (v0.1.0-Hopper, mini-demo speelbaar). Resume-haak doorgeschoven naar die sessie.
+
 ---
 
 # Sessie 2026-06-08 — newp ASM2Web v0.0.1-Booth (skeleton + deploy)
