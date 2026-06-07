@@ -1,0 +1,36 @@
+; IR module: hello-pixel
+; functions: 1, data: 0, ops: 32, unknown: 0
+
+function main (near) locals=13
+  r0.l = 0x1
+  io.out 0x3c8, r0.l
+  r0.l = 0x3f
+  io.out 0x3c9, r0.l
+  r0.l = 0x0
+  io.out 0x3c9, r0.l
+  r0.l = 0x0
+  io.out 0x3c9, r0.l
+  r0.l = 0x2
+  io.out 0x3c8, r0.l
+  r0.l = 0x0
+  io.out 0x3c9, r0.l
+  r0.l = 0x3f
+  io.out 0x3c9, r0.l
+  r0.l = 0x0
+  io.out 0x3c9, r0.l
+  r0.l = 0x1
+  store.u8 [655360 + 10 * 320 + 10], r0.l
+  r0.l = 0x2
+  store.u8 [655360 + 20 * 320 + 20], r0.l
+  r0.l = 0x2
+  store.u8 [655360 + 100 * 320 + 50], r0.l
+  store.u8 [655360 + 100 * 320 + 51], r0.l
+  store.u8 [655360 + 100 * 320 + 52], r0.l
+  store.u8 [655360 + 100 * 320 + 53], r0.l
+  store.u8 [655360 + 100 * 320 + 54], r0.l
+  store.u8 [655360 + 100 * 320 + 55], r0.l
+  store.u8 [655360 + 100 * 320 + 56], r0.l
+  store.u8 [655360 + 100 * 320 + 57], r0.l
+  store.u8 [655360 + 100 * 320 + 58], r0.l
+  store.u8 [655360 + 100 * 320 + 59], r0.l
+  ret

@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ASM2Web demo — hello-pixel (end-to-end TASM &rarr; WASM)</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .demo-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; max-width: 1080px; margin: 0 auto; padding: 0 1rem; }
+    @media (min-width: 920px) { .demo-grid { grid-template-columns: 360px 1fr; } }
+    .canvas-box {
+      border: 1px solid var(--border);
+      background: #000;
+      padding: 8px;
+      border-radius: 6px;
+      text-align: center;
+    }
+    .canvas-box canvas {
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      background: #000;
+      width: 320px; height: 200px;
+      max-width: 100%;
+    }
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+    .controls button {
+      background: var(--bg-elev2);
+      color: var(--fg-strong);
+      border: 1px solid var(--border);
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .controls button:hover { border-color: var(--accent); }
+    .controls button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .info-panel {
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.8rem 1rem;
+    }
+    .info-panel h3 { margin: 0 0 0.5rem; font-size: 0.95rem; color: var(--fg-strong); }
+    .info-row { font-family: var(--mono); font-size: 0.82rem; color: var(--fg-dim); margin: 0.15rem 0; }
+    .info-row strong { color: var(--fg); }
+    pre.asm-src {
+      background: var(--bg-elev2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.8rem;
+      font-size: 0.82rem;
+      font-family: var(--mono);
+      max-height: 400px;
+      overflow: auto;
+      color: var(--fg);
+    }
+    pre.asm-src .comment { color: var(--fg-dim); font-style: italic; }
+    pre.asm-src .mnemonic { color: var(--accent); }
+    pre.asm-src .number { color: var(--accent-2); }
+    .pipeline-step {
+      display: grid;
+      grid-template-columns: 24px 110px 1fr;
+      gap: 0.5rem;
+      align-items: center;
+      padding: 0.3rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.85rem;
+    }
+    .pipeline-step:last-child { border-bottom: 0; }
+    .pipeline-step .tag {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      padding: 2px 5px;
+      border-radius: 3px;
+      background: var(--bg-elev2);
+      color: var(--amber);
+      text-align: center;
+    }
+    .pipeline-step.done .tag { color: var(--green); }
+    .pipeline-step.fail .tag { color: var(--red); }
+    .step-name { color: var(--fg-strong); }
+    .step-detail { color: var(--fg-dim); font-family: var(--mono); font-size: 0.75rem; }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <a href="../" style="text-decoration:none">
+        <span class="logo">ASM<span class="logo-accent">2</span>Web</span>
+      </a>
+      <span class="tagline">demo &mdash; hello-pixel (mini bewijs end-to-end)</span>
+    </div>
+    <nav class="nav">
+      <a href="../">&laquo; home</a>
+      <a href="../architecture/">architectuur</a>
+      <a href="https://github.com/cpaglebbeek/cpaglebbeek/ASM2Web" rel="noopener">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <section style="max-width:1080px; margin:0 auto; padding:0 1rem;">
+      <h1 style="font-size:1.5rem; margin:0 0 0.3rem;">hello-pixel &mdash; bewijs van keten</h1>
+      <p style="color:var(--fg-dim); margin:0 0 1rem; font-size:0.92rem;">
+        TASM-bron &rarr; tokenize &rarr; parse &rarr; IR &rarr; WASM &rarr; runtime &rarr; mode-13h canvas.
+        Deze pagina laadt de gegenereerde <code>.wasm</code>, instantieert de WebAssembly-module met de runtime-ABI
+        en draait <code>main()</code>. Wat je ziet is wat de assembly heeft geschreven naar VGA-memory @ 0xA0000.
+      </p>
+    </section>
+
+    <div class="demo-grid" style="margin-top:1rem;">
+
+      <aside class="info-panel">
+        <h3>Pijplijn</h3>
+        <div id="pipeline-steps">
+          <div class="pipeline-step" id="step-fetch"><span class="tag">1</span><span class="step-name">Fetch WASM</span><span class="step-detail">…</span></div>
+          <div class="pipeline-step" id="step-compile"><span class="tag">2</span><span class="step-name">Compile</span><span class="step-detail">…</span></div>
+          <div class="pipeline-step" id="step-imports"><span class="tag">3</span><span class="step-name">Bind ABI</span><span class="step-detail">…</span></div>
+          <div class="pipeline-step" id="step-instantiate"><span class="tag">4</span><span class="step-name">Instantiate</span><span class="step-detail">…</span></div>
+          <div class="pipeline-step" id="step-run"><span class="tag">5</span><span class="step-name">Run main()</span><span class="step-detail">…</span></div>
+          <div class="pipeline-step" id="step-blit"><span class="tag">6</span><span class="step-name">Blit canvas</span><span class="step-detail">…</span></div>
+        </div>
+
+        <h3 style="margin-top:1rem;">Build-info</h3>
+        <div class="info-row"><strong>Source:</strong>     <span id="info-src">…</span></div>
+        <div class="info-row"><strong>Source SHA:</strong> <span id="info-src-sha">…</span></div>
+        <div class="info-row"><strong>WASM bytes:</strong> <span id="info-wasm">…</span></div>
+        <div class="info-row"><strong>WASM SHA-256:</strong> <span id="info-wasm-sha">…</span></div>
+        <div class="info-row"><strong>IR ops:</strong>     <span id="info-ops">…</span></div>
+        <div class="info-row"><strong>Functions:</strong>  <span id="info-fns">…</span></div>
+
+        <h3 style="margin-top:1rem;">IO-log (host-imports)</h3>
+        <pre id="io-log" class="asm-src" style="max-height:160px; font-size:0.78rem; margin:0;"></pre>
+      </aside>
+
+      <section>
+        <div class="canvas-box">
+          <canvas id="screen" width="320" height="200"></canvas>
+          <div class="controls">
+            <button id="btn-run">Run main()</button>
+            <button id="btn-reload">Reload WASM</button>
+            <button id="btn-clear">Clear framebuffer</button>
+          </div>
+        </div>
+
+        <h3 style="margin-top:1rem; font-size:0.95rem;">TASM-bron</h3>
+        <pre class="asm-src" id="asm-source">…</pre>
+
+        <h3 style="margin-top:1rem; font-size:0.95rem;">IR (na emit)</h3>
+        <pre class="asm-src" id="ir-source">…</pre>
+      </section>
+
+    </div>
+
+    <section style="max-width:1080px; margin:2rem auto; padding:0 1rem; color:var(--fg-dim); font-size:0.85rem;">
+      <h3 style="color:var(--fg-strong); font-size:0.95rem;">Wat bewijst dit?</h3>
+      <ul>
+        <li><strong>P-DET-02 (build-determinisme):</strong> de WASM-SHA hierboven matcht tussen runs op verschillende machines. Geen timestamps, geen optimizer-randomness.</li>
+        <li><strong>P-DET-01 (runtime-determinisme):</strong> zelfde WASM + zelfde initial state &rarr; zelfde framebuffer na <code>main()</code>. Geen RNG, geen wallclock in render-pad.</li>
+        <li><strong>Pijplijn-correctheid:</strong> de zichtbare pixels op (10,10), (20,20), (50&hellip;59, 100) komen exact uit de <code>mov [absolute_offset], al</code>-instructies in de source.</li>
+        <li><strong>Niet bewezen:</strong> control-flow (jumps, loops), call/ret, push/pop, audio, vsync. Komt fase 4.2+.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="bottom">
+    <p>ASM2Web demo &mdash; hello-pixel &middot; AGPL-3.0</p>
+  </footer>
+
+  <script type="module" src="demo.js"></script>
+</body>
+</html>

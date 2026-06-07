@@ -1,0 +1,796 @@
+{
+  "name": "hello-pixel",
+  "stats": {
+    "ops": 32,
+    "unknownOps": 0,
+    "unknownMnemonics": []
+  },
+  "functions": [
+    {
+      "name": "main",
+      "attr": "near",
+      "locals": 13,
+      "ops": [
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 1
+          }
+        },
+        {
+          "op": "out",
+          "port": {
+            "kind": "const",
+            "value": 968
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 63
+          }
+        },
+        {
+          "op": "out",
+          "port": {
+            "kind": "const",
+            "value": 969
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 0
+          }
+        },
+        {
+          "op": "out",
+          "port": {
+            "kind": "const",
+            "value": 969
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 0
+          }
+        },
+        {
+          "op": "out",
+          "port": {
+            "kind": "const",
+            "value": 969
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 2
+          }
+        },
+        {
+          "op": "out",
+          "port": {
+            "kind": "const",
+            "value": 968
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 0
+          }
+        },
+        {
+          "op": "out",
+          "port": {
+            "kind": "const",
+            "value": 969
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 63
+          }
+        },
+        {
+          "op": "out",
+          "port": {
+            "kind": "const",
+            "value": 969
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 0
+          }
+        },
+        {
+          "op": "out",
+          "port": {
+            "kind": "const",
+            "value": 969
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 1
+          }
+        },
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "655360 + 10 * 320 + 10",
+            "exprTokens": [
+              {
+                "type": "NUMBER",
+                "value": 655360
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 10
+              },
+              {
+                "type": "PUNCT",
+                "value": "*"
+              },
+              {
+                "type": "NUMBER",
+                "value": 320
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 10
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "size": 8
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 2
+          }
+        },
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "655360 + 20 * 320 + 20",
+            "exprTokens": [
+              {
+                "type": "NUMBER",
+                "value": 655360
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 20
+              },
+              {
+                "type": "PUNCT",
+                "value": "*"
+              },
+              {
+                "type": "NUMBER",
+                "value": 320
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 20
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "size": 8
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 2
+          }
+        },
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "655360 + 100 * 320 + 50",
+            "exprTokens": [
+              {
+                "type": "NUMBER",
+                "value": 655360
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 100
+              },
+              {
+                "type": "PUNCT",
+                "value": "*"
+              },
+              {
+                "type": "NUMBER",
+                "value": 320
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 50
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "size": 8
+        },
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "655360 + 100 * 320 + 51",
+            "exprTokens": [
+              {
+                "type": "NUMBER",
+                "value": 655360
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 100
+              },
+              {
+                "type": "PUNCT",
+                "value": "*"
+              },
+              {
+                "type": "NUMBER",
+                "value": 320
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 51
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "size": 8
+        },
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "655360 + 100 * 320 + 52",
+            "exprTokens": [
+              {
+                "type": "NUMBER",
+                "value": 655360
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 100
+              },
+              {
+                "type": "PUNCT",
+                "value": "*"
+              },
+              {
+                "type": "NUMBER",
+                "value": 320
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 52
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "size": 8
+        },
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "655360 + 100 * 320 + 53",
+            "exprTokens": [
+              {
+                "type": "NUMBER",
+                "value": 655360
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 100
+              },
+              {
+                "type": "PUNCT",
+                "value": "*"
+              },
+              {
+                "type": "NUMBER",
+                "value": 320
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 53
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "size": 8
+        },
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "655360 + 100 * 320 + 54",
+            "exprTokens": [
+              {
+                "type": "NUMBER",
+                "value": 655360
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 100
+              },
+              {
+                "type": "PUNCT",
+                "value": "*"
+              },
+              {
+                "type": "NUMBER",
+                "value": 320
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 54
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "size": 8
+        },
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "655360 + 100 * 320 + 55",
+            "exprTokens": [
+              {
+                "type": "NUMBER",
+                "value": 655360
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 100
+              },
+              {
+                "type": "PUNCT",
+                "value": "*"
+              },
+              {
+                "type": "NUMBER",
+                "value": 320
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 55
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "size": 8
+        },
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "655360 + 100 * 320 + 56",
+            "exprTokens": [
+              {
+                "type": "NUMBER",
+                "value": 655360
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 100
+              },
+              {
+                "type": "PUNCT",
+                "value": "*"
+              },
+              {
+                "type": "NUMBER",
+                "value": 320
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 56
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "size": 8
+        },
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "655360 + 100 * 320 + 57",
+            "exprTokens": [
+              {
+                "type": "NUMBER",
+                "value": 655360
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 100
+              },
+              {
+                "type": "PUNCT",
+                "value": "*"
+              },
+              {
+                "type": "NUMBER",
+                "value": 320
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 57
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "size": 8
+        },
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "655360 + 100 * 320 + 58",
+            "exprTokens": [
+              {
+                "type": "NUMBER",
+                "value": 655360
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 100
+              },
+              {
+                "type": "PUNCT",
+                "value": "*"
+              },
+              {
+                "type": "NUMBER",
+                "value": 320
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 58
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "size": 8
+        },
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "655360 + 100 * 320 + 59",
+            "exprTokens": [
+              {
+                "type": "NUMBER",
+                "value": 655360
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 100
+              },
+              {
+                "type": "PUNCT",
+                "value": "*"
+              },
+              {
+                "type": "NUMBER",
+                "value": 320
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 59
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "size": 8
+        },
+        {
+          "op": "ret"
+        }
+      ]
+    }
+  ],
+  "data": []
+}

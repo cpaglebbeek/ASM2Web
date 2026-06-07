@@ -1,0 +1,17 @@
+{
+  "name": "asm2web",
+  "version": "0.0.2-Wheeler",
+  "description": "Deterministische per-instructie TASM (x86 16-bit) -> WebAssembly transpilatie. Eerste module: TECHNO uit Second Reality.",
+  "license": "AGPL-3.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "tokenize:techno": "node src/cli/tokenize.js modules/techno",
+    "parse:techno":    "node src/cli/parse.js modules/techno",
+    "build:demo":      "node src/cli/build-demo.js",
+    "test":            "node --test tests/"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

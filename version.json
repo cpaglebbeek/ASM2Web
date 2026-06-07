@@ -1,8 +1,16 @@
 {
-  "version": "0.0.1-Booth",
-  "codename": "Booth",
-  "codenameSource": "Kathleen Hylda Valerie Booth (1922-2022), schreef de eerste assembleertaal aan Birkbeck College in 1947 (voor de ARC-machine).",
+  "version": "0.1.0-Hopper",
+  "codename": "Hopper",
+  "codenameSource": "Grace Hopper (1906-1992), A-0 compiler 1952 — eerste compiler/linker.",
   "released": "2026-06-08",
-  "phase": "skeleton",
-  "next": "v0.0.2-Wheeler (David Wheeler, EDSAC subroutines 1949) — TASM-parser + IR-emitter"
+  "phase": "phase-4a",
+  "completed": ["fase 0 skeleton", "fase 1 tokenizer+parser+symtab", "fase 2 IR-emitter", "fase 3 WASM-codegen (eigen mini-encoder)", "fase 4a runtime (mode-13h canvas, palette-DAC, count-based clock)"],
+  "next": "v0.1.x-Hopper patches OR v0.2.0-Backus (control-flow + S3M-player + push/pop op shadow-stack)",
+  "miniDemoLive": true,
+  "technoPlayable": false,
+  "determinismProven": {
+    "buildDeterminism":  "yes — sha256(hello-pixel.wasm) constant between runs",
+    "runtimeDeterminism": "untested at scale, mini-demo deterministic (no RNG, no wallclock)",
+    "audioDeterminism":  "n/a — no audio in mini-demo yet"
+  }
 }

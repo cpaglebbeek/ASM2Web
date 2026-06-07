@@ -1,9 +1,14 @@
 node_modules/
 dist/
-build/
 .DS_Store
 *.log
 .env
 .env.local
 # Vendored upstream sources (cloned separately, never modified)
 vendor/
+
+# Generated parse/IR artefacten in module-build-dirs — herbouwbaar uit src+vendor.
+modules/*/build/
+
+# web/demo/build/ wordt WEL gecommit (live demo-artefacten incl. .wasm).
+# tests/build/ wordt WEL gecommit (gouden frames, fixtures).

@@ -27,36 +27,55 @@
         Frame <var>N</var> is een <strong>pure functie</strong> van (program-bytes, frame-index, input).
         Geen emulator. Geen rewrite. Geen <code>Math.random()</code>. Geen wallclock-jitter.
       </p>
-      <p class="version" id="version-line">v0.0.1-Booth &middot; fase 0 (skeleton)</p>
+      <p class="version" id="version-line">v0.1.0-Hopper &middot; fase 1-4a (mini-demo end-to-end + runtime + build-determinisme bewezen)</p>
+    </section>
+
+    <section class="hero" style="background:var(--bg-elev); border:1px solid var(--border); border-left:3px solid var(--green); padding:1rem 1.2rem; border-radius:6px;">
+      <h2 style="margin-top:0; border:0;">▸ Live demo — <a href="demo/">hello-pixel</a></h2>
+      <p style="margin:0.3rem 0; color:var(--fg);">
+        Mini TASM-bron (~30 regels), volledig door eigen pijplijn:
+        tokenizer &rarr; parser &rarr; IR &rarr; <strong>eigen WASM-encoder</strong> &rarr; runtime &rarr; mode-13h canvas.
+        Twee opeenvolgende builds produceren <strong>byte-identieke</strong> <code>.wasm</code> (P-DET-02 bewezen).
+      </p>
     </section>
 
     <section class="status">
       <h2>Bouwstatus</h2>
       <ol class="phases">
         <li class="phase done">
-          <span class="phase-tag">Fase 0</span>
+          <span class="phase-tag">Fase 0 ✓</span>
           <span class="phase-name">Skeleton</span>
           <span class="phase-detail">repo + docs + TECHNO inventaris + viewer + deploy</span>
         </li>
-        <li class="phase pending">
-          <span class="phase-tag">Fase 1</span>
+        <li class="phase done">
+          <span class="phase-tag">Fase 1 ✓</span>
           <span class="phase-name">TASM-parser + AST</span>
-          <span class="phase-detail">v0.0.2-Wheeler &mdash; tokenizer, parser, cross-file symbol-table</span>
+          <span class="phase-detail">tokenizer + parser + cross-file symtab &mdash; 100% TECHNO files door round-trip</span>
         </li>
-        <li class="phase pending">
-          <span class="phase-tag">Fase 2</span>
+        <li class="phase done">
+          <span class="phase-tag">Fase 2 ✓</span>
           <span class="phase-name">IR-emitter</span>
-          <span class="phase-detail">v0.0.3-Wheeler &mdash; typed SSA-achtig, expliciete flags</span>
+          <span class="phase-detail">91.3% TECHNO instructies herkend (1187/1300)</span>
         </li>
-        <li class="phase pending">
-          <span class="phase-tag">Fase 3</span>
+        <li class="phase done">
+          <span class="phase-tag">Fase 3 ✓</span>
           <span class="phase-name">WASM-codegen</span>
-          <span class="phase-detail">v0.1.0-Hopper &mdash; reproducible <code>.wasm</code></span>
+          <span class="phase-detail">eigen mini WASM-encoder, byte-identieke <code>.wasm</code> tussen runs</span>
+        </li>
+        <li class="phase done">
+          <span class="phase-tag">Fase 4a ✓</span>
+          <span class="phase-name">Runtime (visueel)</span>
+          <span class="phase-detail">mode-13h canvas + palette-DAC + count-based clock &mdash; hello-pixel speelbaar</span>
         </li>
         <li class="phase pending">
-          <span class="phase-tag">Fase 4</span>
-          <span class="phase-name">Runtime + TECHNO live</span>
-          <span class="phase-detail">v0.2.0-Backus &mdash; mode-13h canvas + DIS&rarr;WebAudio + gouden-frame tests</span>
+          <span class="phase-tag">Fase 4b</span>
+          <span class="phase-name">Runtime (audio + control-flow)</span>
+          <span class="phase-detail">S3M-player (libxmp-lite WASM) + structured control-flow (jumps/calls)</span>
+        </li>
+        <li class="phase pending">
+          <span class="phase-tag">Fase 5</span>
+          <span class="phase-name">TECHNO speelbaar</span>
+          <span class="phase-detail">+ ontbrekende x86-instructies (mul/div/rep/rol) + OBK-data + DIS-engine port</span>
         </li>
       </ol>
     </section>

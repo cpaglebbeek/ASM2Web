@@ -1,0 +1,18 @@
+{
+  "name": "hello-pixel",
+  "built": "2026-06-07",
+  "source": {
+    "path": "demos/hello-pixel.asm",
+    "bytes": 1617,
+    "sha256": "cacf37123453a07a3684938424813282dfa8658a70733887fa98b5b1aff3e1bd"
+  },
+  "wasm": {
+    "bytes": 590,
+    "sha256": "15f4d526f966037204991157bb4b08d4712aa7b895a9feb1389a1ccf0d2ea806"
+  },
+  "stats": {
+    "ops": 32,
+    "unknownOps": 0,
+    "unknownMnemonics": []
+  }
+}
