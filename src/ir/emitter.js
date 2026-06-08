@@ -253,13 +253,20 @@ export function emitIR(ast, opts = {}) {
       const inner = operandToValue(fn, op.inner);
       // A `byte/word ptr` hint sits on the segref wrapper; carry it to the mem.
       if (op.sizeHint && inner && inner.sizeHint === undefined) inner.sizeHint = op.sizeHint;
-      // Fold a known constant segment base (e.g. es=0a000h -> +0xA0000) into the
-      // effective address, but only for register/numeric expressions: when the
-      // expression already references a data symbol, that symbol resolves to an
+      // Resolve the segment prefix, but only for register/numeric expressions: when
+      // the expression already references a data symbol, that symbol resolves to an
       // absolute linear offset and the segment prefix is redundant.
-      if (inner.kind === "mem" && fn && fn._segConst &&
-          fn._segConst[op.seg] !== undefined && !memHasSymbol(inner)) {
-        inner.segBase = (fn._segConst[op.seg] << 4) >>> 0;
+      if (inner.kind === "mem" && !memHasSymbol(inner)) {
+        if (SREG_TO_LOCAL[op.seg] !== undefined) {
+          // Stage 8.2: consume the segment-register *global* at runtime so the
+          // effective address is (seg<<4)+offset even when the segment value was
+          // loaded in another function (machine state survives call boundaries).
+          inner.segReg = op.seg;
+        } else if (fn && fn._segConst && fn._segConst[op.seg] !== undefined) {
+          // fs/gs have no register-global yet: fall back to a const-folded base
+          // (e.g. es=0a000h -> +0xA0000) when the paragraph value is statically known.
+          inner.segBase = (fn._segConst[op.seg] << 4) >>> 0;
+        }
       }
       return inner;
     }
@@ -532,6 +539,6 @@ function fmtVal(v) {
   if (v.kind === "local") return v.isHigh ? `r${v.index}.h` : (v.size === 8 ? `r${v.index}.l` : `r${v.index}`);
   if (v.kind === "const") return `0x${(v.value >>> 0).toString(16)}`;
   if (v.kind === "sym")   return `@${v.name}`;
-  if (v.kind === "mem")   return `[${v.exprText}]`;
+  if (v.kind === "mem")   return `${v.segReg ? v.segReg + ":" : ""}[${v.exprText}]`;
   return JSON.stringify(v);
 }

@@ -398,7 +398,8 @@
                 "value": "si"
               }
             ],
-            "sizeHint": "dword"
+            "sizeHint": "dword",
+            "segReg": "ds"
           },
           "size": 32
         },
@@ -460,7 +461,8 @@
                 "value": "di"
               }
             ],
-            "sizeHint": "dword"
+            "sizeHint": "dword",
+            "segReg": "ds"
           },
           "src": {
             "kind": "const",
@@ -600,7 +602,8 @@
                 "type": "NUMBER",
                 "value": 2
               }
-            ]
+            ],
+            "segReg": "ds"
           },
           "size": 16
         },
@@ -965,7 +968,8 @@
                 "value": 0
               }
             ],
-            "sizeHint": "word"
+            "sizeHint": "word",
+            "segReg": "ds"
           },
           "size": 16
         },
@@ -1343,7 +1347,8 @@
                 "value": 0
               }
             ],
-            "sizeHint": "word"
+            "sizeHint": "word",
+            "segReg": "ds"
           },
           "size": 16
         },
@@ -2883,7 +2888,8 @@
                 "type": "NUMBER",
                 "value": 2
               }
-            ]
+            ],
+            "segReg": "ds"
           },
           "size": 16
         },
@@ -2937,7 +2943,8 @@
                 "type": "NUMBER",
                 "value": 0
               }
-            ]
+            ],
+            "segReg": "ds"
           },
           "size": 16
         },
@@ -2971,7 +2978,8 @@
                 "type": "NUMBER",
                 "value": 0
               }
-            ]
+            ],
+            "segReg": "ds"
           }
         },
         {
@@ -3027,7 +3035,8 @@
                 "type": "NUMBER",
                 "value": 4
               }
-            ]
+            ],
+            "segReg": "ds"
           },
           "src": {
             "kind": "local",
@@ -3085,7 +3094,8 @@
                 "type": "NUMBER",
                 "value": 2
               }
-            ]
+            ],
+            "segReg": "ds"
           },
           "src": {
             "kind": "local",
@@ -3304,7 +3314,8 @@
                 "type": "NUMBER",
                 "value": 4
               }
-            ]
+            ],
+            "segReg": "ds"
           },
           "src": {
             "kind": "local",
@@ -3332,7 +3343,8 @@
                 "type": "NUMBER",
                 "value": 2
               }
-            ]
+            ],
+            "segReg": "ds"
           },
           "src": {
             "kind": "local",
@@ -3381,7 +3393,8 @@
                 "type": "IDENT",
                 "value": "si"
               }
-            ]
+            ],
+            "segReg": "ds"
           },
           "size": 16
         },
@@ -3443,7 +3456,8 @@
                 "type": "IDENT",
                 "value": "si"
               }
-            ]
+            ],
+            "segReg": "ds"
           },
           "size": 16
         },
@@ -3489,7 +3503,8 @@
                 "type": "NUMBER",
                 "value": 2
               }
-            ]
+            ],
+            "segReg": "ds"
           },
           "size": 16
         },
@@ -4269,7 +4284,8 @@
                 "type": "IDENT",
                 "value": "di"
               }
-            ]
+            ],
+            "segReg": "es"
           },
           "size": 8
         },
@@ -4284,7 +4300,8 @@
                 "value": "di"
               }
             ],
-            "sizeHint": "byte"
+            "sizeHint": "byte",
+            "segReg": "es"
           },
           "src": {
             "kind": "const",
@@ -4404,7 +4421,8 @@
                 "type": "IDENT",
                 "value": "di"
               }
-            ]
+            ],
+            "segReg": "es"
           },
           "src": {
             "kind": "local",
@@ -4582,7 +4600,8 @@
                 "type": "IDENT",
                 "value": "di"
               }
-            ]
+            ],
+            "segReg": "es"
           },
           "size": 8
         },
@@ -4597,7 +4616,8 @@
                 "value": "di"
               }
             ],
-            "sizeHint": "byte"
+            "sizeHint": "byte",
+            "segReg": "es"
           },
           "src": {
             "kind": "const",
@@ -4711,7 +4731,8 @@
                 "type": "IDENT",
                 "value": "di"
               }
-            ]
+            ],
+            "segReg": "es"
           },
           "size": 8
         },
@@ -4726,7 +4747,8 @@
                 "value": "di"
               }
             ],
-            "sizeHint": "byte"
+            "sizeHint": "byte",
+            "segReg": "es"
           },
           "src": {
             "kind": "const",
@@ -5509,7 +5531,8 @@
                 "type": "IDENT",
                 "value": "bx"
               }
-            ]
+            ],
+            "segReg": "cs"
           },
           "src": {
             "kind": "local",
@@ -5630,7 +5653,8 @@
                 "type": "IDENT",
                 "value": "bx"
               }
-            ]
+            ],
+            "segReg": "cs"
           },
           "src": {
             "kind": "local",
@@ -7559,7 +7583,8 @@
                 "type": "IDENT",
                 "value": "si"
               }
-            ]
+            ],
+            "segReg": "ds"
           },
           "size": 16
         },
@@ -7592,7 +7617,8 @@
                 "type": "IDENT",
                 "value": "si"
               }
-            ]
+            ],
+            "segReg": "ds"
           },
           "src": {
             "kind": "local",
@@ -7674,7 +7700,8 @@
                 "type": "NUMBER",
                 "value": 4
               }
-            ]
+            ],
+            "segReg": "ds"
           },
           "size": 16
         },
@@ -7796,7 +7823,8 @@
                 "type": "NUMBER",
                 "value": 2
               }
-            ]
+            ],
+            "segReg": "ds"
           },
           "size": 16
         },
@@ -8065,7 +8093,8 @@
                 "type": "IDENT",
                 "value": "si"
               }
-            ]
+            ],
+            "segReg": "ds"
           },
           "size": 8
         },
@@ -8098,7 +8127,8 @@
                 "value": "bx"
               }
             ],
-            "sizeHint": "byte"
+            "sizeHint": "byte",
+            "segReg": "es"
           },
           "a": {
             "kind": "mem",
@@ -8109,7 +8139,8 @@
                 "value": "bx"
               }
             ],
-            "sizeHint": "byte"
+            "sizeHint": "byte",
+            "segReg": "es"
           },
           "b": {
             "kind": "local",
@@ -8164,7 +8195,8 @@
                 "value": 4096
               }
             ],
-            "sizeHint": "byte"
+            "sizeHint": "byte",
+            "segReg": "es"
           },
           "a": {
             "kind": "mem",
@@ -8183,7 +8215,8 @@
                 "value": 4096
               }
             ],
-            "sizeHint": "byte"
+            "sizeHint": "byte",
+            "segReg": "es"
           },
           "b": {
             "kind": "local",
@@ -8212,7 +8245,8 @@
                 "value": "bx"
               }
             ],
-            "sizeHint": "byte"
+            "sizeHint": "byte",
+            "segReg": "es"
           },
           "a": {
             "kind": "mem",
@@ -8223,7 +8257,8 @@
                 "value": "bx"
               }
             ],
-            "sizeHint": "byte"
+            "sizeHint": "byte",
+            "segReg": "es"
           },
           "b": {
             "kind": "local",
@@ -8251,7 +8286,8 @@
                 "value": 4096
               }
             ],
-            "sizeHint": "byte"
+            "sizeHint": "byte",
+            "segReg": "es"
           },
           "a": {
             "kind": "mem",
@@ -8270,7 +8306,8 @@
                 "value": 4096
               }
             ],
-            "sizeHint": "byte"
+            "sizeHint": "byte",
+            "segReg": "es"
           },
           "b": {
             "kind": "local",
@@ -8395,7 +8432,8 @@
                 "type": "NUMBER",
                 "value": 2
               }
-            ]
+            ],
+            "segReg": "cs"
           },
           "src": {
             "kind": "local",
@@ -8465,7 +8503,8 @@
                 "type": "NUMBER",
                 "value": 4
               }
-            ]
+            ],
+            "segReg": "cs"
           },
           "src": {
             "kind": "local",
@@ -8658,7 +8697,8 @@
                 "type": "IDENT",
                 "value": "si"
               }
-            ]
+            ],
+            "segReg": "ds"
           },
           "size": 16
         },
@@ -8691,7 +8731,8 @@
                 "type": "IDENT",
                 "value": "si"
               }
-            ]
+            ],
+            "segReg": "ds"
           },
           "src": {
             "kind": "local",
@@ -8773,7 +8814,8 @@
                 "type": "NUMBER",
                 "value": 4
               }
-            ]
+            ],
+            "segReg": "ds"
           },
           "size": 16
         },
@@ -8895,7 +8937,8 @@
                 "type": "NUMBER",
                 "value": 2
               }
-            ]
+            ],
+            "segReg": "ds"
           },
           "size": 16
         },
@@ -9164,7 +9207,8 @@
                 "type": "IDENT",
                 "value": "si"
               }
-            ]
+            ],
+            "segReg": "ds"
           },
           "size": 8
         },
@@ -9197,7 +9241,8 @@
                 "value": "bx"
               }
             ],
-            "sizeHint": "byte"
+            "sizeHint": "byte",
+            "segReg": "es"
           },
           "a": {
             "kind": "mem",
@@ -9208,7 +9253,8 @@
                 "value": "bx"
               }
             ],
-            "sizeHint": "byte"
+            "sizeHint": "byte",
+            "segReg": "es"
           },
           "b": {
             "kind": "local",
@@ -9294,7 +9340,8 @@
                 "value": 4096
               }
             ],
-            "sizeHint": "byte"
+            "sizeHint": "byte",
+            "segReg": "es"
           },
           "a": {
             "kind": "mem",
@@ -9313,7 +9360,8 @@
                 "value": 4096
               }
             ],
-            "sizeHint": "byte"
+            "sizeHint": "byte",
+            "segReg": "es"
           },
           "b": {
             "kind": "local",
@@ -9389,7 +9437,8 @@
                 "value": "bx"
               }
             ],
-            "sizeHint": "byte"
+            "sizeHint": "byte",
+            "segReg": "es"
           },
           "a": {
             "kind": "mem",
@@ -9400,7 +9449,8 @@
                 "value": "bx"
               }
             ],
-            "sizeHint": "byte"
+            "sizeHint": "byte",
+            "segReg": "es"
           },
           "b": {
             "kind": "local",
@@ -9428,7 +9478,8 @@
                 "value": 4096
               }
             ],
-            "sizeHint": "byte"
+            "sizeHint": "byte",
+            "segReg": "es"
           },
           "a": {
             "kind": "mem",
@@ -9447,7 +9498,8 @@
                 "value": 4096
               }
             ],
-            "sizeHint": "byte"
+            "sizeHint": "byte",
+            "segReg": "es"
           },
           "b": {
             "kind": "local",
@@ -9650,7 +9702,8 @@
                 "type": "NUMBER",
                 "value": 2
               }
-            ]
+            ],
+            "segReg": "cs"
           },
           "src": {
             "kind": "local",
@@ -9720,7 +9773,8 @@
                 "type": "NUMBER",
                 "value": 4
               }
-            ]
+            ],
+            "segReg": "cs"
           },
           "src": {
             "kind": "local",

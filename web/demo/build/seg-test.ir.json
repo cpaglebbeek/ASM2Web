@@ -76,7 +76,7 @@
               }
             ],
             "sizeHint": "byte",
-            "segBase": 655360
+            "segReg": "es"
           },
           "src": {
             "kind": "local",
@@ -124,7 +124,7 @@
               }
             ],
             "sizeHint": "byte",
-            "segBase": 655360
+            "segReg": "es"
           },
           "src": {
             "kind": "local",
@@ -199,7 +199,7 @@
               }
             ],
             "sizeHint": "byte",
-            "segBase": 655360
+            "segReg": "ds"
           },
           "src": {
             "kind": "local",

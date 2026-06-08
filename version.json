@@ -1,15 +1,15 @@
 {
-  "version": "0.6.0-vonNeumann",
+  "version": "0.6.1-vonNeumann",
   "codename": "vonNeumann",
   "codenameSource": "John von Neumann (1903-1957), stored-program architectuur: registers + geheugen als persistente machinestaat. Hier voor de Rood-shift waarin x86-registers + segmentregisters van per-functie WASM-locals naar persistente WASM-globals gaan (machinestaat overleeft call-grenzen).",
   "released": "2026-06-09",
-  "phase": "phase-8-techno-werkend-stage-1-register-globals",
+  "phase": "phase-8-techno-werkend-stage-2-segmented-ea",
   "architectureShift": {
     "color": "Rood",
     "reason": "TECHNO rendert 0 pixels omdat x86-registers + segregs als per-functie WASM-locals werden gemodelleerd -> reset naar 0 bij elke (interne én geëxporteerde) call. es werd nooit 0xA000, C-ABI-params lazen garbage. Fix vereist machinestaat als persistente globals + gesegmenteerde EA + C-ABI params + driver-rewrite + VGA mode-X.",
     "stages": {
       "1-register-globals": "DONE — ax..of + es/ds/cs/ss als persistente WASM-globals (idx 0..15); SP global-init STACK_TOP (per-call reset verwijderd); cross-call persistentie bewezen (proc1 zet ax/bx, losse proc2-call leest ze); 15/15 tests groen; build-determinisme her-bewezen voor alle demos + TECHNO",
-      "2-segmented-ea": "OPEN — emitEA consumeert seg-globals (seg<<4 + offset) i.p.v. enkel const-fold",
+      "2-segmented-ea": "DONE — emitEA consumeert seg-globals at runtime ((segReg<<4)+offset) i.p.v. enkel const-fold; es:[di]/ds:[si] resolveren byte-exact naar 0xA0000+offset óók wanneer de segmentwaarde in een andere functie geladen werd (machinestaat overleeft call-grenzen); fs/gs houden const-fold-fallback; seg-tracker-test + register-persistentie 15/15 groen; build+link-determinisme her-bewezen (alle demos + TECHNO 61376 B)",
       "3-c-abi-params": "OPEN — driver geeft framebuffer/vbuf-pointers + frame-state door via shadow-stack [bp+6/8/10]",
       "4-driver-rewrite": "OPEN — koe-driver.js trouw aan KOE.C (echte init- + param-volgorde)",
       "5-vga-mode-x": "OPEN — unchained/planar mode-X (sequencer map-mask 3c4h + CRTC page-flip 3d4h + pel-pan)"
@@ -26,10 +26,11 @@
     "fase 5 linker (cross-file symbol-resolution + OBK-data ge-embed) + TECHNO end-to-end gelinkt + KOE.C driver-rewrite + browser-runtime",
     "fase 6 audio-basis + STARFIELD tweede scene + gouden-frame P-DET-01",
     "fase 7 x86 segment:offset memory-tracker (es:[di]/ds:[si] -> 0xA0000+offset) + seg-test proof",
-    "fase 8 stage 1: x86-registers + segregs -> persistente WASM-globals (von Neumann-shift); per-functie SP-init-guard verwijderd (SP global-init STACK_TOP); doPush/doPop tmp-index gefixt (latente bug); WASM-encoder global-sectie (id 6) + global.get/set; cross-call register-persistentie bewezen + regressietest"
+    "fase 8 stage 1: x86-registers + segregs -> persistente WASM-globals (von Neumann-shift); per-functie SP-init-guard verwijderd (SP global-init STACK_TOP); doPush/doPop tmp-index gefixt (latente bug); WASM-encoder global-sectie (id 6) + global.get/set; cross-call register-persistentie bewezen + regressietest",
+    "fase 8 stage 2: gesegmenteerde EA via seg-globals — emitEA bouwt (segReg-global<<4)+offset at runtime; es:[di]/ds:[si] byte-exact 0xA0000+offset cross-call; fs/gs const-fold-fallback; 15/15 groen; build+link sha-stabiel"
   ],
   "open": [
-    "fase 8 stage 2-5: gesegmenteerde EA via seg-globals, C-ABI parameter-passing, koe-driver.js rewrite trouw aan KOE.C, VGA mode-X (unchained planar + page-flip) -> dan pas rendert TECHNO",
+    "fase 8 stage 3-5: C-ABI parameter-passing, koe-driver.js rewrite trouw aan KOE.C, VGA mode-X (unchained planar + page-flip) -> dan pas rendert TECHNO",
     "chiptune3 (libopenmpt) audio-integratie volledig",
     "zelfmodificerende code-detectie (TUNNELI @yad-patch)",
     "andere SR-scenes (GLENZ, DOTS, TWIST, GRID, WATER)"
@@ -39,7 +40,7 @@
   "technoPlayable": false,
   "determinismProven": {
     "buildDeterminism":  "yes — sha256(.wasm) constant tussen runs voor ALLE demos + TECHNO (na register-globals-shift opnieuw bewezen)",
-    "runtimeDeterminism": "yes — mini-demo + ROT.ASM + seg-test + register-persistentie byte-exact reproduceerbaar (15/15 tests groen)",
+    "runtimeDeterminism": "yes — mini-demo + ROT.ASM + seg-test (nu via runtime seg-globals) + register-persistentie byte-exact reproduceerbaar (15/15 tests groen)",
     "audioDeterminism":  "n.v.t. — geen audio nog geïntegreerd"
   }
 }

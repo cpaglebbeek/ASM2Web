@@ -27,7 +27,7 @@
         Frame <var>N</var> is een <strong>pure functie</strong> van (program-bytes, frame-index, input).
         Geen emulator. Geen rewrite. Geen <code>Math.random()</code>. Geen wallclock-jitter.
       </p>
-      <p class="version" id="version-line">v0.6.0-vonNeumann &middot; fase 1-7 + fase 8 stage 1 (x86-registers &amp; segregs als persistente WASM-globals — machinestaat overleeft call-grenzen)</p>
+      <p class="version" id="version-line">v0.6.1-vonNeumann &middot; fase 1-7 + fase 8 stage 1-2 (x86-registers &amp; segregs als persistente WASM-globals + gesegmenteerde EA: <code>es:[di]</code> resolveert byte-exact naar <code>0xA0000+offset</code> óók cross-call)</p>
     </section>
 
     <section class="hero" style="background:var(--bg-elev); border:1px solid var(--border); border-left:3px solid var(--accent); padding:1rem 1.2rem; border-radius:6px;">
@@ -133,10 +133,15 @@
           <span class="phase-name">Register-globals (von Neumann-shift)</span>
           <span class="phase-detail">x86-registers + segregs van per-functie WASM-locals → <strong>persistente WASM-globals</strong>; machinestaat overleeft call-grenzen (<code>proc1</code> zet <code>ax/bx</code>, losse <code>proc2</code>-call leest ze) — fundament om TECHNO werkend te krijgen; 15/15 tests groen, build-determinisme her-bewezen</span>
         </li>
+        <li class="phase done">
+          <span class="phase-tag">Fase 8.2 ✓</span>
+          <span class="phase-name">Gesegmenteerde EA via seg-globals</span>
+          <span class="phase-detail"><code>emitEA</code> bouwt <code>(segReg-global&nbsp;&lt;&lt;&nbsp;4)&nbsp;+&nbsp;offset</code> <strong>at runtime</strong> i.p.v. enkel const-fold; <code>es:[di]</code>/<code>ds:[si]</code> resolveren byte-exact naar <code>0xA0000+offset</code> óók wanneer de segmentwaarde in een <em>andere</em> functie geladen werd — machinestaat overleeft de call-grens; fs/gs houden const-fold-fallback; 15/15 tests groen, build+link-determinisme her-bewezen (TECHNO 61376 B)</span>
+        </li>
         <li class="phase pending">
-          <span class="phase-tag">Fase 8.2-8.5</span>
+          <span class="phase-tag">Fase 8.3-8.5</span>
           <span class="phase-name">TECHNO werkend</span>
-          <span class="phase-detail">gesegmenteerde EA via seg-globals → C-ABI param-passing → koe-driver rewrite (KOE.C) → VGA mode-X (unchained planar + page-flip); dán rendert TECHNO</span>
+          <span class="phase-detail">C-ABI param-passing (shadow-stack <code>[bp+6/8/10]</code>) → koe-driver rewrite (KOE.C) → VGA mode-X (unchained planar + page-flip); dán rendert TECHNO</span>
         </li>
       </ol>
     </section>

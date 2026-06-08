@@ -26,6 +26,7 @@ import {
 import {
   LOCAL_AX, LOCAL_BX, LOCAL_CX, LOCAL_DX, LOCAL_SI, LOCAL_DI, LOCAL_BP, LOCAL_SP,
   LOCAL_ZF, LOCAL_CF, LOCAL_SF, LOCAL_OF, NUM_FIXED_LOCALS,
+  LOCAL_ES, LOCAL_DS, LOCAL_CS, LOCAL_SS,
   STACK_TOP,
 } from "../ir/types.js";
 
@@ -69,6 +70,12 @@ let CURRENT_SYMBOLS = new Map();
 const ADDR_REG_LOCAL = Object.freeze({
   ax: LOCAL_AX, bx: LOCAL_BX, cx: LOCAL_CX, dx: LOCAL_DX,
   si: LOCAL_SI, di: LOCAL_DI, bp: LOCAL_BP, sp: LOCAL_SP,
+});
+
+// Segment registers backed by persistent globals — used to compute a runtime
+// segmented effective address (seg<<4)+offset. (fs/gs have no global yet.)
+const SEG_REG_LOCAL = Object.freeze({
+  es: LOCAL_ES, ds: LOCAL_DS, cs: LOCAL_CS, ss: LOCAL_SS,
 });
 
 const FN_IO_OUT = 0;
@@ -742,7 +749,14 @@ function emitEA(b, memOperand) {
     }
   }
   emitExpr();
-  if (memOperand.segBase) { b.i32Const(memOperand.segBase | 0); b.add(); }
+  if (memOperand.segReg !== undefined && SEG_REG_LOCAL[memOperand.segReg] !== undefined) {
+    // (segReg-global << 4) + offset — segmented effective address resolved at runtime.
+    regGet(b, SEG_REG_LOCAL[memOperand.segReg]);
+    b.i32Const(4); b.shl();
+    b.add();
+  } else if (memOperand.segBase) {
+    b.i32Const(memOperand.segBase | 0); b.add();
+  }
 }
 
 function parseMemExpr(memOperand) {

@@ -2,8 +2,8 @@
   "name": "techno-linked",
   "built": "2026-06-08",
   "wasm": {
-    "bytes": 61268,
-    "sha256": "0e2e9e2fc14cfcf373607ef7d42f3c8370750cc301b0358f496d6c1607bbd4c5"
+    "bytes": 61376,
+    "sha256": "6f9f9c5a357a531f524b8e250ed5143fa154bcd96ce9e572f74b8f0121c42b2c"
   },
   "stats": {
     "ops": 1288,

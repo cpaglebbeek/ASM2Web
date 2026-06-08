@@ -6,13 +6,13 @@ function main (near) locals=16
   r12 = r0
   r5 = 0xc8a
   r0.l = 0xf
-  store.u8 [di], r0.l
+  store.u8 es:[di], r0.l
   r5 = 0x1914
   r0.l = 0x1f
-  store.u8 [di], r0.l
+  store.u8 es:[di], r0.l
   r0 = 0xa000
   r13 = r0
   r4 = 0x64
   r0.l = 0x7
-  store.u8 [si], r0.l
+  store.u8 ds:[si], r0.l
   ret
