@@ -1,0 +1,85 @@
+{
+  "types": [
+    {
+      "params": [
+        127,
+        127
+      ],
+      "results": []
+    },
+    {
+      "params": [
+        127
+      ],
+      "results": [
+        127
+      ]
+    },
+    {
+      "params": [
+        127
+      ],
+      "results": []
+    },
+    {
+      "params": [
+        127,
+        127,
+        127
+      ],
+      "results": []
+    },
+    {
+      "params": [],
+      "results": [
+        127
+      ]
+    },
+    {
+      "params": [],
+      "results": []
+    }
+  ],
+  "imports": [
+    "env.memory (memory)",
+    "env.io_out (function)",
+    "env.io_in (function)",
+    "env.exit (function)",
+    "env.mode13h_setpixel (function)",
+    "env.dis_musrow (function)",
+    "env.waitb (function)",
+    "env.dis_init (function)",
+    "env.dis_waitb (function)"
+  ],
+  "exports": [
+    "poly -> fn#8",
+    "polyf -> fn#9",
+    "polyn_disp -> fn#10",
+    "hline1 -> fn#11",
+    "random -> fn#12",
+    "setborder -> fn#13",
+    "init_stars -> fn#14",
+    "deinit_stars -> fn#15",
+    "fetch4ax -> fn#16",
+    "fetch4ax2 -> fn#17",
+    "fetch4ax3 -> fn#18",
+    "clearsbu -> fn#19",
+    "starfetch0 -> fn#20",
+    "starfetch1 -> fn#21",
+    "starfetch2 -> fn#22",
+    "staradd -> fn#23",
+    "staradd2 -> fn#24",
+    "risetext -> fn#25",
+    "do_stars -> fn#26",
+    "init -> fn#27",
+    "resetmode13 -> fn#28",
+    "outpal -> fn#29",
+    "waitb -> fn#30"
+  ],
+  "memoryPages": 16,
+  "stats": {
+    "ops": 969,
+    "unknownOps": 0,
+    "unknownMnemonics": []
+  }
+}

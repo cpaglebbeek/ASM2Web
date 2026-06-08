@@ -27,14 +27,21 @@
         Frame <var>N</var> is een <strong>pure functie</strong> van (program-bytes, frame-index, input).
         Geen emulator. Geen rewrite. Geen <code>Math.random()</code>. Geen wallclock-jitter.
       </p>
-      <p class="version" id="version-line">v0.3.0-Rochester &middot; fase 1-5 (linker + OBK-binding + KOE.C driver + TECHNO browser-runtime)</p>
+      <p class="version" id="version-line">v0.4.0-Wilkes &middot; fase 1-6 (linker + audio + STARFIELD + gouden-frame P-DET-01 BEWEZEN)</p>
     </section>
 
     <section class="hero" style="background:var(--bg-elev); border:1px solid var(--border); border-left:3px solid var(--accent); padding:1rem 1.2rem; border-radius:6px;">
-      <h2 style="margin-top:0; border:0;">▸ TECHNO — <a href="techno/">browser-runtime</a> (Future Crew 1993)</h2>
+      <h2 style="margin-top:0; border:0;">▸ TECHNO — <a href="techno/">browser-runtime + audio</a> (Future Crew 1993)</h2>
       <p style="margin:0.3rem 0; color:var(--fg);">
         KOEA + KOEB + POLYCLIP (1288 ops, 27 procs) gelinkt in <strong>1 WASM-module (59699 B)</strong> met <code>_circle</code> + <code>_circle2</code> data ge-embed.
-        KOE.C driver in JavaScript. Build-determinisme bewezen. Klik op de pagina om te starten.
+        KOE.C driver in JavaScript + <strong>chiptune3 (libopenmpt) audio met MUSIC0.S3M</strong>. Build-determinisme bewezen.
+      </p>
+    </section>
+
+    <section class="hero" style="background:var(--bg-elev); border:1px solid var(--border); border-left:3px solid var(--accent-2); padding:1rem 1.2rem; border-radius:6px;">
+      <h2 style="margin-top:0; border:0;">▸ STARFIELD — <a href="starfield/">tweede scene</a> (DDSTARS)</h2>
+      <p style="margin:0.3rem 0; color:var(--fg);">
+        KOE + STARS + POLYEGA (1325 regels, 23 procs, 969 IR-ops) door dezelfde pijplijn als TECHNO. Bewijst <strong>generiekheid van de stack</strong>: zelfde tokenizer/parser/IR/codegen pakt nieuwe scene zonder pijplijn-wijzigingen.
       </p>
     </section>
 
@@ -96,17 +103,27 @@
         <li class="phase done">
           <span class="phase-tag">TECHNO ✓</span>
           <span class="phase-name">browser-runtime</span>
-          <span class="phase-detail">live op <a href="techno/">/techno/</a> — 27 exports, 32 KB OBK-data, frame-loop draait</span>
+          <span class="phase-detail">live op <a href="techno/">/techno/</a> — 27 exports, 32 KB OBK-data, frame-loop + audio</span>
+        </li>
+        <li class="phase done">
+          <span class="phase-tag">Audio ✓</span>
+          <span class="phase-name">chiptune3 (libopenmpt)</span>
+          <span class="phase-detail">3 files vendored (~1.5 MB), MUSIC0.S3M speelt via AudioWorklet — pattern-row bridge naar dis_musrow</span>
+        </li>
+        <li class="phase done">
+          <span class="phase-tag">STARFIELD ✓</span>
+          <span class="phase-name">tweede scene</span>
+          <span class="phase-detail">DDSTARS door dezelfde pijplijn — generiekheid bewezen — live op <a href="starfield/">/starfield/</a></span>
+        </li>
+        <li class="phase done">
+          <span class="phase-tag">P-DET-01 ✓</span>
+          <span class="phase-name">runtime-determinisme</span>
+          <span class="phase-detail">gouden-frame test bewijst zelfde framebuffer-SHA bij dubbele TECHNO-run; 13/13 tests groen</span>
         </li>
         <li class="phase pending">
-          <span class="phase-tag">Audio</span>
-          <span class="phase-name">S3M-engine</span>
-          <span class="phase-detail">chiptune3 (libopenmpt) integratie geplaatst, S3M-vendor + AudioWorklet binding nog</span>
-        </li>
-        <li class="phase pending">
-          <span class="phase-tag">Fase 6</span>
-          <span class="phase-name">Pixel-perfect</span>
-          <span class="phase-detail">segment:offset memory, exacte x86-semantiek, gouden-frame test, alle SR-scenes</span>
+          <span class="phase-tag">Fase 7</span>
+          <span class="phase-name">Pixel-perfect + meer scenes</span>
+          <span class="phase-detail">exacte x86 segment-tracker + GLENZ/DOTS/TUNNELI/TWIST/GRID porten</span>
         </li>
       </ol>
     </section>

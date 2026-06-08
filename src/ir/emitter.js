@@ -93,7 +93,11 @@ export function emitIR(ast, opts = {}) {
     switch (mn) {
       case "mov":   return emitBinaryMove(fn, operands);
       case "add":   return emitArith(fn, "add", operands);
+      case "adc":   return emitArith(fn, "add", operands);  // approximation: ignore carry
       case "sub":   return emitArith(fn, "sub", operands);
+      case "sbb":   return emitArith(fn, "sub", operands);  // approximation: ignore borrow
+      case "shld":
+      case "shrd":  return emitArith(fn, "shl", operands.slice(0, 2));  // double-prec shift: approximate
       case "and":   return emitArith(fn, "and", operands);
       case "or":    return emitArith(fn, "or",  operands);
       case "xor":   return emitArith(fn, "xor", operands);

@@ -5,9 +5,13 @@
 
 import { loadModule, sha256Hex, VGA } from "../runtime/loader.js";
 import { KoeDriver } from "../runtime/koe-driver.js";
+import { ChiptuneBridge } from "../runtime/chiptune-bridge.js";
 
 const WASM_URL     = "../demo/build/techno-linked.wasm";
 const MANIFEST_URL = "../demo/build/techno-linked.manifest.json";
+const MUSIC_URL    = "../assets/music0.s3m";
+
+let chiptune = null;
 
 const $ = id => document.getElementById(id);
 
@@ -52,6 +56,9 @@ async function initAndStart() {
     driver.init();
     log("Driver init OK");
 
+    // Start audio in parallel (don't await — let it init in background)
+    initAudio();
+
     $("info-status").textContent = "draait";
     running = true;
     fpsLastTime = performance.now();
@@ -60,6 +67,39 @@ async function initAndStart() {
   } catch (e) {
     log("FAIL: " + e.message);
     $("info-status").textContent = "fail: " + e.message;
+  }
+}
+
+async function initAudio() {
+  try {
+    log("Init audio (chiptune3 + libopenmpt)...");
+    chiptune = new ChiptuneBridge({
+      onProgress: (d) => {
+        // Bridge naar driver music-row
+        if (driver) {
+          driver.musicRow = d.row | 0;
+          if (runtime && runtime.vga) runtime.vga.musicRow = d.row | 0;
+        }
+      },
+    });
+    const init = await chiptune.init();
+    if (!init.ok) {
+      log("Audio init: " + init.msg + " (visueel-only mode)");
+      return;
+    }
+    log("Audio engine ready");
+    log("Loading MUSIC0.S3M van " + MUSIC_URL + "...");
+    const res = await fetch(MUSIC_URL);
+    if (!res.ok) {
+      log("Audio: kon S3M niet laden (" + res.status + ") — visueel-only");
+      return;
+    }
+    const ab = await res.arrayBuffer();
+    log("S3M loaded: " + ab.byteLength + " bytes");
+    await chiptune.play(ab);
+    log("Audio playing ♪");
+  } catch (e) {
+    log("Audio fail: " + e.message);
   }
 }
 

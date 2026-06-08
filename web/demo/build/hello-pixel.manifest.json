@@ -1,6 +1,6 @@
 {
   "name": "hello-pixel",
-  "built": "2026-06-07",
+  "built": "2026-06-08",
   "source": {
     "path": "demos/hello-pixel.asm",
     "bytes": 1617,
