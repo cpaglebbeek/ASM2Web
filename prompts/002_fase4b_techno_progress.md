@@ -1,8 +1,12 @@
 ---
 date: 2026-06-08
 repo: ASM2Web
-status: open
-resume: "verder met ASM2Web linker + TECHNO speelbaar — Fase 5: (1) cross-file linker (KOEA+KOEB+POLYCLIP samen in 1 WASM-module via shared linear memory + symbol-resolution), (2) OBK-data als WASM data-section gelinkt aan `_circle`/`_circle2` externs, (3) KOE.C driver -> TypeScript-rewrite (728 regels glue-code), (4) DIS-engine substituut via chiptune3 (libopenmpt, BSD-3-Clause) of libxmp-lite (MIT — geen actief gemaintainede WASM-port gevonden), (5) TECHNO visueel/audio in browser, (6) gouden-frame test voor P-DET-01 vol bewijs. v0.3.0-Rochester."
+status: done
+resume: ""
+---
+
+> **Status update 2026-06-08 (latere sessie)**: fase 5 linker+driver+TECHNO-runtime gedaan in `003_fase5_linker_techno_live.md` (v0.3.0-Rochester). Resume-haak doorgeschoven.
+
 ---
 
 # Sessie 2026-06-08 — ASM2Web autonoom doorbouwen naar TECHNO
