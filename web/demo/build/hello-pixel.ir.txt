@@ -1,7 +1,7 @@
 ; IR module: hello-pixel
 ; functions: 1, data: 0, ops: 32, unknown: 0
 
-function main (near) locals=12
+function main (near) locals=16
   r0.l = 0x1
   io.out 0x3c8, r0.l
   r0.l = 0x3f

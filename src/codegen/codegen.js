@@ -29,6 +29,24 @@ import {
   STACK_TOP,
 } from "../ir/types.js";
 
+// Machine registers (index < NUM_FIXED_LOCALS) live in persistent module globals
+// so their values survive across function calls; everything else is a scratch local.
+function regGet(b, idx) { if (idx < NUM_FIXED_LOCALS) b.globalGet(idx); else b.localGet(idx); }
+function regSet(b, idx) { if (idx < NUM_FIXED_LOCALS) b.globalSet(idx); else b.localSet(idx); }
+function regTee(b, idx) {
+  if (idx < NUM_FIXED_LOCALS) { b.globalSet(idx); b.globalGet(idx); }  // globals have no tee
+  else b.localTee(idx);
+}
+
+// Register globals: NUM_FIXED_LOCALS i32 globals; SP starts at STACK_TOP.
+function buildRegisterGlobals() {
+  const g = [];
+  for (let i = 0; i < NUM_FIXED_LOCALS; i++) {
+    g.push({ type: ValType.i32, mutable: true, init: i === LOCAL_SP ? STACK_TOP : 0 });
+  }
+  return g;
+}
+
 const ABI_IMPORTS = [
   { name: "io_out",            params: [ValType.i32, ValType.i32], results: [] },
   { name: "io_in",             params: [ValType.i32],              results: [ValType.i32] },
@@ -135,6 +153,7 @@ export function compileIRtoWASM(ir) {
       index: f.wasmIndex,
     })),
     start: null,
+    globals: buildRegisterGlobals(),
     functions: wasmFns.map(f => ({ typeIndex: f.typeIndex, locals: f.locals, body: f.body })),
     data: dataSegments,
   };
@@ -198,16 +217,9 @@ function emitFunction(fn, userFnIndex, voidTypeIndex) {
 
   const b = new InstrBuilder();
 
-  // ------ function entry: init SP if first call ------
-  // if ($sp_init == 0) { $sp = STACK_TOP; $sp_init = 1 }
-  b.localGet(SP_INIT_GUARD);
-  b.eqz();
-  b.if_();
-    b.i32Const(STACK_TOP);
-    b.localSet(LOCAL_SP);
-    b.i32Const(1);
-    b.localSet(SP_INIT_GUARD);
-  b.end();
+  // SP (shadow-stack pointer) is now a persistent global initialised to STACK_TOP at
+  // module instantiation, so nested calls share one descending stack. No per-call reset.
+  void SP_INIT_GUARD;
 
   if (!needsDispatch) {
     // Single basic block: straight-line emission.
@@ -346,8 +358,8 @@ function emitOp(b, op, fn, labelBlockIdx, pcLocal, tmps, userFnIndex) {
       if (op.num === 0x21) { b.i32Const(0); b.call(FN_EXIT); b.ret(); }
       else { b.i32Const(0xFF); b.call(FN_EXIT); b.ret(); }
       return;
-    case "push":     pushValue(b, op.src, tmps); doPush(b); return;
-    case "pop":      doPop(b); storeTo(b, op.dest, tmps); return;
+    case "push":     pushValue(b, op.src, tmps); doPush(b, tmps.TMP2); return;
+    case "pop":      doPop(b, tmps.TMP2); storeTo(b, op.dest, tmps); return;
     case "ret":      b.ret(); return;
     case "call": {
       const wasmIdx = userFnIndex.get(op.target) ?? userFnIndex.get("_" + op.target);
@@ -465,7 +477,7 @@ function emitArith(b, op, tmps) {
   }
   b.localTee(tmps.TMP1);
   b.eqz();
-  b.localSet(LOCAL_ZF);
+  regSet(b, LOCAL_ZF);
   b.localGet(tmps.TMP1);
   storeTo(b, op.dest, tmps);
 }
@@ -483,7 +495,7 @@ function emitXchg(b, op, tmps) {
 function emitMul(b, op, tmps) {
   // AX = AL * src  (8-bit) or DX:AX = AX * src (16-bit)
   // Approximation: AX = AX * src (16-bit result truncated)
-  b.localGet(LOCAL_AX);
+  regGet(b, LOCAL_AX);
   b.i32Const(0xFFFF); b.and();
   pushValue(b, op.src, tmps);
   b.mul();
@@ -493,7 +505,7 @@ function emitMul(b, op, tmps) {
 function emitDiv(b, op, tmps) {
   // AX = AX / src  (8-bit divide)
   // Approximation: AX = AX / src
-  b.localGet(LOCAL_AX);
+  regGet(b, LOCAL_AX);
   b.i32Const(0xFFFF); b.and();
   pushValue(b, op.src, tmps);
   if (op.op === "idiv") b.emit(Op.i32_div_s);
@@ -507,10 +519,10 @@ function emitLoopDecCx(b, op, tmps) {
   // For now, decrement CX. In multi-block mode, parser-emit translates `loop`
   // to two IR ops: dec_cx + jcond(nzf). But our current emitter emits as a single
   // op, so we just decrement here without jumping (best-effort).
-  b.localGet(LOCAL_CX);
+  regGet(b, LOCAL_CX);
   b.i32Const(1); b.sub();
   b.i32Const(0xFFFF); b.and();
-  b.localSet(LOCAL_CX);
+  regSet(b, LOCAL_CX);
 }
 
 function emitCmpTest(b, op, tmps) {
@@ -519,7 +531,7 @@ function emitCmpTest(b, op, tmps) {
   if (op.op === "cmp") b.sub();
   else b.and();
   b.eqz();
-  b.localSet(LOCAL_ZF);
+  regSet(b, LOCAL_ZF);
 }
 
 function emitStore(b, op, tmps) {
@@ -542,7 +554,7 @@ function emitStore(b, op, tmps) {
     return;
   }
   if (op.addr.kind === "local") {
-    b.localGet(op.addr.index);
+    regGet(b, op.addr.index);
     pushValue(b, op.src, tmps);
     if (sz === 8)       b.store8(0, 0);
     else if (sz === 32) b.store(0, 0);
@@ -567,7 +579,7 @@ function emitLoad(b, op, tmps) {
     else if (sz === 32) b.load(0, op.addr.value | 0);
     else                b.load16U(0, op.addr.value | 0);
   } else if (op.addr.kind === "local") {
-    b.localGet(op.addr.index);
+    regGet(b, op.addr.index);
     if (sz === 8)       b.load8U(0, 0);
     else if (sz === 32) b.load(0, 0);
     else                b.load16U(0, 0);
@@ -577,75 +589,39 @@ function emitLoad(b, op, tmps) {
   storeTo(b, op.dest, tmps);
 }
 
-// Shadow-stack helpers.
-// Push pops top-of-stack and writes to mem16[SP-2]; SP -= 2.
-function doPush(b) {
-  // stack: [value]
-  // need: store16 at SP-2, then SP-=2
-  // Sequence: tee value -> TMP, sp-=2, load_value, store16
-  // Simpler:  sp -= 2; mem16[sp] = value
-  // Use:  local.get sp; i32.const 2; i32.sub; local.tee sp; local.get value; i32.store16
-  // But value is already on stack. We need address first, then value, then store.
-  // Trick: capture value via local.
-  // Reorder with a tmp: (value already top)
-  //   localSet $tmp        ; pop value to tmp
-  //   localGet $sp
-  //   i32.const 2
-  //   i32.sub
-  //   localTee $sp
-  //   localGet $tmp
-  //   i32.store16 0 0
-  // We use a fixed tmp register (TMP1 via emitArith may conflict — emit local).
-  // For simplicity use a unique local: we won't collide with TMP1 because push/pop
-  // are sequential. But to be safe use TMP2.
-  // (Caller must pass TMP2 via tmps object; we have tmps in scope.)
-  // -- here we use a literal index, but since this fn is internal we know we're
-  //    being called from emitOp which has tmps.TMP2 = fn.locals.count + 3.
-  // To avoid global state, we accept a known local index for push tmp.
-  // For now: hard-code via a passed param — but doPush is currently param-less.
-  // -> Just use TMP2 by convention (last fixed scratch).
-  // Simpler approach: keep push/pop param-less and use a fixed offset based on
-  // assumption set in emitFunction.  Caller MUST ensure totalLocals includes them.
-  // We don't have tmps here. Hack: inline a sequence that uses i32 stack only:
-  //   value is at TOS. Use store at variable address by swapping.
-  // Actually best: change signature. Let me just rewrite to use Op-level swap via
-  // local at fixed index 16 (after fixed=12 + PC + SP_INIT_GUARD + TMP1 + TMP2 = 16).
-  // Wait we allocated TMP1 = fixed.count+2 and TMP2 = fixed.count+3, with
-  // fn.locals.count = NUM_FIXED_LOCALS = 12. So PC=12, SP_INIT_GUARD=13, TMP1=14, TMP2=15.
-  const TMP_PUSH = 15; // matches TMP2 allocation in emitFunction (fn.locals.count + 3 with count=12)
-  b.localSet(TMP_PUSH);
-  b.localGet(LOCAL_SP);
+// Shadow-stack helpers. SP is a persistent global; `tmpIdx` is a scratch local
+// used to hold the pushed/popped value while we adjust SP.
+// Push: pops top-of-stack and writes to mem16[SP-2]; SP -= 2.
+function doPush(b, tmpIdx) {
+  b.localSet(tmpIdx);          // tmp = value
+  regGet(b, LOCAL_SP);
   b.i32Const(2);
   b.sub();
-  b.localTee(LOCAL_SP);
-  b.localGet(TMP_PUSH);
+  regTee(b, LOCAL_SP);         // SP -= 2  (leaves SP on stack)
+  b.localGet(tmpIdx);
   b.emit(Op.i32_store16); b.uleb(0); b.uleb(0);
 }
 
-function doPop(b) {
-  // result = mem16[SP], SP += 2
-  b.localGet(LOCAL_SP);
+function doPop(b, tmpIdx) {
+  regGet(b, LOCAL_SP);
   b.emit(Op.i32_load16_u); b.uleb(0); b.uleb(0);
-  // result on stack now — bump SP
-  // need to keep result, so capture and restore
-  const TMP_POP = 15;
-  b.localSet(TMP_POP);
-  b.localGet(LOCAL_SP);
+  b.localSet(tmpIdx);          // tmp = mem16[SP]
+  regGet(b, LOCAL_SP);
   b.i32Const(2);
   b.add();
-  b.localSet(LOCAL_SP);
-  b.localGet(TMP_POP);
+  regSet(b, LOCAL_SP);         // SP += 2
+  b.localGet(tmpIdx);
 }
 
 // Flag retrieval for jcond.
 function pushFlag(b, cond) {
   switch (cond) {
-    case "zf":  b.localGet(LOCAL_ZF); break;
-    case "nzf": b.localGet(LOCAL_ZF); b.eqz(); break;
-    case "cf":  b.localGet(LOCAL_CF); break;
-    case "ncf": b.localGet(LOCAL_CF); b.eqz(); break;
-    case "sf":  b.localGet(LOCAL_SF); break;
-    case "nsf": b.localGet(LOCAL_SF); b.eqz(); break;
+    case "zf":  regGet(b, LOCAL_ZF); break;
+    case "nzf": regGet(b, LOCAL_ZF); b.eqz(); break;
+    case "cf":  regGet(b, LOCAL_CF); break;
+    case "ncf": regGet(b, LOCAL_CF); b.eqz(); break;
+    case "sf":  regGet(b, LOCAL_SF); break;
+    case "nsf": regGet(b, LOCAL_SF); b.eqz(); break;
     default:    b.i32Const(0);
   }
 }
@@ -655,7 +631,7 @@ function pushValue(b, v, tmps) {
   switch (v.kind) {
     case "const": b.i32Const(v.value | 0); return;
     case "local":
-      b.localGet(v.index);
+      regGet(b, v.index);
       if (v.size === 8 && v.isHigh) {
         b.i32Const(8); b.shrU();
         b.i32Const(0xFF); b.and();
@@ -690,24 +666,24 @@ function storeTo(b, v, tmps) {
       // value on top. We want: existing = (existing & 0x00FF) | ((value & 0xFF) << 8)
       // Use TMP to swap order.
       b.localSet(tmps.TMP1);                    // tmp = new value
-      b.localGet(v.index); b.i32Const(0x00FF); b.and();
+      regGet(b, v.index); b.i32Const(0x00FF); b.and();
       b.localGet(tmps.TMP1); b.i32Const(0xFF); b.and(); b.i32Const(8); b.shl();
       b.or();
-      b.localSet(v.index);
+      regSet(b, v.index);
       return;
     }
     if (v.size === 8) {
       // value on top. (existing & 0xFF00) | (new & 0xFF)
       b.localSet(tmps.TMP1);
-      b.localGet(v.index); b.i32Const(0xFF00); b.and();
+      regGet(b, v.index); b.i32Const(0xFF00); b.and();
       b.localGet(tmps.TMP1); b.i32Const(0xFF); b.and();
       b.or();
-      b.localSet(v.index);
+      regSet(b, v.index);
       return;
     }
     // 16-bit: mask to low 16
     b.i32Const(0xFFFF); b.and();
-    b.localSet(v.index);
+    regSet(b, v.index);
     return;
   }
   b.drop();
@@ -735,7 +711,7 @@ function emitEA(b, memOperand) {
     if (t.type === "IDENT") {
       const reg = String(t.value).toLowerCase();
       if (ADDR_REG_LOCAL[reg] !== undefined) {
-        b.localGet(ADDR_REG_LOCAL[reg]);
+        regGet(b, ADDR_REG_LOCAL[reg]);
         b.i32Const(0xFFFF); b.and();         // 16-bit register in addressing
         return;
       }

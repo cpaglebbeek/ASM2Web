@@ -1,42 +1,45 @@
 {
-  "version": "0.5.0-Stibitz",
-  "codename": "Stibitz",
-  "codenameSource": "George Stibitz (1904-1995), bouwde de Complex Number Calculator (1940) en pionierde relais-computing + remote job entry. Hier voor de x86 segment:offset memory-tracker (exacte adres-semantiek).",
-  "released": "2026-06-07",
-  "phase": "phase-7-segment-tracker",
+  "version": "0.6.0-vonNeumann",
+  "codename": "vonNeumann",
+  "codenameSource": "John von Neumann (1903-1957), stored-program architectuur: registers + geheugen als persistente machinestaat. Hier voor de Rood-shift waarin x86-registers + segmentregisters van per-functie WASM-locals naar persistente WASM-globals gaan (machinestaat overleeft call-grenzen).",
+  "released": "2026-06-09",
+  "phase": "phase-8-techno-werkend-stage-1-register-globals",
+  "architectureShift": {
+    "color": "Rood",
+    "reason": "TECHNO rendert 0 pixels omdat x86-registers + segregs als per-functie WASM-locals werden gemodelleerd -> reset naar 0 bij elke (interne én geëxporteerde) call. es werd nooit 0xA000, C-ABI-params lazen garbage. Fix vereist machinestaat als persistente globals + gesegmenteerde EA + C-ABI params + driver-rewrite + VGA mode-X.",
+    "stages": {
+      "1-register-globals": "DONE — ax..of + es/ds/cs/ss als persistente WASM-globals (idx 0..15); SP global-init STACK_TOP (per-call reset verwijderd); cross-call persistentie bewezen (proc1 zet ax/bx, losse proc2-call leest ze); 15/15 tests groen; build-determinisme her-bewezen voor alle demos + TECHNO",
+      "2-segmented-ea": "OPEN — emitEA consumeert seg-globals (seg<<4 + offset) i.p.v. enkel const-fold",
+      "3-c-abi-params": "OPEN — driver geeft framebuffer/vbuf-pointers + frame-state door via shadow-stack [bp+6/8/10]",
+      "4-driver-rewrite": "OPEN — koe-driver.js trouw aan KOE.C (echte init- + param-volgorde)",
+      "5-vga-mode-x": "OPEN — unchained/planar mode-X (sequencer map-mask 3c4h + CRTC page-flip 3d4h + pel-pan)"
+    }
+  },
   "completed": [
     "fase 0 skeleton",
     "fase 1 tokenizer+parser+symtab",
     "fase 2 IR-emitter (100% TECHNO mnemonics)",
     "fase 3 WASM-codegen (eigen mini-encoder, byte-reproduceerbaar)",
     "fase 4a runtime (mode-13h canvas, palette-DAC, count-based clock)",
-    "fase 4b-1 structured control-flow (dispatch-loop met br_table)",
-    "fase 4b-2 shadow-stack push/pop in linear memory",
-    "fase 4b-3 alle 23 ontbrekende mnemonics in IR + codegen (mul/div/rep/rol/ror/xchg/jg/jl/jcxz/lds/les/movsx/movzx/neg/popf/pushf/rcl/rcr/sar/loop)",
-    "OBK/OMF data-parser (extraheert _circle 24000 B + _circle2 8000 B uit TASM-build)",
-    "fase 5 linker (cross-file symbol-resolution + OBK-data ge-embed in WASM data-section)",
-    "fase 5 TECHNO end-to-end gelinkt: KOEA+KOEB+POLYCLIP samen in 59699 B WASM, 27 exports, build-determinisme bewezen",
-    "fase 5 KOE.C driver in JS rewritten (~150 regels, orchestrator)",
-    "fase 5 TECHNO browser-runtime live op /techno/ — frame-loop + canvas + driver",
-    "audio-engine basis (silent-mode fallback, deterministic music-row counter)",
-    "fase 7 x86 segment:offset memory-tracker — `mov ax,0a000h / mov es,ax` herkend als segment-base const-load; ES:[DI]/DS:[SI]/byte-ptr resolveren naar linear 0xA0000+offset; data-symbooltabel + recursieve effectief-adres-evaluatie (emitEA)",
-    "fase 7 BUGFIX (geel/logisch): tokenizer merget `es:` tot één LABEL-token; parser herkende segment-override alleen in IDENT+':'-vorm -> segref viel terug op raw-operand. Fix: segreg-genaamde LABEL midden in operand = segment-override. + byte/word ptr sizeHint propageert nu naar inner mem.",
-    "fase 7 seg-test.asm: zelf-bevattende proof van segment-tracker (3/3 pixels byte-exact op 0xA0000, regressietest in suite)",
-    "fase 7 TUNNELI scene geport (build schoon, 39 ops, 0 unknown) — rendert beperkt door zelfmodificerende code-afhankelijkheid (eerlijk gedocumenteerd)",
-    "web-demo demo-selector (?demo=) voor hello-pixel / seg-test / starfield / rot"
+    "fase 4b structured control-flow (dispatch-loop br_table) + shadow-stack push/pop",
+    "OBK/OMF data-parser (_circle 24000 B + _circle2 8000 B)",
+    "fase 5 linker (cross-file symbol-resolution + OBK-data ge-embed) + TECHNO end-to-end gelinkt + KOE.C driver-rewrite + browser-runtime",
+    "fase 6 audio-basis + STARFIELD tweede scene + gouden-frame P-DET-01",
+    "fase 7 x86 segment:offset memory-tracker (es:[di]/ds:[si] -> 0xA0000+offset) + seg-test proof",
+    "fase 8 stage 1: x86-registers + segregs -> persistente WASM-globals (von Neumann-shift); per-functie SP-init-guard verwijderd (SP global-init STACK_TOP); doPush/doPop tmp-index gefixt (latente bug); WASM-encoder global-sectie (id 6) + global.get/set; cross-call register-persistentie bewezen + regressietest"
   ],
   "open": [
-    "chiptune3 (libopenmpt) vendor + AudioWorklet voor echte S3M-playback",
-    "zelfmodificerende code-detectie/emulatie (TUNNELI @yad-patch) — nu nog approximatie",
-    "gouden-frame test (PNG-SHA snapshots) voor P-DET-01 vol bewijs op TECHNO",
-    "andere SR-scenes (GLENZ, DOTS, TWIST, GRID, WATER, ...)"
+    "fase 8 stage 2-5: gesegmenteerde EA via seg-globals, C-ABI parameter-passing, koe-driver.js rewrite trouw aan KOE.C, VGA mode-X (unchained planar + page-flip) -> dan pas rendert TECHNO",
+    "chiptune3 (libopenmpt) audio-integratie volledig",
+    "zelfmodificerende code-detectie (TUNNELI @yad-patch)",
+    "andere SR-scenes (GLENZ, DOTS, TWIST, GRID, WATER)"
   ],
   "miniDemoLive": true,
   "technoCompiles": true,
   "technoPlayable": false,
   "determinismProven": {
-    "buildDeterminism":  "yes — sha256(.wasm) constant tussen runs voor ALLE demos",
-    "runtimeDeterminism": "yes — mini-demo + ROT.ASM + seg-test byte-exact reproduceerbaar (14/14 tests groen)",
+    "buildDeterminism":  "yes — sha256(.wasm) constant tussen runs voor ALLE demos + TECHNO (na register-globals-shift opnieuw bewezen)",
+    "runtimeDeterminism": "yes — mini-demo + ROT.ASM + seg-test + register-persistentie byte-exact reproduceerbaar (15/15 tests groen)",
     "audioDeterminism":  "n.v.t. — geen audio nog geïntegreerd"
   }
 }

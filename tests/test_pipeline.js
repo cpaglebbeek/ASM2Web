@@ -94,6 +94,33 @@ test("segment:offset tracker resolves es:[di]/ds:[si] to linear 0xA0000", async 
   assert.equal(u8[0xA0000 + 3211], 0, "byte ptr must write exactly 1 byte (no word spill)");
 });
 
+test("x86 registers persist across separate function calls (globals, not locals)", async () => {
+  // proc1 sets ax/bx; proc2 — a *separate* exported call — reads them and stores to
+  // memory. With registers modeled as per-function locals this would read 0; as
+  // persistent module globals the values survive the call boundary.
+  const asm = [
+    "code segment",
+    "proc1 proc", "  mov ax, 1234h", "  mov bx, 5678h", "  ret", "proc1 endp",
+    "proc2 proc", "  mov word ptr [0], ax", "  mov word ptr [2], bx", "  ret", "proc2 endp",
+    "code ends", "",
+  ].join("\n");
+  const ir = emitIR(parse(tokenize(asm, { file: "x" }), { file: "x" }), { name: "persist" });
+  const { wasm } = compileIRtoWASM(ir);
+  const memory = new WebAssembly.Memory({ initial: 16, maximum: 16 });
+  const env = {
+    memory,
+    io_out: () => {}, io_in: () => 0, exit: () => {},
+    mode13h_setpixel: () => {}, dis_musrow: () => 0, waitb: () => {},
+    dis_init: () => {}, dis_waitb: () => {},
+  };
+  const { instance } = await WebAssembly.instantiate(wasm, { env });
+  instance.exports.proc1();
+  instance.exports.proc2();
+  const u16 = new Uint16Array(memory.buffer);
+  assert.equal(u16[0], 0x1234, "ax persisted from proc1 into proc2");
+  assert.equal(u16[1], 0x5678, "bx persisted from proc1 into proc2");
+});
+
 test("TECHNO IR-emitter achieves >90% supported ops on KOEA+KOEB+POLYCLIP+ROT", async () => {
   const { readFileSync, readdirSync, existsSync } = await import("node:fs");
   const { join, resolve } = await import("node:path");

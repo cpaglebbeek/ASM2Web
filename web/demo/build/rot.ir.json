@@ -9,7 +9,7 @@
     {
       "name": "__init",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "mov",
@@ -33,7 +33,7 @@
     {
       "name": "waitb",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "mov",
@@ -132,7 +132,7 @@
     {
       "name": "rol",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "call",
