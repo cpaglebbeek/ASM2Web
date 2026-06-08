@@ -4,7 +4,7 @@
 function poly (near) locals=12
   r0 = 0x0
   0x0 = r0
-  r0 = 0x0
+  r0 = load.u16 [starvram]
   0x0 = r0
   jump .polyf
   ret
@@ -13,58 +13,65 @@ function polyf (near) locals=12
   r0 = 0x0
   0x0 = r0
   0x0 = r0
-  r2 = 0x0
+  r2 = load.u16 [polysides]
   r0 = r2
   r0 = shl r0, 0x4
+  store.u16 [finfolen], r0
   r0 = add r0, @OFFSET
-  r0 = 0x0
+  store.u16 [finfo1], r0
+  r0 = load.u16 [wmaxy]
   r0 = add r0, 0x1
+  store.u16 [fwmaxy1], r0
   0x0 = 0x77770000
   r1 = xor r1, r1
   r4 = @OFFSET
   r5 = @OFFSET
+  store.u16 [finfo0], r5
   .pfn1:
-  0x0 = 0x0
+  0x0 = load.u32 [si]
   cmp 0x0, 0x0
   jgt_s .pfn2
   0x0 = 0x0
   r1 = r5
   .pfn2:
-  0x0 = r5
+  store.u32 [di], 0x0
   r4 = add r4, 0x4
   r5 = add r5, 0x10
   loop_dec_cx .pfn1
+  store.u16 [fleftrown], 0xffff8001
+  store.u16 [frightrown], 0xffff8001
   r4 = r1
   r5 = r1
-  r6 = 0x0
+  r6 = load.u16 [si + 2]
   r1 = @OFFSET
   r0 = r6
-  cmp r0, 0x0
+  cmp r0, [wminy]
   jge_s .pfn35
-  r0 = 0x0
+  r0 = load.u16 [wminy]
   .pfn35:
-  0x0 = r1
+  store.u16 [bx], r0
   r1 = add r1, 0x2
   r2 = 0x10
   .pfn63:
   push r2
   push r1
-  cmp r6, 0x0
+  cmp r6, [fleftrown]
   jlt_s .pfn42
   push 0x0
   push r5
   r5 = r4
   r5 = sub r5, 0x10
-  cmp r5, 0x0
+  cmp r5, [finfo0]
   jncf .pfn41
-  r5 = add r5, 0x0
+  r5 = add r5, [finfolen]
   .pfn41:
   r1 = @OFFSET
   call polyfcalc
   r2 = add r2, r6
-  0x0 = 0x0
-  0x0 = 0x0
-  r3 = 0x0
+  store.u16 [fleftrown], r2
+  0x0 = load.u16 [si + 0]
+  0x0 = load.u16 [fleftaddl]
+  r3 = load.u16 [fleftaddh]
   r3 = sar r3, 0x1
   0x0 = rcr 0x0, 0x1
   r1 = xor r1, r1
@@ -74,22 +81,23 @@ function polyf (near) locals=12
   pop r5
   pop 0x0
   .pfn42:
-  cmp r6, 0x0
+  cmp r6, [frightrown]
   jlt_s .pfn52
   push 0x0
   push r4
   r4 = r5
   r5 = add r5, 0x10
-  cmp r5, 0x0
+  cmp r5, [finfo1]
   jcf .pfn51
-  r5 = sub r5, 0x0
+  r5 = sub r5, [finfolen]
   .pfn51:
   r1 = @OFFSET
   call polyfcalc
   r2 = add r2, r6
-  0x0 = 0x0
-  0x0 = 0x0
-  r0 = 0x0
+  store.u16 [frightrown], r2
+  0x0 = load.u16 [si + 0]
+  0x0 = load.u16 [frightaddl]
+  r0 = load.u16 [frightaddh]
   r0 = sar r0, 0x1
   0x0 = rcr 0x0, 0x1
   r1 = xor r1, r1
@@ -98,8 +106,8 @@ function polyf (near) locals=12
   pop r4
   pop 0x0
   .pfn52:
-  r1 = 0x0
-  r2 = 0x0
+  r1 = load.u16 [fleftrown]
+  r2 = load.u16 [frightrown]
   cmp r2, r1
   jlt_s .pfn61
   r2 = r1
@@ -110,7 +118,7 @@ function polyf (near) locals=12
   jgt_s .pfn71
   .pfn6:
   pop r2
-  cmp r6, 0x0
+  cmp r6, [fwmaxy1]
   jgt_s .pfn64
   cmp r4, r5
   jzf .pfn64
@@ -118,7 +126,7 @@ function polyf (near) locals=12
   jzf .pfn64
   jump .pfn63
   .pfn64:
-  0x0 = r1
+  store.u16 [bx], 0xffff8001
   r4 = @OFFSET
   call polyn_disp
   ret
@@ -126,26 +134,30 @@ function polyf (near) locals=12
   r6 = add r6, r2
   push r6
   push r2
-  cmp r6, 0x0
+  cmp r6, [wminy]
   jlt_s .pfn66
   r6 = sub r6, r2
-  r2 = 0x0
+  r2 = load.u16 [wminy]
   r2 = sub r2, r6
   .pfn66:
   0x0 = r2
   0x0 = ror 0x0, 0x10
+  store.u16 [feax], 0x0
   0x0 = ror 0x0, 0x10
-  r0 = 0x0
+  store.u16 [fedx], 0x0
+  r0 = load.u16 [fleftaddh]
   0x0 = shl 0x0, 0x10
-  r0 = 0x0
+  r0 = load.u16 [fleftaddl + 2]
   imul 0x0
-  r0 = 0x0
+  [feax] = add [feax], 0x0
+  r0 = load.u16 [frightaddh]
   0x0 = shl 0x0, 0x10
-  r0 = 0x0
+  r0 = load.u16 [frightaddl + 2]
   imul 0x0
-  0x0 = 0x0
+  [fedx] = add [fedx], 0x0
+  0x0 = load.u16 [feax]
   0x0 = ror 0x0, 0x10
-  0x0 = 0x0
+  0x0 = load.u16 [fedx]
   0x0 = ror 0x0, 0x10
   r6 = r2
   pop r2
@@ -155,17 +167,17 @@ function polyf (near) locals=12
   jnzf .pfn6b
   jump .pfn6
   .pfn6b:
-  r6 = 0x0
+  r6 = load.u16 [wminy]
   .pfn71:
-  cmp r6, 0x0
+  cmp r6, [wminy]
   jlt_s .pfn65
   r6 = add r6, r2
-  cmp r6, 0x0
+  cmp r6, [fwmaxy1]
   jle_s .pfn72
   r6 = sub r6, r2
-  r2 = 0x0
+  r2 = load.u16 [fwmaxy1]
   r2 = sub r2, r6
-  r6 = 0x0
+  r6 = load.u16 [fwmaxy1]
   .pfn72:
   cmp r2, 0x0
   jle_s .pfn6
@@ -176,17 +188,17 @@ function polyf (near) locals=12
   r2 = sub 0x0, r2
   r1 = r2
   0x0 = ror 0x0, 0x10
-  0x0 = 0x0
-  0x0 = 0x0
-  r6 = 0x0
-  r2 = 0x0
+  0x0 = load.u16 [fleftaddl]
+  0x0 = load.u16 [frightaddl]
+  r6 = load.u16 [fleftaddh]
+  r2 = load.u16 [frightaddh]
   .pfn7:
   0x0 = add 0x0, 0x0
   r0 = add r0, r6
   0x0 = add 0x0, 0x0
   r3 = add r3, r2
-  0x0 = r1
-  0x0 = r1
+  store.u16 [bx], r0
+  store.u16 [bx + 2], r3
   0x0 = add 0x0, 0x10004
   jncf .pfn7
   pop r6
@@ -194,18 +206,18 @@ function polyf (near) locals=12
   pop r4
   jump .pfn6
   .polyfcalc:
-  r2 = 0x0
+  r2 = load.u16 [di + 2]
   r2 = sub r2, r6
   jle_s .pfc1
-  r0 = 0x0
-  r0 = sub r0, 0x0
+  r0 = load.u16 [di + 0]
+  r0 = sub r0, [si + 0]
   jlt_s .pfc2
   r3 = xor r3, r3
   div r2
-  0x0 = r1
+  store.u16 [bx + 4], r0
   r0 = xor r0, r0
   div r2
-  0x0 = r1
+  store.u16 [bx + 2], r0
   ret
   .pfc1:
   r2 = xor r2, r2
@@ -221,21 +233,21 @@ function polyf (near) locals=12
   r0 = sub 0x0, r0
   r3 = add r3, 0x0
   r3 = sub 0x0, r3
-  0x0 = r1
-  0x0 = r1
+  store.u16 [bx + 4], r3
+  store.u16 [bx + 2], r0
   ret
 
 function polyn_disp (near) locals=12
   r4 = @OFFSET
-  r1 = 0x0
+  r1 = load.u16 [si]
   r4 = add r4, 0x2
   .plnd3:
   push r2
   push r1
-  r0 = 0x0
+  r0 = load.u16 [si]
   cmp r0, 0xffff8001
   jzf .polyn_dispx
-  r3 = 0x0
+  r3 = load.u16 [si + 2]
   call hline1
   pop r1
   pop r2
@@ -271,11 +283,11 @@ function hline1 (near) locals=12
   jlt_s .hli0
   r0 = xor r0, r0
   .hli2:
-  cmp r3, 0x0
+  cmp r3, [wmaxx]
   jle_s .hliok
-  cmp r0, 0x0
+  cmp r0, [wmaxx]
   jgt_s .hli0
-  r3 = 0x0
+  r3 = load.u16 [wmaxx]
   .hliok:
   r5 = r0
   r5 = sar r5, 0x3
@@ -283,21 +295,21 @@ function hline1 (near) locals=12
   r2 = sar r2, 0x3
   r2 = sub r2, r5
   r1 = shl r1, 0x1
-  r5 = add r5, 0x0
+  r5 = add r5, [rows + bx]
   r6 = 0x7
   r6 = and r6, r0
-  r1.l = 0x0
+  r1.l = load.u8 [leftside + bp]
   r6 = 0x7
   r6 = and r6, r3
-  r1.h = 0x0
+  r1.h = load.u8 [rightside + bp]
   cmp r2, 0x0
   jzf .hli30
   r3 = 0x3ce
   r0.l = 0x8
   r0.h = r1.l
   io.out r3, r0
-  r0.h = 0x0
-  0x0 = r5
+  r0.h = load.u8 [di]
+  store.u8 [di], 0xff
   r5 = add r5, 0x1
   r2 = sub r2, 0x1
   jcx_zero .hli33
@@ -306,7 +318,7 @@ function hline1 (near) locals=12
   r0 = 0xffff
   test r5, 0x1
   jzf .hli32
-  0x0 = r5
+  store.u8 [di], r0.l
   r5 = add r5, 0x1
   r2 = sub r2, 0x1
   .hli32:
@@ -319,8 +331,8 @@ function hline1 (near) locals=12
   r0.l = 0x8
   r0.h = r1.h
   io.out r3, r0
-  r0.h = 0x0
-  0x0 = r5
+  r0.h = load.u8 [di]
+  store.u8 [di], 0xff
   .hli0:
   ret
   .hli30:
@@ -329,15 +341,16 @@ function hline1 (near) locals=12
   r0.h = r1.h
   r0.h = and r0.h, r1.l
   io.out r3, r0
-  r0.l = 0x0
-  0x0 = r5
+  r0.l = load.u8 [di]
+  store.u8 [di], 0xff
   ret
 
 function random (near) locals=12
   push 0x0
   0x0 = 0x343fd
-  mul 0x0
+  mul [seed]
   0x0 = add 0x0, 0x269ec3
+  store.u16 [seed], 0x0
   r0 = r3
   pop 0x0
   ret
@@ -386,15 +399,17 @@ function init_stars (near) locals=12
   r0 = 0x4c00
   int 0x21
   .@@1:
+  store.u16 [emmhandle], r3
   r0.h = 0x41
   int 0x67
+  store.u16 [emmseg], r1
   call clearsbu
   r2 = 0xc8
   r0 = 0x0
   r3 = 0x140
   r1 = @OFFSET
   .@@4:
-  0x0 = r1
+  store.u16 [bx], r0
   r0 = add r0, r3
   r1 = add r1, 0x2
   loop_dec_cx .@@4
@@ -403,7 +418,7 @@ function init_stars (near) locals=12
   r3 = 0x140
   r1 = @OFFSET
   .@@4b:
-  0x0 = r1
+  store.u16 [bx], r0
   r0 = add r0, r3
   r1 = add r1, 0x2
   loop_dec_cx .@@4b
@@ -449,6 +464,10 @@ function init_stars (near) locals=12
   nop ; string-op-stosw
   r6 = add r6, 0x4
   loop_dec_cx .@@2c
+  store.u16 [starlimit], @STARS
+  store.u16 [starpalfade], 0x0
+  store.u16 [startxtopen], 0xffffd8f1
+  store.u16 [startxtclose], 0x2710
   r2 = 0x64
   .@@sa:
   push r2
@@ -460,7 +479,7 @@ function init_stars (near) locals=12
 
 function deinit_stars (near) locals=12
   r0.h = 0x45
-  r3 = 0x0
+  r3 = load.u16 [emmhandle]
   int 0x67
   ret
 
@@ -470,12 +489,12 @@ function fetch4ax (near) locals=12
   push r0
   r0 = 0x4400
   r1 = shr r1, 0x2
-  r3 = 0x0
+  r3 = load.u16 [emmhandle]
   int 0x67
   pop r0
   r0 = and r0, 0x3
   r0 = shl r0, 0xc
-  r0 = add r0, 0x0
+  r0 = add r0, [emmseg]
   ret
 
 function fetch4ax2 (near) locals=12
@@ -484,12 +503,12 @@ function fetch4ax2 (near) locals=12
   push r0
   r0 = 0x4401
   r1 = shr r1, 0x2
-  r3 = 0x0
+  r3 = load.u16 [emmhandle]
   int 0x67
   pop r0
   r0 = and r0, 0x3
   r0 = shl r0, 0xc
-  r0 = add r0, 0x0
+  r0 = add r0, [emmseg]
   r0 = add r0, 0x400
   ret
 
@@ -499,12 +518,12 @@ function fetch4ax3 (near) locals=12
   push r0
   r0 = 0x4402
   r1 = shr r1, 0x2
-  r3 = 0x0
+  r3 = load.u16 [emmhandle]
   int 0x67
   pop r0
   r0 = and r0, 0x3
   r0 = shl r0, 0xc
-  r0 = add r0, 0x0
+  r0 = add r0, [emmseg]
   r0 = add r0, 0x800
   ret
 
@@ -527,15 +546,16 @@ function clearsbu (near) locals=12
   ret
 
 function starfetch0 (near) locals=12
-  r0 = 0x0
+  r0 = load.u16 [emmpage4]
   r0 = add r0, 0x1
   r0 = and r0, 0x3f
+  store.u16 [emmpage4], r0
   call fetch4ax
   0x0 = r0
   ret
 
 function starfetch1 (near) locals=12
-  r0 = 0x0
+  r0 = load.u16 [emmpage4]
   r0 = add r0, 0x11
   r0 = and r0, 0x3f
   call fetch4ax2
@@ -543,7 +563,7 @@ function starfetch1 (near) locals=12
   ret
 
 function starfetch2 (near) locals=12
-  r0 = 0x0
+  r0 = load.u16 [emmpage4]
   r0 = add r0, 0x2b
   r0 = and r0, 0x3f
   call fetch4ax3
@@ -553,30 +573,31 @@ function starfetch2 (near) locals=12
 function staradd (near) locals=12
   r0 = 0x0
   0x0 = r0
-  r0 = 0x0
+  r0 = load.u16 [starlimit]
   r0 = or r0, r0
   jzf .@@11
   r0 = sub r0, 0x1
+  store.u16 [starlimit], r0
   .@@11:
   r6 = @STARS
   r4 = @OFFSET
   .@@1:
-  r1 = 0x0
+  r1 = load.u16 [si]
   r1.l = sub r1.l, 0x2
-  0x0 = r4
+  store.u8 [si], r1.l
   jcf .@@4
-  cmp r6, 0x0
+  cmp r6, [starlimit]
   jcf .@@2
   r1 = shl r1, 0x1
-  r0 = 0x0
-  imul 0x0
+  r0 = load.u16 [si + 4]
+  imul [muldivy + bx]
   r3 = shl r3, ?
   r3 = add r3, 0x64
   cmp r3, 0x63
   jgt_u .@@2
   r2 = r3
-  r0 = 0x0
-  imul 0x0
+  r0 = load.u16 [si + 2]
+  imul [muldivx + bx]
   r1 = r2
   r3 = shl r3, ?
   r3 = add r3, 0xa0
@@ -586,23 +607,23 @@ function staradd (near) locals=12
   r2.l = and r2.l, 0x7
   r3 = shr r3, 0x3
   r1 = shl r1, 0x1
-  r1 = 0x0
+  r1 = load.u16 [rows1 + bx]
   r1 = add r1, r3
   r2.h = 0x80
   r2.h = shr r2.h, r2.l
-  r2.l = 0x0
+  r2.l = load.u8 [si]
   cmp r2.l, 0xb4
   jcf .@@sc1
-  0x0 = or 0x0, r1
+  [bx] = or [bx], r2.h
   jump .@@2
   .@@sc1:
   cmp r2.l, 0x6e
   jcf .@@sc2
-  0x0 = or 0x0, r1
+  [bx + 4096] = or [bx + 4096], r2.h
   jump .@@2
   .@@sc2:
-  0x0 = or 0x0, r1
-  0x0 = or 0x0, r1
+  [bx] = or [bx], r2.h
+  [bx + 4096] = or [bx + 4096], r2.h
   .@@2:
   r4 = add r4, 0x8
   r6 = sub r6, 0x1
@@ -612,11 +633,11 @@ function staradd (near) locals=12
   call random
   r0 = and r0, 0x3ff
   r0 = sub r0, 0x200
-  0x0 = r4
+  store.u16 [si + 2], r0
   call random
   r0 = and r0, 0x3ff
   r0 = sub r0, 0x200
-  0x0 = r4
+  store.u16 [si + 4], r0
   jump .@@2
   ret
 
@@ -624,30 +645,31 @@ function staradd2 (near) locals=12
   call starfetch1
   r0 = 0x0
   0x0 = r0
-  r0 = 0x0
+  r0 = load.u16 [starlimit]
   r0 = or r0, r0
   jzf .@@11
   r0 = sub r0, 0x4
+  store.u16 [starlimit], r0
   .@@11:
   r6 = @STARS2
   r4 = @OFFSET
   .@@1:
-  r1 = 0x0
+  r1 = load.u16 [si]
   r1.l = sub r1.l, 0x2
-  0x0 = r4
+  store.u8 [si], r1.l
   jcf .@@4
-  cmp r6, 0x0
+  cmp r6, [starlimit]
   jcf .@@2
   r1 = shl r1, 0x1
-  r0 = 0x0
-  imul 0x0
+  r0 = load.u16 [si + 4]
+  imul [muldivy + bx]
   r3 = shl r3, ?
   r3 = add r3, 0x64
   cmp r3, 0x63
   jgt_u .@@2
   r2 = r3
-  r0 = 0x0
-  imul 0x0
+  r0 = load.u16 [si + 2]
+  imul [muldivx + bx]
   r1 = r2
   r3 = shl r3, ?
   r3 = add r3, 0xa0
@@ -657,27 +679,27 @@ function staradd2 (near) locals=12
   r2.l = and r2.l, 0x7
   r3 = shr r3, 0x3
   r1 = shl r1, 0x1
-  r1 = 0x0
+  r1 = load.u16 [rows1 + bx]
   r1 = add r1, r3
   r2.h = 0x80
   r2.h = shr r2.h, r2.l
-  r2.l = 0x0
+  r2.l = load.u8 [si]
   cmp r2.l, 0xb4
   jcf .@@sc1
-  0x0 = or 0x0, r1
-  0x0 = or 0x0, r1
+  [bx] = or [bx], r2.h
+  [bx] = or [bx], r2.h
   jump .@@2
   .@@sc1:
   cmp r2.l, 0x6e
   jcf .@@sc2
-  0x0 = or 0x0, r1
-  0x0 = or 0x0, r1
+  [bx + 4096] = or [bx + 4096], r2.h
+  [bx + 4096] = or [bx + 4096], r2.h
   jump .@@2
   .@@sc2:
-  0x0 = or 0x0, r1
-  0x0 = or 0x0, r1
-  0x0 = or 0x0, r1
-  0x0 = or 0x0, r1
+  [bx] = or [bx], r2.h
+  [bx + 4096] = or [bx + 4096], r2.h
+  [bx] = or [bx], r2.h
+  [bx + 4096] = or [bx + 4096], r2.h
   .@@2:
   r4 = add r4, 0x8
   r6 = sub r6, 0x1
@@ -687,24 +709,26 @@ function staradd2 (near) locals=12
   call random
   r0 = and r0, 0x3ff
   r0 = sub r0, 0x200
-  0x0 = r4
+  store.u16 [si + 2], r0
   call random
   r0 = and r0, 0x3ff
   r0 = sub r0, 0x200
-  0x0 = r4
+  store.u16 [si + 4], r0
   jump .@@2
   ret
 
 function risetext (near) locals=12
-  r0 = 0x0
+  r0 = load.u16 [startxtopen]
   cmp r0, 0x63
   jge_s .@@12
   r0 = add r0, 0x1
+  store.u16 [startxtopen], r0
   .@@12:
-  r3 = 0x0
+  r3 = load.u16 [startxtclose]
   cmp r3, 0x0
   jle_s .@@21
   r3 = sub r3, 0x1
+  store.u16 [startxtclose], r3
   .@@21:
   cmp r3, r0
   jge_s .@@22
@@ -721,13 +745,15 @@ function risetext (near) locals=12
   push r0
   r5 = 0x96
   r5 = sub r5, r0
+  store.u16 [_nostar2], r0
   r0 = 0x50
   mul r5
   r5 = r0
+  store.u16 [_nostar1], r5
   r0 = @SEG
   0x0 = r0
   r4 = 0x40
-  r4 = add r4, 0x0
+  r4 = add r4, [startxtp0]
   pop r2
   r2 = sub r2, 0x1
   r5 = sub r5, 0x28
@@ -735,7 +761,7 @@ function risetext (near) locals=12
   r0 = 0xf02
   io.out r3, r0
   0x0 = xor 0x0, 0x0
-  0x0 = r5
+  store.u16 [di + zzz], 0x0
   r5 = add r5, 0x50
   r2 = sub r2, 0x1
   jzf .@@tc0c
@@ -743,7 +769,7 @@ function risetext (near) locals=12
   r0 = 0xf02
   io.out r3, r0
   0x0 = 0x0
-  0x0 = r5
+  store.u16 [di + zzz], 0x0
   r5 = add r5, 0x50
   r2 = sub r2, 0x1
   jzf .@@tc0
@@ -758,14 +784,14 @@ function risetext (near) locals=12
   r3 = 0x3c4
   r0 = 0x102
   io.out r3, r0
-  0x0 = 0x0
-  0x0 = r5
+  0x0 = load.u16 [si + zzz]
+  store.u16 [di + zzz], 0x0
   r4 = add r4, 0x28
   r3 = 0x3c4
   r0 = 0x202
   io.out r3, r0
-  0x0 = 0x0
-  0x0 = r5
+  0x0 = load.u16 [si + zzz]
+  store.u16 [di + zzz], 0x0
   r4 = add r4, 0x28
   r5 = add r5, 0x50
   r2 = sub r2, 0x1
@@ -779,9 +805,10 @@ function risetext (near) locals=12
   r0 = 0xf02
   io.out r3, r0
   0x0 = 0x0
-  0x0 = r5
+  store.u16 [di + zzz], 0x0
   r5 = add r5, 0x50
   r5 = sub r5, 0x1
+  store.u16 [_nostar2], r5
   .@@tc0:
   ret
   .@@tc0c:
@@ -789,27 +816,31 @@ function risetext (near) locals=12
   r0 = 0xf02
   io.out r3, r0
   0x0 = xor 0x0, 0x0
-  0x0 = r5
+  store.u16 [di + zzz], 0x0
   ret
 
 function do_stars (near) locals=12
   .@@aga:
   r0.l = 0x0
   r3 = 0x3d4
-  r0 = 0x0
+  r0 = load.u16 [starvram]
   cmp r0, 0xa000
   jzf .@@sw1
+  store.u16 [starvram], 0xa000
   r0 = 0x400c
   jump .@@sw0
   .@@sw1:
+  store.u16 [starvram], 0xa400
   r0 = 0xc
   .@@sw0:
   io.out r3, r0
   call waitb
   r0.l = 0x1
+  cmp [starpalfade], 0x20
   jgt_u .@@p1
-  r1.l = 0x0
+  r1.l = load.u8 [starpalfade]
   r1.l = add r1.l, 0x1
+  store.u8 [starpalfade], r1.l
   r1.l = shl r1.l, 0x3
   jncf .@@p2
   r1.l = 0xff
@@ -885,20 +916,30 @@ function do_stars (near) locals=12
   r0.l = 0x3c
   io.out r3, r0.l
   .@@p1:
-  r0 = 0x0
+  r0 = load.u16 [starframe]
   r0 = add r0, 0x1
+  store.u16 [starframe], r0
   cmp r0, 0x4b0
   jnzf .@@st1
+  store.u16 [startxtp0], 0x50
+  store.u16 [startxtopen], 0xffffff00
+  store.u16 [startxtclose], 0x5dc
   .@@st1:
   cmp r0, 0xc80
   jnzf .@@st2
+  store.u16 [startxtp0], 0x65
+  store.u16 [startxtopen], 0xffffff00
+  store.u16 [startxtclose], 0x5dc
   .@@st2:
   cmp r0, 0x5dc
   jnzf .@@st3
+  store.u16 [starlimit], @STARS2
   .@@st3:
   call risetext
   call starfetch0
+  cmp [starframe], 0x4b0
   jgt_u .@@stz
+  cmp [starframe], 0x384
   jgt_u .@@stz0
   call staradd
   jump .@@stz0
@@ -907,7 +948,7 @@ function do_stars (near) locals=12
   .@@stz0:
   r0 = 0x0
   0x0 = r0
-  r0 = 0x0
+  r0 = load.u16 [starvram]
   0x0 = r0
   r5 = xor r5, r5
   r3 = 0x3c4
@@ -917,8 +958,8 @@ function do_stars (near) locals=12
   r2 = 0x64
   .@@3:
   .@@3g:
-  0x0 = 0x0
-  0x0 = r5
+  0x0 = load.u16 [si + zzz]
+  store.u16 [di + zzz], 0x0
   .@@3s:
   r4 = add r4, 0x28
   r5 = add r5, 0x50
@@ -931,13 +972,13 @@ function do_stars (near) locals=12
   r2 = 0x64
   .@@7:
   .@@7g:
-  0x0 = 0x0
-  0x0 = r5
+  0x0 = load.u16 [si + zzz]
+  store.u16 [di + zzz], 0x0
   .@@7s:
   r4 = add r4, 0x28
   r5 = add r5, 0x50
   loop_dec_cx .@@7
-  r0 = 0x0
+  r0 = load.u16 [emmpage4]
   r0 = add r0, 0x20
   r0 = and r0, 0x3f
   call fetch4ax
@@ -950,8 +991,8 @@ function do_stars (near) locals=12
   r2 = 0x64
   .@@5:
   .@@5g:
-  0x0 = 0x0
-  0x0 = r5
+  0x0 = load.u16 [si + zzz]
+  store.u16 [di + zzz], 0x0
   .@@5s:
   r4 = sub r4, 0x28
   r5 = add r5, 0x50
@@ -964,8 +1005,8 @@ function do_stars (near) locals=12
   r2 = 0x64
   .@@8:
   .@@8g:
-  0x0 = 0x0
-  0x0 = r5
+  0x0 = load.u16 [si + zzz]
+  store.u16 [di + zzz], 0x0
   .@@8s:
   r4 = sub r4, 0x28
   r5 = add r5, 0x50

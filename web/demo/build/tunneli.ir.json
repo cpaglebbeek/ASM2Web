@@ -1,0 +1,704 @@
+{
+  "name": "tunneli",
+  "stats": {
+    "ops": 39,
+    "unknownOps": 0,
+    "unknownMnemonics": []
+  },
+  "functions": [
+    {
+      "name": "rowinit",
+      "attr": "far",
+      "locals": 12,
+      "ops": [
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 2,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 200
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 0
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 0
+          }
+        },
+        {
+          "op": "label",
+          "name": "@ri",
+          "local": false
+        },
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "rows + bx",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "rows"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "bx"
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "size": 16
+        },
+        {
+          "op": "add",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "a": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "b": {
+            "kind": "const",
+            "value": 320
+          }
+        },
+        {
+          "op": "add",
+          "dest": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          },
+          "a": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          },
+          "b": {
+            "kind": "const",
+            "value": 2
+          }
+        },
+        {
+          "op": "loop_dec_cx",
+          "target": "@ri"
+        },
+        {
+          "op": "ret"
+        }
+      ]
+    },
+    {
+      "name": "init",
+      "attr": "far",
+      "locals": 12,
+      "ops": [
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "op",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "op"
+              }
+            ],
+            "sizeHint": "word"
+          },
+          "src": {
+            "kind": "const",
+            "value": 0
+          },
+          "size": 16
+        },
+        {
+          "op": "ret"
+        }
+      ]
+    },
+    {
+      "name": "Putrouts",
+      "attr": "far",
+      "locals": 12,
+      "ops": [
+        {
+          "op": "push",
+          "src": {
+            "kind": "const",
+            "value": 0
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "const",
+            "value": 0
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 40960
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "const",
+            "value": 0
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "@yad + 1",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "@yad"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 1
+              }
+            ],
+            "sizeHint": "word"
+          },
+          "src": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          },
+          "size": 16
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "sym",
+            "name": "Op"
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 2,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 64
+          }
+        },
+        {
+          "op": "label",
+          "name": "@dr",
+          "local": false
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "load",
+          "dest": {
+            "kind": "local",
+            "index": 5,
+            "size": 16,
+            "isHigh": false
+          },
+          "addr": {
+            "kind": "mem",
+            "exprText": "oldpos + bx",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "oldpos"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "bx"
+              }
+            ],
+            "sizeHint": "word"
+          },
+          "size": 16
+        },
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "di",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "di"
+              }
+            ],
+            "sizeHint": "byte",
+            "segBase": 655360
+          },
+          "src": {
+            "kind": "const",
+            "value": 0
+          },
+          "size": 8
+        },
+        {
+          "op": "label",
+          "name": "@yad",
+          "local": false
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 1234
+          }
+        },
+        {
+          "op": "add",
+          "dest": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          },
+          "a": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          },
+          "b": {
+            "kind": "mem",
+            "exprText": "si + 2",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 2
+              }
+            ],
+            "sizeHint": "word"
+          }
+        },
+        {
+          "op": "cmp",
+          "a": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          },
+          "b": {
+            "kind": "const",
+            "value": 199
+          }
+        },
+        {
+          "op": "jcond",
+          "cond": "gt_u",
+          "target": "@yli"
+        },
+        {
+          "op": "load",
+          "dest": {
+            "kind": "local",
+            "index": 5,
+            "size": 16,
+            "isHigh": false
+          },
+          "addr": {
+            "kind": "mem",
+            "exprText": "si",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              }
+            ],
+            "sizeHint": "word"
+          },
+          "size": 16
+        },
+        {
+          "op": "add",
+          "dest": {
+            "kind": "local",
+            "index": 5,
+            "size": 16,
+            "isHigh": false
+          },
+          "a": {
+            "kind": "local",
+            "index": 5,
+            "size": 16,
+            "isHigh": false
+          },
+          "b": {
+            "kind": "local",
+            "index": 3,
+            "size": 16,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "cmp",
+          "a": {
+            "kind": "local",
+            "index": 5,
+            "size": 16,
+            "isHigh": false
+          },
+          "b": {
+            "kind": "const",
+            "value": 319
+          }
+        },
+        {
+          "op": "jcond",
+          "cond": "gt_u",
+          "target": "@yli"
+        },
+        {
+          "op": "add",
+          "dest": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          },
+          "a": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          },
+          "b": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "add",
+          "dest": {
+            "kind": "local",
+            "index": 5,
+            "size": 16,
+            "isHigh": false
+          },
+          "a": {
+            "kind": "local",
+            "index": 5,
+            "size": 16,
+            "isHigh": false
+          },
+          "b": {
+            "kind": "mem",
+            "exprText": "rows + bx",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "rows"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "bx"
+              }
+            ],
+            "sizeHint": "word"
+          }
+        },
+        {
+          "op": "label",
+          "name": "@c",
+          "local": false
+        },
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "di",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "di"
+              }
+            ],
+            "sizeHint": "byte",
+            "segBase": 655360
+          },
+          "src": {
+            "kind": "const",
+            "value": 15
+          },
+          "size": 8
+        },
+        {
+          "op": "label",
+          "name": "@yli",
+          "local": false
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "oldpos + bx",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "oldpos"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "bx"
+              }
+            ],
+            "sizeHint": "word"
+          },
+          "src": {
+            "kind": "local",
+            "index": 5,
+            "size": 16,
+            "isHigh": false
+          },
+          "size": 16
+        },
+        {
+          "op": "add",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "a": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "b": {
+            "kind": "const",
+            "value": 2
+          }
+        },
+        {
+          "op": "add",
+          "dest": {
+            "kind": "local",
+            "index": 4,
+            "size": 16,
+            "isHigh": false
+          },
+          "a": {
+            "kind": "local",
+            "index": 4,
+            "size": 16,
+            "isHigh": false
+          },
+          "b": {
+            "kind": "const",
+            "value": 4
+          }
+        },
+        {
+          "op": "loop_dec_cx",
+          "target": "@dr"
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "sym",
+            "name": "Op"
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "pop",
+          "dest": {
+            "kind": "const",
+            "value": 0
+          }
+        },
+        {
+          "op": "ret"
+        }
+      ]
+    }
+  ],
+  "data": [
+    {
+      "name": "oldpos",
+      "size": "dw",
+      "items": [
+        {
+          "kind": "dup",
+          "count": 7000,
+          "inner": {
+            "kind": "num",
+            "value": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "rows",
+      "size": "dw",
+      "items": [
+        {
+          "kind": "dup",
+          "count": 210,
+          "inner": {
+            "kind": "num",
+            "value": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "op",
+      "size": "dw",
+      "items": [
+        {
+          "kind": "num",
+          "value": 0
+        }
+      ]
+    }
+  ]
+}

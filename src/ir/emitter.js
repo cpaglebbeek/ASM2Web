@@ -16,12 +16,26 @@ import {
 
 import { NODE } from "../tasm/parser.js";
 
+const SREG_NAMES = new Set(["cs", "ds", "es", "ss", "fs", "gs"]);
+
 /**
  * @param {Module} ast  output of parser.parse()
  * @param {{name?:string, entry?:string}} [opts]
  */
 export function emitIR(ast, opts = {}) {
   const mod = newModule(opts.name || ast.file || "module");
+
+  // Pre-pass: collect all data-label names (incl. nested in SEGMENT) so that a
+  // bare label used as an operand (`mov ax, cs:Op`) is treated as a memory
+  // reference rather than an unresolved symbol.
+  const dataNames = new Set();
+  (function collectData(items) {
+    for (const it of items || []) {
+      if (!it) continue;
+      if (it.kind === NODE.DATA && it.name) dataNames.add(it.name);
+      if (Array.isArray(it.items)) collectData(it.items);
+    }
+  })(ast.items || []);
   // Walk top-level items, building functions when we see PROC.
   // Bare instructions (no enclosing PROC) go into an implicit __init function.
   let initFn = null;
@@ -44,6 +58,8 @@ export function emitIR(ast, opts = {}) {
           break;
         case NODE.PROC: {
           const f = newFunction(it.name, it.attr || "near");
+          f._segConst = {};   // tracked segment-register constants (paragraph values)
+          f._regConst = {};   // tracked GP-register immediate values (for `mov seg, reg`)
           mod.functions.push(f);
           walkItems(it.items, f);
           // Implicit RET at end if not present (TASM often omits).
@@ -89,6 +105,12 @@ export function emitIR(ast, opts = {}) {
     mod.stats.ops++;
     const mn = instr.mnemonic;
     const operands = instr.operands || [];
+
+    // Segment/immediate tracking: only consecutive `mov reg, imm` instructions
+    // keep a register's tracked constant alive (the `mov ax,0a000h / mov es,ax`
+    // idiom). Any other instruction invalidates GP-register constants.
+    if (mn === "mov") trackMov(fn, operands);
+    else if (fn._regConst) fn._regConst = {};
 
     switch (mn) {
       case "mov":   return emitBinaryMove(fn, operands);
@@ -216,16 +238,58 @@ export function emitIR(ast, opts = {}) {
       return { kind: "const", value: Number(op.value) | 0 };
     }
     if (op.kind === "label") {
+      // A bare data-label is a memory reference (load/store the variable).
+      if (dataNames.has(op.name)) {
+        return { kind: "mem", exprText: op.name, exprTokens: [{ type: "IDENT", value: op.name }], sizeHint: op.sizeHint };
+      }
       return { kind: "sym", name: op.name };
     }
     if (op.kind === "mem") {
       return { kind: "mem", exprText: op.exprText, exprTokens: op.exprTokens, sizeHint: op.sizeHint };
     }
     if (op.kind === "segref") {
-      // Flat-mapping: ignore segment prefix in fase 1 IR-emitter.
-      return operandToValue(fn, op.inner);
+      const inner = operandToValue(fn, op.inner);
+      // A `byte/word ptr` hint sits on the segref wrapper; carry it to the mem.
+      if (op.sizeHint && inner && inner.sizeHint === undefined) inner.sizeHint = op.sizeHint;
+      // Fold a known constant segment base (e.g. es=0a000h -> +0xA0000) into the
+      // effective address, but only for register/numeric expressions: when the
+      // expression already references a data symbol, that symbol resolves to an
+      // absolute linear offset and the segment prefix is redundant.
+      if (inner.kind === "mem" && fn && fn._segConst &&
+          fn._segConst[op.seg] !== undefined && !memHasSymbol(inner)) {
+        inner.segBase = (fn._segConst[op.seg] << 4) >>> 0;
+      }
+      return inner;
     }
     return { kind: "const", value: 0 };
+  }
+
+  // True when a memory expression references a non-register identifier (a data
+  // symbol or code label) — used to decide whether a segment base should fold in.
+  function memHasSymbol(mem) {
+    const toks = mem.exprTokens || [];
+    return toks.some(t => t.type === "IDENT" && REG_TO_LOCAL[String(t.value).toLowerCase()] === undefined);
+  }
+
+  // Track `mov reg, imm` and `mov seg, reg/imm` to recover constant segment
+  // bases. Conservative: unknown sources clear the tracked value.
+  function trackMov(fn, operands) {
+    if (!fn || operands.length < 2) return;
+    fn._segConst = fn._segConst || {};
+    fn._regConst = fn._regConst || {};
+    const dst = operands[0], src = operands[1];
+    const dn = dst && dst.kind === "reg" ? String(dst.name).toLowerCase() : null;
+    if (dn && SREG_NAMES.has(dn)) {
+      if (src.kind === "imm") fn._segConst[dn] = Number(src.value) | 0;
+      else if (src.kind === "reg" && fn._regConst[String(src.name).toLowerCase()] !== undefined)
+        fn._segConst[dn] = fn._regConst[String(src.name).toLowerCase()];
+      else delete fn._segConst[dn];
+      return;
+    }
+    if (dn && REG_TO_LOCAL[dn] !== undefined) {
+      if (src.kind === "imm") fn._regConst[dn] = Number(src.value) | 0;
+      else delete fn._regConst[dn];
+    }
   }
 
   function emitBinaryMove(fn, operands) {

@@ -7,8 +7,8 @@
     "sha256": "cacf37123453a07a3684938424813282dfa8658a70733887fa98b5b1aff3e1bd"
   },
   "wasm": {
-    "bytes": 681,
-    "sha256": "e9fc413170b34cdf7c9158ed3111b6975f9ed8312e3e87a96fd67b12960e674b"
+    "bytes": 811,
+    "sha256": "8bd83e490df093d4272ed3dd75531a405371592729ffc492e4e5794053a6447b"
   },
   "stats": {
     "ops": 32,

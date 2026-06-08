@@ -5,10 +5,17 @@
 
 import { loadModule, sha256Hex, VGA } from "../runtime/loader.js";
 
-const WASM_URL     = "build/hello-pixel.wasm";
-const SRC_URL      = "build/hello-pixel.asm";
-const IR_URL       = "build/hello-pixel.ir.txt";
-const MANIFEST_URL = "build/hello-pixel.manifest.json";
+// Which demo to load is selectable via `?demo=<name>` (default: hello-pixel).
+const KNOWN_DEMOS = ["hello-pixel", "seg-test", "starfield", "rot"];
+const DEMO_NAME = (() => {
+  const q = new URLSearchParams(location.search).get("demo");
+  return KNOWN_DEMOS.includes(q) ? q : "hello-pixel";
+})();
+
+const WASM_URL     = `build/${DEMO_NAME}.wasm`;
+const SRC_URL      = `build/${DEMO_NAME}.asm`;
+const IR_URL       = `build/${DEMO_NAME}.ir.txt`;
+const MANIFEST_URL = `build/${DEMO_NAME}.manifest.json`;
 
 const $ = id => document.getElementById(id);
 
@@ -55,6 +62,16 @@ async function init() {
   }
 
   await loadAndRun(true);
+
+  const sel = $("demo-select");
+  if (sel) {
+    sel.value = DEMO_NAME;
+    sel.addEventListener("change", () => {
+      const u = new URL(location.href);
+      u.searchParams.set("demo", sel.value);
+      location.href = u.toString();   // reload with the new demo
+    });
+  }
 
   $("btn-run").addEventListener("click", () => runMain());
   $("btn-reload").addEventListener("click", () => loadAndRun(true));

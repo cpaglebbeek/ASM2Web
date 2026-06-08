@@ -295,13 +295,18 @@
               "regKind": "r8"
             },
             {
-              "kind": "raw",
-              "text": "ds"
-            },
-            {
-              "kind": "reg",
-              "name": "si",
-              "regKind": "r16"
+              "inner": {
+                "exprText": "si",
+                "exprTokens": [
+                  {
+                    "type": "IDENT",
+                    "value": "si"
+                  }
+                ],
+                "kind": "mem"
+              },
+              "kind": "segref",
+              "seg": "ds"
             }
           ]
         },
@@ -525,19 +530,19 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "_vbufseg"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
+                },
+                {
+                  "kind": "reg",
+                  "name": "ax",
+                  "regKind": "r16"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 41,
-                "offset": 557
-              },
-              "text": "_vbufseg , ax"
             },
             {
               "kind": "instr",
@@ -1280,28 +1285,25 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "bx",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "bx"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 },
                 {
                   "kind": "reg",
-                  "name": "bx",
+                  "name": "ax",
                   "regKind": "r16"
-                },
-                {
-                  "kind": "raw",
-                  "text": ","
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 19,
-                "line": 89,
-                "offset": 1137
-              },
-              "text": "ax"
             },
             {
               "kind": "instr",
@@ -1624,28 +1626,25 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "bx",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "bx"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 },
                 {
                   "kind": "reg",
-                  "name": "bx",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "raw",
-                  "text": ","
+                  "name": "ah",
+                  "regKind": "r8"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 14,
-                "line": 106,
-                "offset": 1353
-              },
-              "text": "ah"
             },
             {
               "kind": "instr",
@@ -1697,32 +1696,33 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "bx + 1",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "bx"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 1
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 },
                 {
                   "kind": "reg",
-                  "name": "bx",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "imm",
-                  "value": 1
-                },
-                {
-                  "kind": "raw",
-                  "text": ","
+                  "name": "ah",
+                  "regKind": "r8"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 16,
-                "line": 109,
-                "offset": 1396
-              },
-              "text": "ah"
             },
             {
               "kind": "instr",
@@ -1926,17 +1926,26 @@
                   "regKind": "r8"
                 },
                 {
-                  "kind": "raw",
-                  "text": "ds"
-                },
-                {
-                  "kind": "reg",
-                  "name": "si",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "label",
-                  "name": "zzz"
+                  "inner": {
+                    "exprText": "si + zzz",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "si"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "zzz"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "ds"
                 }
               ]
             },
@@ -1976,19 +1985,36 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "_blit16t + ebx * 2",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "_blit16t"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "ebx"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "*"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 2
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 126,
-                "offset": 1620
-              },
-              "text": "_blit16t [ ebx * 2 ]"
             },
             {
               "kind": "instr",
@@ -2005,21 +2031,34 @@
                   "regKind": "r8"
                 },
                 {
-                  "kind": "raw",
-                  "text": "ds"
-                },
-                {
-                  "kind": "reg",
-                  "name": "si",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "imm",
-                  "value": 1
-                },
-                {
-                  "kind": "label",
-                  "name": "zzz"
+                  "inner": {
+                    "exprText": "si + 1 + zzz",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "si"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 1
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "zzz"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "ds"
                 }
               ]
             },
@@ -2059,19 +2098,36 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "_blit16t + ebx * 2",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "_blit16t"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "ebx"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "*"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 2
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 129,
-                "offset": 1683
-              },
-              "text": "_blit16t [ ebx * 2 ]"
             },
             {
               "kind": "instr",
@@ -2104,32 +2160,33 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "es"
+                  "inner": {
+                    "exprText": "di + zzz",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "di"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "zzz"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "es"
                 },
                 {
                   "kind": "reg",
-                  "name": "di",
+                  "name": "ax",
                   "regKind": "r16"
-                },
-                {
-                  "kind": "label",
-                  "name": "zzz"
-                },
-                {
-                  "kind": "raw",
-                  "text": ","
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 18,
-                "line": 131,
-                "offset": 1729
-              },
-              "text": "ax"
             },
             {
               "kind": "raw",
@@ -2396,17 +2453,26 @@
                   "regKind": "r8"
                 },
                 {
-                  "kind": "raw",
-                  "text": "ds"
-                },
-                {
-                  "kind": "reg",
-                  "name": "si",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "label",
-                  "name": "zzz"
+                  "inner": {
+                    "exprText": "si + zzz",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "si"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "zzz"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "ds"
                 }
               ]
             },
@@ -2446,19 +2512,36 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "_blit16t + ebx * 2",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "_blit16t"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "ebx"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "*"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 2
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 153,
-                "offset": 1998
-              },
-              "text": "_blit16t [ ebx * 2 ]"
             },
             {
               "kind": "instr",
@@ -2475,21 +2558,34 @@
                   "regKind": "r8"
                 },
                 {
-                  "kind": "raw",
-                  "text": "ds"
-                },
-                {
-                  "kind": "reg",
-                  "name": "si",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "imm",
-                  "value": 1
-                },
-                {
-                  "kind": "label",
-                  "name": "zzz"
+                  "inner": {
+                    "exprText": "si + 1 + zzz",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "si"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 1
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "zzz"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "ds"
                 }
               ]
             },
@@ -2529,19 +2625,36 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "_blit16t + ebx * 2",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "_blit16t"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "ebx"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "*"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 2
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 156,
-                "offset": 2061
-              },
-              "text": "_blit16t [ ebx * 2 ]"
             },
             {
               "kind": "instr",
@@ -2574,32 +2687,33 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "es"
+                  "inner": {
+                    "exprText": "di + zzz",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "di"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "zzz"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "es"
                 },
                 {
                   "kind": "reg",
-                  "name": "di",
+                  "name": "ax",
                   "regKind": "r16"
-                },
-                {
-                  "kind": "label",
-                  "name": "zzz"
-                },
-                {
-                  "kind": "raw",
-                  "text": ","
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 18,
-                "line": 158,
-                "offset": 2107
-              },
-              "text": "ax"
             },
             {
               "kind": "raw",
@@ -2976,19 +3090,36 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "_rows + ebx * 2",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "_rows"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "ebx"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "*"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 2
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 182,
-                "offset": 2377
-              },
-              "text": "_rows [ ebx * 2 ]"
             },
             {
               "kind": "instr",
@@ -3005,19 +3136,14 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "clipleft"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 183,
-                "offset": 2402
-              },
-              "text": "clipleft"
             },
             {
               "kind": "instr",
@@ -3126,29 +3252,25 @@
               "mnemonic": "xor",
               "operands": [
                 {
-                  "kind": "raw",
-                  "sizeHint": "byte",
-                  "text": "ds"
+                  "inner": {
+                    "exprText": "si",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "si"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "ds",
+                  "sizeHint": "byte"
                 },
                 {
-                  "kind": "reg",
-                  "name": "si",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "raw",
-                  "text": ","
+                  "kind": "imm",
+                  "value": 128
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 23,
-                "line": 190,
-                "offset": 2517
-              },
-              "text": "128"
             },
             {
               "kind": "instr",
@@ -3236,29 +3358,25 @@
               "mnemonic": "xor",
               "operands": [
                 {
-                  "kind": "raw",
-                  "sizeHint": "byte",
-                  "text": "ds"
+                  "inner": {
+                    "exprText": "si",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "si"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "ds",
+                  "sizeHint": "byte"
                 },
                 {
-                  "kind": "reg",
-                  "name": "si",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "raw",
-                  "text": ","
+                  "kind": "imm",
+                  "value": 128
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 23,
-                "line": 195,
-                "offset": 2596
-              },
-              "text": "128"
             },
             {
               "kind": "instr",
@@ -3595,19 +3713,36 @@
               "mnemonic": "jmp",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "_loffs + ebp * 2",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "_loffs"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "ebp"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "*"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 2
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 215,
-                "offset": 2838
-              },
-              "text": "_loffs [ ebp * 2 ]"
             },
             {
               "kind": "align",
@@ -3825,29 +3960,25 @@
               "mnemonic": "xor",
               "operands": [
                 {
-                  "kind": "raw",
-                  "sizeHint": "byte",
-                  "text": "ds"
+                  "inner": {
+                    "exprText": "si",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "si"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "ds",
+                  "sizeHint": "byte"
                 },
                 {
-                  "kind": "reg",
-                  "name": "si",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "raw",
-                  "text": ","
+                  "kind": "label",
+                  "name": "mask"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 26,
-                "line": 232,
-                "offset": 3176
-              },
-              "text": "mask"
             },
             {
               "kind": "instr",
@@ -4780,19 +4911,36 @@
               "mnemonic": "jmp",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "_roffs + ebp * 2",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "_roffs"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "ebp"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "*"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 2
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 293,
-                "offset": 4330
-              },
-              "text": "_roffs [ ebp * 2 ]"
             },
             {
               "kind": "align",
@@ -5010,29 +5158,25 @@
               "mnemonic": "xor",
               "operands": [
                 {
-                  "kind": "raw",
-                  "sizeHint": "byte",
-                  "text": "ds"
+                  "inner": {
+                    "exprText": "si",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "si"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "ds",
+                  "sizeHint": "byte"
                 },
                 {
-                  "kind": "reg",
-                  "name": "si",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "raw",
-                  "text": ","
+                  "kind": "label",
+                  "name": "mask"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 26,
-                "line": 310,
-                "offset": 4668
-              },
-              "text": "mask"
             },
             {
               "kind": "instr",
@@ -6087,20 +6231,34 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "sizeHint": "dword",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "polyixy + 0",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "polyixy"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 0
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs",
+                  "sizeHint": "dword"
+                },
+                {
+                  "kind": "reg",
+                  "name": "eax",
+                  "regKind": "r32"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 19,
-                "line": 381,
-                "offset": 5921
-              },
-              "text": "polyixy [ 0 ] , eax"
             },
             {
               "kind": "instr",
@@ -6146,20 +6304,34 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "sizeHint": "dword",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "polyixy + 4",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "polyixy"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 4
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs",
+                  "sizeHint": "dword"
+                },
+                {
+                  "kind": "reg",
+                  "name": "eax",
+                  "regKind": "r32"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 19,
-                "line": 383,
-                "offset": 5973
-              },
-              "text": "polyixy [ 4 ] , eax"
             },
             {
               "kind": "instr",
@@ -6205,20 +6377,34 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "sizeHint": "dword",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "polyixy + 8",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "polyixy"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 8
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs",
+                  "sizeHint": "dword"
+                },
+                {
+                  "kind": "reg",
+                  "name": "eax",
+                  "regKind": "r32"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 19,
-                "line": 385,
-                "offset": 6025
-              },
-              "text": "polyixy [ 8 ] , eax"
             },
             {
               "kind": "instr",
@@ -6264,20 +6450,34 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "sizeHint": "dword",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "polyixy + 12",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "polyixy"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 12
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs",
+                  "sizeHint": "dword"
+                },
+                {
+                  "kind": "reg",
+                  "name": "eax",
+                  "regKind": "r32"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 19,
-                "line": 387,
-                "offset": 6077
-              },
-              "text": "polyixy [ 12 ] , eax"
             },
             {
               "kind": "instr",
@@ -6289,19 +6489,18 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "polyisides"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
+                },
+                {
+                  "kind": "imm",
+                  "value": 4
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 388,
-                "offset": 6102
-              },
-              "text": "polyisides , 4"
             },
             {
               "kind": "instr",
@@ -6333,19 +6532,14 @@
                   "regKind": "sreg"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "_vbufseg"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 391,
-                "offset": 6148
-              },
-              "text": "_vbufseg"
             },
             {
               "kind": "instr",
@@ -6391,19 +6585,14 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "polysides"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 393,
-                "offset": 6192
-              },
-              "text": "polysides"
             },
             {
               "kind": "instr",
@@ -6497,17 +6686,26 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
-                },
-                {
-                  "kind": "reg",
-                  "name": "si",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "imm",
-                  "value": 0
+                  "inner": {
+                    "exprText": "si + 0",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "si"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 0
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
             },
@@ -6526,17 +6724,26 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
-                },
-                {
-                  "kind": "reg",
-                  "name": "si",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "imm",
-                  "value": 2
+                  "inner": {
+                    "exprText": "si + 2",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "si"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 2
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
             },
@@ -6555,17 +6762,26 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
-                },
-                {
-                  "kind": "reg",
-                  "name": "si",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "imm",
-                  "value": 4
+                  "inner": {
+                    "exprText": "si + 4",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "si"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 4
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
             },
@@ -6584,17 +6800,26 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
-                },
-                {
-                  "kind": "reg",
-                  "name": "si",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "imm",
-                  "value": 6
+                  "inner": {
+                    "exprText": "si + 6",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "si"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 6
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
             },
@@ -6689,17 +6914,26 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
-                },
-                {
-                  "kind": "reg",
-                  "name": "si",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "imm",
-                  "value": 0
+                  "inner": {
+                    "exprText": "si + 0",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "si"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 0
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
             },
@@ -6718,17 +6952,26 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
-                },
-                {
-                  "kind": "reg",
-                  "name": "si",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "imm",
-                  "value": 2
+                  "inner": {
+                    "exprText": "si + 2",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "si"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 2
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
             },
@@ -6747,19 +6990,28 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "polyxy + 0",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "polyxy"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 0
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 410,
-                "offset": 6424
-              },
-              "text": "polyxy [ 0 ]"
             },
             {
               "kind": "instr",
@@ -6776,19 +7028,28 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "polyxy + 2",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "polyxy"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 2
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 411,
-                "offset": 6446
-              },
-              "text": "polyxy [ 2 ]"
             },
             {
               "kind": "instr",
@@ -10054,17 +10315,26 @@
                   "regKind": "r32"
                 },
                 {
-                  "kind": "raw",
-                  "text": "ds"
-                },
-                {
-                  "kind": "reg",
-                  "name": "si",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "label",
-                  "name": "zzz"
+                  "inner": {
+                    "exprText": "si + zzz",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "si"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "zzz"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "ds"
                 }
               ]
             },
@@ -10078,32 +10348,33 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "es"
+                  "inner": {
+                    "exprText": "di + zzz",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "di"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "zzz"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "es"
                 },
                 {
                   "kind": "reg",
-                  "name": "di",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "label",
-                  "name": "zzz"
-                },
-                {
-                  "kind": "raw",
-                  "text": ","
+                  "name": "eax",
+                  "regKind": "r32"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 18,
-                "line": 516,
-                "offset": 8819
-              },
-              "text": "eax"
             },
             {
               "kind": "raw",
@@ -10431,21 +10702,34 @@
                   "regKind": "r8"
                 },
                 {
-                  "kind": "raw",
-                  "text": "ds"
-                },
-                {
-                  "kind": "reg",
-                  "name": "si",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "imm",
-                  "value": 36
-                },
-                {
-                  "kind": "label",
-                  "name": "zzz"
+                  "inner": {
+                    "exprText": "si + 36 - zzz",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "si"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 36
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "-"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "zzz"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "ds"
                 }
               ]
             },
@@ -10464,19 +10748,28 @@
                   "regKind": "r8"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "flip8 + bx",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "flip8"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "bx"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 539,
-                "offset": 9087
-              },
-              "text": "flip8 [ bx ]"
             },
             {
               "kind": "instr",
@@ -10513,21 +10806,34 @@
                   "regKind": "r8"
                 },
                 {
-                  "kind": "raw",
-                  "text": "ds"
-                },
-                {
-                  "kind": "reg",
-                  "name": "si",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "imm",
-                  "value": 37
-                },
-                {
-                  "kind": "label",
-                  "name": "zzz"
+                  "inner": {
+                    "exprText": "si + 37 - zzz",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "si"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 37
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "-"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "zzz"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "ds"
                 }
               ]
             },
@@ -10546,19 +10852,28 @@
                   "regKind": "r8"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "flip8 + bx",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "flip8"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "bx"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 542,
-                "offset": 9145
-              },
-              "text": "flip8 [ bx ]"
             },
             {
               "kind": "instr",
@@ -10595,21 +10910,34 @@
                   "regKind": "r8"
                 },
                 {
-                  "kind": "raw",
-                  "text": "ds"
-                },
-                {
-                  "kind": "reg",
-                  "name": "si",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "imm",
-                  "value": 38
-                },
-                {
-                  "kind": "label",
-                  "name": "zzz"
+                  "inner": {
+                    "exprText": "si + 38 - zzz",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "si"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 38
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "-"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "zzz"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "ds"
                 }
               ]
             },
@@ -10628,19 +10956,28 @@
                   "regKind": "r8"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "flip8 + bx",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "flip8"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "bx"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 545,
-                "offset": 9203
-              },
-              "text": "flip8 [ bx ]"
             },
             {
               "kind": "instr",
@@ -10677,21 +11014,34 @@
                   "regKind": "r8"
                 },
                 {
-                  "kind": "raw",
-                  "text": "ds"
-                },
-                {
-                  "kind": "reg",
-                  "name": "si",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "imm",
-                  "value": 39
-                },
-                {
-                  "kind": "label",
-                  "name": "zzz"
+                  "inner": {
+                    "exprText": "si + 39 - zzz",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "si"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 39
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "-"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "zzz"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "ds"
                 }
               ]
             },
@@ -10710,19 +11060,28 @@
                   "regKind": "r8"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "flip8 + bx",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "flip8"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "bx"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 548,
-                "offset": 9261
-              },
-              "text": "flip8 [ bx ]"
             },
             {
               "kind": "instr",
@@ -10734,32 +11093,33 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "es"
+                  "inner": {
+                    "exprText": "di + zzz",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "di"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "zzz"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "es"
                 },
                 {
                   "kind": "reg",
-                  "name": "di",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "label",
-                  "name": "zzz"
-                },
-                {
-                  "kind": "raw",
-                  "text": ","
+                  "name": "eax",
+                  "regKind": "r32"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 18,
-                "line": 549,
-                "offset": 9289
-              },
-              "text": "eax"
             },
             {
               "kind": "raw",
@@ -11684,17 +12044,26 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "ds"
-                },
-                {
-                  "kind": "reg",
-                  "name": "si",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "label",
-                  "name": "zzz"
+                  "inner": {
+                    "exprText": "si + zzz",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "si"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "zzz"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "ds"
                 }
               ]
             },
@@ -11748,32 +12117,33 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "es"
+                  "inner": {
+                    "exprText": "si + zzz",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "si"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "zzz"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "es"
                 },
                 {
                   "kind": "reg",
-                  "name": "si",
+                  "name": "ax",
                   "regKind": "r16"
-                },
-                {
-                  "kind": "label",
-                  "name": "zzz"
-                },
-                {
-                  "kind": "raw",
-                  "text": ","
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 18,
-                "line": 617,
-                "offset": 10074
-              },
-              "text": "ax"
             },
             {
               "kind": "raw",
@@ -12308,19 +12678,19 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "memseg"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
+                },
+                {
+                  "kind": "reg",
+                  "name": "ax",
+                  "regKind": "r16"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 657,
-                "offset": 10556
-              },
-              "text": "memseg , ax"
             },
             {
               "kind": "raw",
@@ -12350,19 +12720,33 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "circles + zzz",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "circles"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "zzz"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
+                },
+                {
+                  "kind": "reg",
+                  "name": "ax",
+                  "regKind": "r16"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 660,
-                "offset": 10592
-              },
-              "text": "circles [ zzz ] , ax"
             },
             {
               "kind": "instr",
@@ -13065,19 +13449,28 @@
                   "regKind": "sreg"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "circles + 0",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "circles"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 0
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 699,
-                "offset": 11103
-              },
-              "text": "circles [ 0 ]"
             },
             {
               "kind": "instr",
@@ -13234,19 +13627,28 @@
                   "regKind": "sreg"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "circles + zzz",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "circles"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "zzz"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 708,
-                "offset": 11225
-              },
-              "text": "circles [ zzz ]"
             },
             {
               "kind": "instr",
@@ -13263,19 +13665,36 @@
                   "regKind": "sreg"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "circles + zzz + 2",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "circles"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "zzz"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 2
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 709,
-                "offset": 11250
-              },
-              "text": "circles [ zzz + 2 ]"
             },
             {
               "kind": "instr",
@@ -13891,19 +14310,18 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "framecount"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
+                },
+                {
+                  "kind": "imm",
+                  "value": 0
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 743,
-                "offset": 11835
-              },
-              "text": "framecount , 0"
             },
             {
               "kind": "instr",
@@ -14028,20 +14446,15 @@
                   "regKind": "r8"
                 },
                 {
-                  "kind": "raw",
-                  "sizeHint": "byte",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "scrnposl"
+                  },
+                  "kind": "segref",
+                  "seg": "cs",
+                  "sizeHint": "byte"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 21,
-                "line": 752,
-                "offset": 11986
-              },
-              "text": "scrnposl"
             },
             {
               "kind": "instr",
@@ -14120,19 +14533,14 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "palanimc"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 757,
-                "offset": 12046
-              },
-              "text": "palanimc"
             },
             {
               "kind": "instr",
@@ -14149,19 +14557,14 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "patdir"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 758,
-                "offset": 12067
-              },
-              "text": "patdir"
             },
             {
               "kind": "instr",
@@ -14316,19 +14719,19 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "palanimc"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
+                },
+                {
+                  "kind": "reg",
+                  "name": "si",
+                  "regKind": "r16"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 14,
-                "line": 765,
-                "offset": 12167
-              },
-              "text": "palanimc , si"
             },
             {
               "kind": "instr",
@@ -14340,19 +14743,19 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "palanimc2"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
+                },
+                {
+                  "kind": "reg",
+                  "name": "si",
+                  "regKind": "r16"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 766,
-                "offset": 12188
-              },
-              "text": "palanimc2 , si"
             },
             {
               "kind": "instr",
@@ -14369,19 +14772,14 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "palanimc"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 768,
-                "offset": 12215
-              },
-              "text": "palanimc"
             },
             {
               "kind": "instr",
@@ -14487,19 +14885,14 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "palanimc"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 773,
-                "offset": 12296
-              },
-              "text": "palanimc"
             },
             {
               "kind": "instr",
@@ -14675,19 +15068,14 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "scrnpos"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 783,
-                "offset": 12428
-              },
-              "text": "scrnpos"
             },
             {
               "kind": "instr",
@@ -14704,19 +15092,14 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "sinurot"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 784,
-                "offset": 12448
-              },
-              "text": "sinurot"
             },
             {
               "kind": "instr",
@@ -14772,19 +15155,19 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "sinurot"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
+                },
+                {
+                  "kind": "reg",
+                  "name": "bp",
+                  "regKind": "r16"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 787,
-                "offset": 12492
-              },
-              "text": "sinurot , bp"
             },
             {
               "kind": "instr",
@@ -14900,19 +15283,28 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "_sin1024 + bp",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "_sin1024"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "bp"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 793,
-                "offset": 12579
-              },
-              "text": "_sin1024 [ bp ]"
             },
             {
               "kind": "instr",
@@ -14949,19 +15341,14 @@
                   "regKind": "r8"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "sinuspower"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 795,
-                "offset": 12615
-              },
-              "text": "sinuspower"
             },
             {
               "kind": "instr",
@@ -14978,20 +15365,29 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "sizeHint": "byte",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "power0 + bx",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "power0"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "bx"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs",
+                  "sizeHint": "byte"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 23,
-                "line": 796,
-                "offset": 12649
-              },
-              "text": "power0 [ bx ]"
             },
             {
               "kind": "instr",
@@ -15008,19 +15404,14 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "scrnposl"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 797,
-                "offset": 12672
-              },
-              "text": "scrnposl"
             },
             {
               "kind": "instr",
@@ -15037,19 +15428,14 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "overx"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 798,
-                "offset": 12693
-              },
-              "text": "overx"
             },
             {
               "kind": "instr",
@@ -15143,19 +15529,44 @@
                   "regKind": "sreg"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "circles + bx + 7 * 2",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "circles"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "bx"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 7
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "*"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 2
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 803,
-                "offset": 12754
-              },
-              "text": "circles [ bx + 7 * 2 ]"
             },
             {
               "kind": "instr",
@@ -15213,19 +15624,14 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "overya"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 806,
-                "offset": 12805
-              },
-              "text": "overya"
             },
             {
               "kind": "raw",
@@ -15251,17 +15657,26 @@
                   "regKind": "r32"
                 },
                 {
-                  "kind": "raw",
-                  "text": "ds"
-                },
-                {
-                  "kind": "reg",
-                  "name": "si",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "label",
-                  "name": "zzz"
+                  "inner": {
+                    "exprText": "si + zzz",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "si"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "zzz"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "ds"
                 }
               ]
             },
@@ -15275,32 +15690,33 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "es"
+                  "inner": {
+                    "exprText": "di + zzz",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "di"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "zzz"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "es"
                 },
                 {
                   "kind": "reg",
-                  "name": "di",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "label",
-                  "name": "zzz"
-                },
-                {
-                  "kind": "raw",
-                  "text": ","
+                  "name": "eax",
+                  "regKind": "r32"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 18,
-                "line": 809,
-                "offset": 12866
-              },
-              "text": "eax"
             },
             {
               "kind": "raw",
@@ -15532,19 +15948,18 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "patdir"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
+                },
+                {
+                  "kind": "imm",
+                  "value": -3
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 827,
-                "offset": 13046
-              },
-              "text": "patdir , - 3"
             },
             {
               "kind": "label",
@@ -15601,19 +16016,18 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "patdir"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
+                },
+                {
+                  "kind": "imm",
+                  "value": -3
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 830,
-                "offset": 13092
-              },
-              "text": "patdir , - 3"
             },
             {
               "kind": "label",
@@ -15640,19 +16054,14 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "scrnrot"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 832,
-                "offset": 13125
-              },
-              "text": "scrnrot"
             },
             {
               "kind": "instr",
@@ -15704,19 +16113,19 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "scrnrot"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
+                },
+                {
+                  "kind": "reg",
+                  "name": "bx",
+                  "regKind": "r16"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 835,
-                "offset": 13167
-              },
-              "text": "scrnrot , bx"
             },
             {
               "kind": "instr",
@@ -15753,19 +16162,28 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "_sin1024 + bx",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "_sin1024"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "bx"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 838,
-                "offset": 13203
-              },
-              "text": "_sin1024 [ bx ]"
             },
             {
               "kind": "instr",
@@ -15817,19 +16235,19 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "scrnx"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
+                },
+                {
+                  "kind": "reg",
+                  "name": "ax",
+                  "regKind": "r16"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 841,
-                "offset": 13249
-              },
-              "text": "scrnx , ax"
             },
             {
               "kind": "instr",
@@ -15898,19 +16316,28 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "_sin1024 + bx",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "_sin1024"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "bx"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 844,
-                "offset": 13303
-              },
-              "text": "_sin1024 [ bx ]"
             },
             {
               "kind": "instr",
@@ -15962,19 +16389,19 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "scrny"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
+                },
+                {
+                  "kind": "reg",
+                  "name": "ax",
+                  "regKind": "r16"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 847,
-                "offset": 13349
-              },
-              "text": "scrny , ax"
             },
             {
               "kind": "instr",
@@ -15991,19 +16418,14 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "overrot"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 849,
-                "offset": 13372
-              },
-              "text": "overrot"
             },
             {
               "kind": "instr",
@@ -16055,19 +16477,19 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "overrot"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
+                },
+                {
+                  "kind": "reg",
+                  "name": "bx",
+                  "regKind": "r16"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 852,
-                "offset": 13414
-              },
-              "text": "overrot , bx"
             },
             {
               "kind": "instr",
@@ -16104,19 +16526,28 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "_sin1024 + bx",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "_sin1024"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "bx"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 855,
-                "offset": 13450
-              },
-              "text": "_sin1024 [ bx ]"
             },
             {
               "kind": "instr",
@@ -16168,19 +16599,19 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "overx"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
+                },
+                {
+                  "kind": "reg",
+                  "name": "ax",
+                  "regKind": "r16"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 858,
-                "offset": 13496
-              },
-              "text": "overx , ax"
             },
             {
               "kind": "instr",
@@ -16249,19 +16680,28 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "exprText": "_sin1024 + bx",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "_sin1024"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "bx"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 861,
-                "offset": 13550
-              },
-              "text": "_sin1024 [ bx ]"
             },
             {
               "kind": "instr",
@@ -16349,19 +16789,19 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "overya"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
+                },
+                {
+                  "kind": "reg",
+                  "name": "ax",
+                  "regKind": "r16"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 866,
-                "offset": 13617
-              },
-              "text": "overya , ax"
             },
             {
               "kind": "instr",
@@ -16378,19 +16818,14 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "scrnx"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 868,
-                "offset": 13641
-              },
-              "text": "scrnx"
             },
             {
               "kind": "instr",
@@ -16443,19 +16878,19 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "scrnposl"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
+                },
+                {
+                  "kind": "reg",
+                  "name": "ax",
+                  "regKind": "r16"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 871,
-                "offset": 13679
-              },
-              "text": "scrnposl , ax"
             },
             {
               "kind": "instr",
@@ -16487,19 +16922,14 @@
               "mnemonic": "mul",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "scrny"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 873,
-                "offset": 13712
-              },
-              "text": "scrny"
             },
             {
               "kind": "instr",
@@ -16552,19 +16982,19 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "scrnpos"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
+                },
+                {
+                  "kind": "reg",
+                  "name": "ax",
+                  "regKind": "r16"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 876,
-                "offset": 13750
-              },
-              "text": "scrnpos , ax"
             },
             {
               "kind": "instr",
@@ -16581,19 +17011,14 @@
                   "regKind": "r16"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "scrnpos"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 878,
-                "offset": 13775
-              },
-              "text": "scrnpos"
             },
             {
               "kind": "instr",
@@ -16745,19 +17170,22 @@
               "mnemonic": "cmp",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "framecount"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
+                },
+                {
+                  "kind": "imm",
+                  "value": 70
+                },
+                {
+                  "kind": "imm",
+                  "value": 5
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 887,
-                "offset": 13878
-              },
-              "text": "framecount , 70 * 5"
             },
             {
               "kind": "instr",
@@ -16784,19 +17212,14 @@
               "mnemonic": "inc",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "powercnt"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 889,
-                "offset": 13914
-              },
-              "text": "powercnt"
             },
             {
               "kind": "instr",
@@ -16808,19 +17231,18 @@
               "mnemonic": "cmp",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "powercnt"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
+                },
+                {
+                  "kind": "imm",
+                  "value": 16
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 890,
-                "offset": 13932
-              },
-              "text": "powercnt , 16"
             },
             {
               "kind": "instr",
@@ -16847,19 +17269,18 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "powercnt"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
+                },
+                {
+                  "kind": "imm",
+                  "value": 0
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 892,
-                "offset": 13963
-              },
-              "text": "powercnt , 0"
             },
             {
               "kind": "instr",
@@ -16871,19 +17292,18 @@
               "mnemonic": "cmp",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "sinuspower"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
+                },
+                {
+                  "kind": "imm",
+                  "value": 15
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 893,
-                "offset": 13983
-              },
-              "text": "sinuspower , 15"
             },
             {
               "kind": "instr",
@@ -16910,19 +17330,14 @@
               "mnemonic": "inc",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "sinuspower"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 895,
-                "offset": 14017
-              },
-              "text": "sinuspower"
             },
             {
               "kind": "label",
@@ -16944,19 +17359,14 @@
               "mnemonic": "inc",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "framecount"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 9,
-                "line": 897,
-                "offset": 14044
-              },
-              "text": "framecount"
             },
             {
               "kind": "instr",
@@ -17474,19 +17884,14 @@
                   "regKind": "sreg"
                 },
                 {
-                  "kind": "raw",
-                  "text": "cs"
+                  "inner": {
+                    "kind": "label",
+                    "name": "memseg"
+                  },
+                  "kind": "segref",
+                  "seg": "cs"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 12,
-                "line": 951,
-                "offset": 14726
-              },
-              "text": "memseg"
             },
             {
               "kind": "instr",
@@ -18695,28 +19100,60 @@
                   "regKind": "r8"
                 },
                 {
-                  "kind": "raw",
-                  "text": "ds"
-                },
-                {
-                  "kind": "reg",
-                  "name": "si",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "raw",
-                  "text": "("
+                  "inner": {
+                    "exprText": "si + ( zzz + 0 ) * 4 + zpl",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "si"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "("
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "zzz"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 0
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": ")"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "*"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 4
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "zpl"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "ds"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 17,
-                "line": 1026,
-                "offset": 15642
-              },
-              "text": "zzz + 0 ) * 4 + zpl ]"
             },
             {
               "kind": "instr",
@@ -18733,28 +19170,60 @@
                   "regKind": "r8"
                 },
                 {
-                  "kind": "raw",
-                  "text": "ds"
-                },
-                {
-                  "kind": "reg",
-                  "name": "si",
-                  "regKind": "r16"
-                },
-                {
-                  "kind": "raw",
-                  "text": "("
+                  "inner": {
+                    "exprText": "si + ( zzz + 1 ) * 4 + zpl",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "si"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "("
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "zzz"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 1
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": ")"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "*"
+                      },
+                      {
+                        "type": "NUMBER",
+                        "value": 4
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "zpl"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "ds"
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 17,
-                "line": 1027,
-                "offset": 15673
-              },
-              "text": "zzz + 1 ) * 4 + zpl ]"
             },
             {
               "kind": "instr",
@@ -18766,32 +19235,33 @@
               "mnemonic": "mov",
               "operands": [
                 {
-                  "kind": "raw",
-                  "text": "es"
+                  "inner": {
+                    "exprText": "di + zzz",
+                    "exprTokens": [
+                      {
+                        "type": "IDENT",
+                        "value": "di"
+                      },
+                      {
+                        "type": "PUNCT",
+                        "value": "+"
+                      },
+                      {
+                        "type": "IDENT",
+                        "value": "zzz"
+                      }
+                    ],
+                    "kind": "mem"
+                  },
+                  "kind": "segref",
+                  "seg": "es"
                 },
                 {
                   "kind": "reg",
-                  "name": "di",
+                  "name": "ax",
                   "regKind": "r16"
-                },
-                {
-                  "kind": "label",
-                  "name": "zzz"
-                },
-                {
-                  "kind": "raw",
-                  "text": ","
                 }
               ]
-            },
-            {
-              "kind": "raw",
-              "loc": {
-                "col": 18,
-                "line": 1028,
-                "offset": 15705
-              },
-              "text": "ax"
             },
             {
               "kind": "raw",
@@ -19375,7 +19845,7 @@
     "labels": 84,
     "procs": 21,
     "publics": 11,
-    "raw": 209,
+    "raw": 121,
     "segments": 1,
     "unknownMnemonics": [
       "ENDIF",
@@ -19391,41 +19861,13 @@
       "_power0",
       "_roffs",
       "_rows",
-      "_sin1024",
-      "_vbufseg",
-      "ah",
-      "ax",
-      "circles",
-      "clipleft",
-      "eax",
       "flip8",
-      "framecount",
       "llinemacro",
       "local",
-      "mask",
-      "memseg",
-      "overrot",
-      "overx",
-      "overya",
       "pal1",
       "pal2",
-      "palanimc",
-      "palanimc2",
-      "patdir",
-      "polyisides",
-      "polyixy",
-      "polysides",
       "polyxy",
-      "power0",
-      "powercnt",
       "rlinemacro",
-      "scrnpos",
-      "scrnposl",
-      "scrnrot",
-      "scrnx",
-      "scrny",
-      "sinurot",
-      "sinuspower",
       "zpl",
       "zzz"
     ]

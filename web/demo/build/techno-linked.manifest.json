@@ -2,8 +2,8 @@
   "name": "techno-linked",
   "built": "2026-06-08",
   "wasm": {
-    "bytes": 59699,
-    "sha256": "556f2ad80fa8c9329cc61750cb223a5376f804a1831ccea9536d21bffaac0a79"
+    "bytes": 61271,
+    "sha256": "08a15649e54eb1b6e46ba214fab2c5c90ef401ab1d661d4c102b13f5cc109758"
   },
   "stats": {
     "ops": 1288,
@@ -33,6 +33,10 @@
     "unresolvedSymbols": [
       "OFFSET",
       "SEG",
+      "mask",
+      "polyisides",
+      "polysides",
+      "polyxy",
       "zzz"
     ]
   },
@@ -90,6 +94,10 @@
     "unresolvedSymbols": [
       "OFFSET",
       "SEG",
+      "mask",
+      "polyisides",
+      "polysides",
+      "polyxy",
       "zzz"
     ]
   },

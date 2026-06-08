@@ -9,7 +9,7 @@
     "tokenize:techno": "node src/cli/tokenize.js modules/techno",
     "parse:techno":    "node src/cli/parse.js modules/techno",
     "build:demo":      "node src/cli/build-demo.js",
-    "test":            "node --test tests/"
+    "test":            "node --test tests/*.js"
   },
   "engines": {
     "node": ">=20"

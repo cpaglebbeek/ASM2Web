@@ -1,0 +1,63 @@
+{
+  "types": [
+    {
+      "params": [
+        127,
+        127
+      ],
+      "results": []
+    },
+    {
+      "params": [
+        127
+      ],
+      "results": [
+        127
+      ]
+    },
+    {
+      "params": [
+        127
+      ],
+      "results": []
+    },
+    {
+      "params": [
+        127,
+        127,
+        127
+      ],
+      "results": []
+    },
+    {
+      "params": [],
+      "results": [
+        127
+      ]
+    },
+    {
+      "params": [],
+      "results": []
+    }
+  ],
+  "imports": [
+    "env.memory (memory)",
+    "env.io_out (function)",
+    "env.io_in (function)",
+    "env.exit (function)",
+    "env.mode13h_setpixel (function)",
+    "env.dis_musrow (function)",
+    "env.waitb (function)",
+    "env.dis_init (function)",
+    "env.dis_waitb (function)"
+  ],
+  "exports": [
+    "main -> fn#8"
+  ],
+  "memoryPages": 16,
+  "stats": {
+    "ops": 14,
+    "unknownOps": 0,
+    "unknownMnemonics": []
+  }
+}

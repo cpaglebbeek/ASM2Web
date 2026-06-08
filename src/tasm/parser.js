@@ -512,6 +512,13 @@ export function parse(tokens, opts = {}) {
       };
     }
     // Segment-override prefix:  ds:[bx]  or  es:di
+    // The tokenizer merges `es:` into a single LABEL token (ident + ':'), so a
+    // segreg-named LABEL mid-operand is a segment override, not a declaration.
+    if (t.type === TOK.LABEL && SREG.has(lc(t.value))) {
+      const seg = lc(eat().value);   // ':' is already part of the LABEL token
+      const inner = parseOperand();
+      return { kind: "segref", seg, inner };
+    }
     if (t.type === TOK.IDENT && SREG.has(lc(t.value)) && peek(1).type === TOK.PUNCT && peek(1).value === ":") {
       const seg = lc(eat().value);
       eat(); // ':'
@@ -530,6 +537,23 @@ export function parse(tokens, opts = {}) {
         const rest = parseOperand();
         if (rest) rest.sizeHint = lc(name);
         return rest;
+      }
+      // Based/indexed on a symbol: `oldpos[bx]` -> mem operand combining the
+      // symbol with the bracket expression (symbol + index).
+      if (peek().type === TOK.PUNCT && peek().value === "[") {
+        eat();
+        const exprToks = [{ type: TOK.IDENT, value: name }, { type: TOK.PUNCT, value: "+" }];
+        while (peek().type !== TOK.PUNCT || peek().value !== "]") {
+          if (peek().type === TOK.NEWLINE || peek().type === TOK.EOF) break;
+          const x = eat();
+          exprToks.push({ type: x.type, value: x.value });
+        }
+        if (peek().type === TOK.PUNCT && peek().value === "]") eat();
+        return {
+          kind: "mem",
+          exprText: exprToks.map(x => String(x.value)).join(" "),
+          exprTokens: exprToks,
+        };
       }
       return { kind: "label", name };
     }

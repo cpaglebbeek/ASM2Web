@@ -1,0 +1,57 @@
+; IR module: tunneli
+; functions: 3, data: 3, ops: 39, unknown: 0
+
+function rowinit (far) locals=12
+  r2 = 0xc8
+  r0 = 0x0
+  r1 = 0x0
+  .@ri:
+  store.u16 [rows + bx], r0
+  r0 = add r0, 0x140
+  r1 = add r1, 0x2
+  loop_dec_cx .@ri
+  ret
+
+function init (far) locals=12
+  store.u16 [op], 0x0
+  ret
+
+function Putrouts (far) locals=12
+  push 0x0
+  0x0 = r0
+  r0 = 0xa000
+  0x0 = r0
+  store.u16 [@yad + 1], r1
+  r0 = @Op
+  r2 = 0x40
+  .@dr:
+  r1 = r0
+  r5 = load.u16 [oldpos + bx]
+  store.u8 [di], 0x0
+  .@yad:
+  r1 = 0x4d2
+  r1 = add r1, [si + 2]
+  cmp r1, 0xc7
+  jgt_u .@yli
+  r5 = load.u16 [si]
+  r5 = add r5, r3
+  cmp r5, 0x13f
+  jgt_u .@yli
+  r1 = add r1, r1
+  r5 = add r5, [rows + bx]
+  .@c:
+  store.u8 [di], 0xf
+  .@yli:
+  r1 = r0
+  store.u16 [oldpos + bx], r5
+  r0 = add r0, 0x2
+  r4 = add r4, 0x4
+  loop_dec_cx .@dr
+  @Op = r0
+  pop 0x0
+  ret
+
+; data:
+  oldpos  dw  [{"kind":"dup","count":7000,"inner":{"kind":"num","value":0}}]
+  rows  dw  [{"kind":"dup","count":210,"inner":{"kind":"num","value":0}}]
+  op  dw  [{"kind":"num","value":0}]

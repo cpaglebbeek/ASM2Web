@@ -1,14 +1,14 @@
 {
   "name": "koea",
-  "built": "2026-06-07",
+  "built": "2026-06-08",
   "source": {
     "path": "demos/koea.asm",
     "bytes": 16116,
     "sha256": "7d584fe7caefdb45f98b1ed47958adebaca9e8df25720458ed812ac7b1287573"
   },
   "wasm": {
-    "bytes": 18769,
-    "sha256": "a2a21f5b09d7f5e7d173fd3d07c4b0ea67f193a7a4d4eb0bcc072e5ab613e74d"
+    "bytes": 19827,
+    "sha256": "bbdb8cff08d8f9e34b794b32eaaab696702906dc287e9a5ee0eac268462e9c3e"
   },
   "stats": {
     "ops": 675,

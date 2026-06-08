@@ -27,7 +27,7 @@
         Frame <var>N</var> is een <strong>pure functie</strong> van (program-bytes, frame-index, input).
         Geen emulator. Geen rewrite. Geen <code>Math.random()</code>. Geen wallclock-jitter.
       </p>
-      <p class="version" id="version-line">v0.4.0-Wilkes &middot; fase 1-6 (linker + audio + STARFIELD + gouden-frame P-DET-01 BEWEZEN)</p>
+      <p class="version" id="version-line">v0.5.0-Stibitz &middot; fase 1-7 (+ x86 segment:offset memory-tracker — ES:[DI]/DS:[SI] pixel-exact)</p>
     </section>
 
     <section class="hero" style="background:var(--bg-elev); border:1px solid var(--border); border-left:3px solid var(--accent); padding:1rem 1.2rem; border-radius:6px;">
@@ -46,9 +46,12 @@
     </section>
 
     <section class="hero" style="background:var(--bg-elev); border:1px solid var(--border); border-left:3px solid var(--green); padding:1rem 1.2rem; border-radius:6px;">
-      <h2 style="margin-top:0; border:0;">▸ Mini demo — <a href="demo/">hello-pixel</a></h2>
+      <h2 style="margin-top:0; border:0;">▸ Mini demo — <a href="demo/">hello-pixel</a> &middot; <a href="demo/?demo=seg-test">seg-test</a></h2>
       <p style="margin:0.3rem 0; color:var(--fg);">
-        Eenvoudige TASM-bron (~30 regels), bewijst de pijplijn end-to-end.
+        Eenvoudige TASM-bron (~30 regels), bewijst de pijplijn end-to-end. De
+        <a href="demo/?demo=seg-test"><code>seg-test</code></a>-demo bewijst de x86 segment:offset-tracker:
+        <code>mov ax,0a000h / mov es,ax</code> wordt herkend als segment-base const-load, en
+        <code>es:[di]</code>/<code>ds:[si]</code> resolveren byte-exact naar linear <code>0xA0000+offset</code>.
       </p>
     </section>
 
@@ -120,10 +123,15 @@
           <span class="phase-name">runtime-determinisme</span>
           <span class="phase-detail">gouden-frame test bewijst zelfde framebuffer-SHA bij dubbele TECHNO-run; 13/13 tests groen</span>
         </li>
+        <li class="phase done">
+          <span class="phase-tag">Fase 7 ✓</span>
+          <span class="phase-name">x86 segment:offset-tracker</span>
+          <span class="phase-detail"><code>mov ax,0a000h / mov es,ax</code> → segment-base const-load; <code>ES:[DI]</code>/<code>DS:[SI]</code>/<code>byte ptr</code> byte-exact naar <code>0xA0000+offset</code> — bewezen door <a href="demo/?demo=seg-test">seg-test</a> (3/3 pixels) + regressietest; 14/14 tests groen</span>
+        </li>
         <li class="phase pending">
-          <span class="phase-tag">Fase 7</span>
-          <span class="phase-name">Pixel-perfect + meer scenes</span>
-          <span class="phase-detail">exacte x86 segment-tracker + GLENZ/DOTS/TUNNELI/TWIST/GRID porten</span>
+          <span class="phase-tag">Fase 8</span>
+          <span class="phase-name">Zelfmodificerende code + meer scenes</span>
+          <span class="phase-detail">SMC-detectie (TUNNELI @yad-patch) + GLENZ/DOTS/TWIST/GRID/WATER porten</span>
         </li>
       </ol>
     </section>

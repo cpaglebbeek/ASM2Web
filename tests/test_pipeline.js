@@ -69,6 +69,31 @@ test("WASM instantiates and main() writes expected pixels", async () => {
   assert.equal(fb[100 * 320 + 60], 0, "pixel (60,100) = 0");
 });
 
+test("segment:offset tracker resolves es:[di]/ds:[si] to linear 0xA0000", async () => {
+  const src = readFileSync("demos/seg-test.asm", "utf8");
+  const ast = parse(tokenize(src), { file: "seg-test.asm" });
+  assert.equal(ast.stats.raw, 0, "no unrecognised lines (segref must parse)");
+  const ir = emitIR(ast, { name: "seg" });
+  assert.equal(ir.stats.unknownOps, 0, "no unknown ops");
+  const { wasm } = compileIRtoWASM(ir);
+  const memory = new WebAssembly.Memory({ initial: 16, maximum: 16 });
+  const env = {
+    memory,
+    io_out: () => {}, io_in: () => 0, exit: () => {},
+    mode13h_setpixel: () => {}, dis_musrow: () => 0, waitb: () => {},
+    dis_init: () => {}, dis_waitb: () => {},
+  };
+  const { instance } = await WebAssembly.instantiate(wasm, { env });
+  instance.exports.main();
+  const u8 = new Uint8Array(memory.buffer);
+  // `mov ax,0a000h / mov es,ax` must fold the segment base so es:[di] lands in the
+  // VGA frame-buffer at linear 0xA0000+offset (byte-sized, no neighbouring spill).
+  assert.equal(u8[0xA0000 + 3210], 15, "es:[di] pixel (10,10)");
+  assert.equal(u8[0xA0000 + 6420], 31, "es:[di] pixel (20,20)");
+  assert.equal(u8[0xA0000 + 100], 7, "ds:[si] write");
+  assert.equal(u8[0xA0000 + 3211], 0, "byte ptr must write exactly 1 byte (no word spill)");
+});
+
 test("TECHNO IR-emitter achieves >90% supported ops on KOEA+KOEB+POLYCLIP+ROT", async () => {
   const { readFileSync, readdirSync, existsSync } = await import("node:fs");
   const { join, resolve } = await import("node:path");

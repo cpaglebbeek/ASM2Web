@@ -17,17 +17,24 @@
           "local": false
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 0,
             "size": 8,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "si",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              }
+            ]
+          },
+          "size": 8
         },
         {
           "op": "add",
@@ -209,6 +216,26 @@
                 "value": 8
               }
             ]
+          },
+          "size": 16
+        },
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "_vbufseg",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "_vbufseg"
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
           },
           "size": 16
         },
@@ -632,17 +659,24 @@
           "local": true
         },
         {
-          "op": "mov",
-          "dest": {
-            "kind": "const",
-            "value": 0
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "bx",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "bx"
+              }
+            ]
           },
           "src": {
             "kind": "local",
-            "index": 1,
+            "index": 0,
             "size": 16,
             "isHigh": false
-          }
+          },
+          "size": 16
         },
         {
           "op": "add",
@@ -859,17 +893,24 @@
           }
         },
         {
-          "op": "mov",
-          "dest": {
-            "kind": "const",
-            "value": 0
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "bx",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "bx"
+              }
+            ]
           },
           "src": {
             "kind": "local",
-            "index": 1,
-            "size": 16,
-            "isHigh": false
-          }
+            "index": 0,
+            "size": 8,
+            "isHigh": true
+          },
+          "size": 8
         },
         {
           "op": "ror",
@@ -910,17 +951,32 @@
           }
         },
         {
-          "op": "mov",
-          "dest": {
-            "kind": "const",
-            "value": 0
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "bx + 1",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "bx"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 1
+              }
+            ]
           },
           "src": {
             "kind": "local",
-            "index": 1,
-            "size": 16,
-            "isHigh": false
-          }
+            "index": 0,
+            "size": 8,
+            "isHigh": true
+          },
+          "size": 8
         },
         {
           "op": "add",
@@ -1033,17 +1089,32 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 1,
             "size": 8,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "si + zzz",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "zzz"
+              }
+            ]
+          },
+          "size": 8
         },
         {
           "op": "xor",
@@ -1067,30 +1138,76 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 0,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "_blit16t + ebx * 2",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "_blit16t"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "ebx"
+              },
+              {
+                "type": "PUNCT",
+                "value": "*"
+              },
+              {
+                "type": "NUMBER",
+                "value": 2
+              }
+            ]
+          },
+          "size": 16
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 1,
             "size": 8,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "si + 1 + zzz",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 1
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "zzz"
+              }
+            ]
+          },
+          "size": 8
         },
         {
           "op": "xor",
@@ -1114,17 +1231,40 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 3,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "_blit16t + ebx * 2",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "_blit16t"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "ebx"
+              },
+              {
+                "type": "PUNCT",
+                "value": "*"
+              },
+              {
+                "type": "NUMBER",
+                "value": 2
+              }
+            ]
+          },
+          "size": 16
         },
         {
           "op": "mov",
@@ -1142,17 +1282,32 @@
           }
         },
         {
-          "op": "mov",
-          "dest": {
-            "kind": "const",
-            "value": 0
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "di + zzz",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "di"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "zzz"
+              }
+            ]
           },
           "src": {
             "kind": "local",
-            "index": 5,
+            "index": 0,
             "size": 16,
             "isHigh": false
-          }
+          },
+          "size": 16
         },
         {
           "op": "add",
@@ -1294,17 +1449,32 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 1,
             "size": 8,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "si + zzz",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "zzz"
+              }
+            ]
+          },
+          "size": 8
         },
         {
           "op": "xor",
@@ -1328,30 +1498,76 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 0,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "_blit16t + ebx * 2",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "_blit16t"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "ebx"
+              },
+              {
+                "type": "PUNCT",
+                "value": "*"
+              },
+              {
+                "type": "NUMBER",
+                "value": 2
+              }
+            ]
+          },
+          "size": 16
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 1,
             "size": 8,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "si + 1 + zzz",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 1
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "zzz"
+              }
+            ]
+          },
+          "size": 8
         },
         {
           "op": "xor",
@@ -1375,17 +1591,40 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 3,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "_blit16t + ebx * 2",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "_blit16t"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "ebx"
+              },
+              {
+                "type": "PUNCT",
+                "value": "*"
+              },
+              {
+                "type": "NUMBER",
+                "value": 2
+              }
+            ]
+          },
+          "size": 16
         },
         {
           "op": "mov",
@@ -1403,17 +1642,32 @@
           }
         },
         {
-          "op": "mov",
-          "dest": {
-            "kind": "const",
-            "value": 0
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "di + zzz",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "di"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "zzz"
+              }
+            ]
           },
           "src": {
             "kind": "local",
-            "index": 5,
+            "index": 0,
             "size": 16,
             "isHigh": false
-          }
+          },
+          "size": 16
         },
         {
           "op": "add",
@@ -1638,30 +1892,60 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 4,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "_rows + ebx * 2",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "_rows"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "ebx"
+              },
+              {
+                "type": "PUNCT",
+                "value": "*"
+              },
+              {
+                "type": "NUMBER",
+                "value": 2
+              }
+            ]
+          },
+          "size": 16
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 6,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "clipleft",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "clipleft"
+              }
+            ]
+          },
+          "size": 16
         },
         {
           "op": "or",
@@ -1730,18 +2014,30 @@
         {
           "op": "xor",
           "dest": {
-            "kind": "const",
-            "value": 0
+            "kind": "mem",
+            "exprText": "si",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              }
+            ],
+            "sizeHint": "byte"
           },
           "a": {
-            "kind": "const",
-            "value": 0
+            "kind": "mem",
+            "exprText": "si",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              }
+            ],
+            "sizeHint": "byte"
           },
           "b": {
-            "kind": "local",
-            "index": 4,
-            "size": 16,
-            "isHigh": false
+            "kind": "const",
+            "value": 128
           }
         },
         {
@@ -1799,18 +2095,30 @@
         {
           "op": "xor",
           "dest": {
-            "kind": "const",
-            "value": 0
+            "kind": "mem",
+            "exprText": "si",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              }
+            ],
+            "sizeHint": "byte"
           },
           "a": {
-            "kind": "const",
-            "value": 0
+            "kind": "mem",
+            "exprText": "si",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              }
+            ],
+            "sizeHint": "byte"
           },
           "b": {
-            "kind": "local",
-            "index": 4,
-            "size": 16,
-            "isHigh": false
+            "kind": "const",
+            "value": 128
           }
         },
         {
@@ -2078,18 +2386,30 @@
         {
           "op": "xor",
           "dest": {
-            "kind": "const",
-            "value": 0
+            "kind": "mem",
+            "exprText": "si",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              }
+            ],
+            "sizeHint": "byte"
           },
           "a": {
-            "kind": "const",
-            "value": 0
+            "kind": "mem",
+            "exprText": "si",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              }
+            ],
+            "sizeHint": "byte"
           },
           "b": {
-            "kind": "local",
-            "index": 4,
-            "size": 16,
-            "isHigh": false
+            "kind": "sym",
+            "name": "mask"
           }
         },
         {
@@ -2661,18 +2981,30 @@
         {
           "op": "xor",
           "dest": {
-            "kind": "const",
-            "value": 0
+            "kind": "mem",
+            "exprText": "si",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              }
+            ],
+            "sizeHint": "byte"
           },
           "a": {
-            "kind": "const",
-            "value": 0
+            "kind": "mem",
+            "exprText": "si",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              }
+            ],
+            "sizeHint": "byte"
           },
           "b": {
-            "kind": "local",
-            "index": 4,
-            "size": 16,
-            "isHigh": false
+            "kind": "sym",
+            "name": "mask"
           }
         },
         {
@@ -3271,6 +3603,33 @@
           "size": 16
         },
         {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "polyixy + 0",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "polyixy"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 0
+              }
+            ],
+            "sizeHint": "dword"
+          },
+          "src": {
+            "kind": "const",
+            "value": 0
+          },
+          "size": 32
+        },
+        {
           "op": "load",
           "dest": {
             "kind": "const",
@@ -3295,6 +3654,33 @@
             ]
           },
           "size": 16
+        },
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "polyixy + 4",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "polyixy"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 4
+              }
+            ],
+            "sizeHint": "dword"
+          },
+          "src": {
+            "kind": "const",
+            "value": 0
+          },
+          "size": 32
         },
         {
           "op": "load",
@@ -3323,6 +3709,33 @@
           "size": 16
         },
         {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "polyixy + 8",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "polyixy"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 8
+              }
+            ],
+            "sizeHint": "dword"
+          },
+          "src": {
+            "kind": "const",
+            "value": 0
+          },
+          "size": 32
+        },
+        {
           "op": "load",
           "dest": {
             "kind": "const",
@@ -3349,19 +3762,71 @@
           "size": 16
         },
         {
-          "op": "call",
-          "target": "clipanypoly"
-        },
-        {
-          "op": "mov",
-          "dest": {
-            "kind": "const",
-            "value": 0
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "polyixy + 12",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "polyixy"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 12
+              }
+            ],
+            "sizeHint": "dword"
           },
           "src": {
             "kind": "const",
             "value": 0
-          }
+          },
+          "size": 32
+        },
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "polyisides",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "polyisides"
+              }
+            ]
+          },
+          "src": {
+            "kind": "const",
+            "value": 4
+          },
+          "size": 16
+        },
+        {
+          "op": "call",
+          "target": "clipanypoly"
+        },
+        {
+          "op": "load",
+          "dest": {
+            "kind": "const",
+            "value": 0
+          },
+          "addr": {
+            "kind": "mem",
+            "exprText": "_vbufseg",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "_vbufseg"
+              }
+            ]
+          },
+          "size": 16
         },
         {
           "op": "mov",
@@ -3377,17 +3842,24 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 5,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "polysides",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "polysides"
+              }
+            ]
+          },
+          "size": 16
         },
         {
           "op": "or",
@@ -3445,56 +3917,116 @@
           "local": true
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 0,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "si + 0",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 0
+              }
+            ]
+          },
+          "size": 16
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 1,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "si + 2",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 2
+              }
+            ]
+          },
+          "size": 16
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 3,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "si + 4",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 4
+              }
+            ]
+          },
+          "size": 16
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 2,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "si + 6",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 6
+              }
+            ]
+          },
+          "size": 16
         },
         {
           "op": "call",
@@ -3549,56 +4081,116 @@
           "local": true
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 0,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "si + 0",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 0
+              }
+            ]
+          },
+          "size": 16
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 1,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "si + 2",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 2
+              }
+            ]
+          },
+          "size": 16
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 3,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "polyxy + 0",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "polyxy"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 0
+              }
+            ]
+          },
+          "size": 16
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 2,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "polyxy + 2",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "polyxy"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 2
+              }
+            ]
+          },
+          "size": 16
         },
         {
           "op": "call",
@@ -3758,28 +4350,56 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "const",
             "value": 0
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "si + zzz",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "zzz"
+              }
+            ]
+          },
+          "size": 16
         },
         {
-          "op": "mov",
-          "dest": {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "di + zzz",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "di"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "zzz"
+              }
+            ]
+          },
+          "src": {
             "kind": "const",
             "value": 0
           },
-          "src": {
-            "kind": "local",
-            "index": 5,
-            "size": 16,
-            "isHigh": false
-          }
+          "size": 16
         },
         {
           "op": "add",
@@ -3988,30 +4608,68 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 1,
             "size": 8,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "si + 36 - zzz",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 36
+              },
+              {
+                "type": "PUNCT",
+                "value": "-"
+              },
+              {
+                "type": "IDENT",
+                "value": "zzz"
+              }
+            ]
+          },
+          "size": 8
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 0,
             "size": 8,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "flip8 + bx",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "flip8"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "bx"
+              }
+            ]
+          },
+          "size": 8
         },
         {
           "op": "rol",
@@ -4029,30 +4687,68 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 1,
             "size": 8,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "si + 37 - zzz",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 37
+              },
+              {
+                "type": "PUNCT",
+                "value": "-"
+              },
+              {
+                "type": "IDENT",
+                "value": "zzz"
+              }
+            ]
+          },
+          "size": 8
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 0,
             "size": 8,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "flip8 + bx",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "flip8"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "bx"
+              }
+            ]
+          },
+          "size": 8
         },
         {
           "op": "rol",
@@ -4070,30 +4766,68 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 1,
             "size": 8,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "si + 38 - zzz",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 38
+              },
+              {
+                "type": "PUNCT",
+                "value": "-"
+              },
+              {
+                "type": "IDENT",
+                "value": "zzz"
+              }
+            ]
+          },
+          "size": 8
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 0,
             "size": 8,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "flip8 + bx",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "flip8"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "bx"
+              }
+            ]
+          },
+          "size": 8
         },
         {
           "op": "rol",
@@ -4111,43 +4845,94 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 1,
             "size": 8,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "si + 39 - zzz",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 39
+              },
+              {
+                "type": "PUNCT",
+                "value": "-"
+              },
+              {
+                "type": "IDENT",
+                "value": "zzz"
+              }
+            ]
+          },
+          "size": 8
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 0,
             "size": 8,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "flip8 + bx",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "flip8"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "bx"
+              }
+            ]
+          },
+          "size": 8
         },
         {
-          "op": "mov",
-          "dest": {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "di + zzz",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "di"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "zzz"
+              }
+            ]
+          },
+          "src": {
             "kind": "const",
             "value": 0
           },
-          "src": {
-            "kind": "local",
-            "index": 5,
-            "size": 16,
-            "isHigh": false
-          }
+          "size": 16
         },
         {
           "op": "add",
@@ -4724,17 +5509,32 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 0,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "si + zzz",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "zzz"
+              }
+            ]
+          },
+          "size": 16
         },
         {
           "op": "rcr",
@@ -4775,17 +5575,32 @@
           }
         },
         {
-          "op": "mov",
-          "dest": {
-            "kind": "const",
-            "value": 0
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "si + zzz",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "zzz"
+              }
+            ]
           },
           "src": {
             "kind": "local",
-            "index": 4,
+            "index": 0,
             "size": 16,
             "isHigh": false
-          }
+          },
+          "size": 16
         },
         {
           "op": "label",
@@ -4955,6 +5770,54 @@
         {
           "op": "int",
           "num": 33
+        },
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "memseg",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "memseg"
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "size": 16
+        },
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "circles + zzz",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "circles"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "zzz"
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "size": 16
         },
         {
           "op": "add",
@@ -5411,15 +6274,30 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "const",
             "value": 0
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "circles + 0",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "circles"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 0
+              }
+            ]
+          },
+          "size": 16
         },
         {
           "op": "mov",
@@ -5507,26 +6385,64 @@
           "note": "rep-prefix"
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "const",
             "value": 0
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "circles + zzz",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "circles"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "zzz"
+              }
+            ]
+          },
+          "size": 16
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "const",
             "value": 0
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "circles + zzz + 2",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "circles"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "zzz"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 2
+              }
+            ]
+          },
+          "size": 16
         },
         {
           "op": "call",
@@ -5914,6 +6830,24 @@
           "target": "@@10"
         },
         {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "framecount",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "framecount"
+              }
+            ]
+          },
+          "src": {
+            "kind": "const",
+            "value": 0
+          },
+          "size": 16
+        },
+        {
           "op": "ret"
         }
       ]
@@ -5974,17 +6908,25 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 0,
             "size": 8,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "scrnposl",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "scrnposl"
+              }
+            ],
+            "sizeHint": "byte"
+          },
+          "size": 8
         },
         {
           "op": "out",
@@ -6030,17 +6972,24 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 4,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "palanimc",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "palanimc"
+              }
+            ]
+          },
+          "size": 16
         },
         {
           "op": "add",
@@ -6057,8 +7006,14 @@
             "isHigh": false
           },
           "b": {
-            "kind": "const",
-            "value": 0
+            "kind": "mem",
+            "exprText": "patdir",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "patdir"
+              }
+            ]
           }
         },
         {
@@ -6142,17 +7097,64 @@
           "local": true
         },
         {
-          "op": "mov",
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "palanimc",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "palanimc"
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 4,
+            "size": 16,
+            "isHigh": false
+          },
+          "size": 16
+        },
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "palanimc2",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "palanimc2"
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 4,
+            "size": 16,
+            "isHigh": false
+          },
+          "size": 16
+        },
+        {
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 4,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "palanimc",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "palanimc"
+              }
+            ]
+          },
+          "size": 16
         },
         {
           "op": "add",
@@ -6212,17 +7214,24 @@
           "target": "outpal"
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 4,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "palanimc",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "palanimc"
+              }
+            ]
+          },
+          "size": 16
         },
         {
           "op": "add",
@@ -6321,30 +7330,44 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 5,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "scrnpos",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "scrnpos"
+              }
+            ]
+          },
+          "size": 16
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 6,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "sinurot",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "sinurot"
+              }
+            ]
+          },
+          "size": 16
         },
         {
           "op": "add",
@@ -6383,6 +7406,26 @@
             "kind": "const",
             "value": 2047
           }
+        },
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "sinurot",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "sinurot"
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 6,
+            "size": 16,
+            "isHigh": false
+          },
+          "size": 16
         },
         {
           "op": "mov",
@@ -6450,17 +7493,32 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 1,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "_sin1024 + bp",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "_sin1024"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "bp"
+              }
+            ]
+          },
+          "size": 16
         },
         {
           "op": "sar",
@@ -6482,30 +7540,53 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 1,
             "size": 8,
             "isHigh": true
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "sinuspower",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "sinuspower"
+              }
+            ]
+          },
+          "size": 8
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 0,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "power0 + bx",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "power0"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "bx"
+              }
+            ],
+            "sizeHint": "byte"
+          },
+          "size": 8
         },
         {
           "op": "sub",
@@ -6522,8 +7603,14 @@
             "isHigh": false
           },
           "b": {
-            "kind": "const",
-            "value": 0
+            "kind": "mem",
+            "exprText": "scrnposl",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "scrnposl"
+              }
+            ]
           }
         },
         {
@@ -6541,8 +7628,14 @@
             "isHigh": false
           },
           "b": {
-            "kind": "const",
-            "value": 0
+            "kind": "mem",
+            "exprText": "overx",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "overx"
+              }
+            ]
           }
         },
         {
@@ -6618,15 +7711,46 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "const",
             "value": 0
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "circles + bx + 7 * 2",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "circles"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "bx"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 7
+              },
+              {
+                "type": "PUNCT",
+                "value": "*"
+              },
+              {
+                "type": "NUMBER",
+                "value": 2
+              }
+            ]
+          },
+          "size": 16
         },
         {
           "op": "sar",
@@ -6683,33 +7807,67 @@
             "isHigh": false
           },
           "b": {
-            "kind": "const",
-            "value": 0
+            "kind": "mem",
+            "exprText": "overya",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "overya"
+              }
+            ]
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "const",
             "value": 0
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "si + zzz",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "zzz"
+              }
+            ]
+          },
+          "size": 16
         },
         {
-          "op": "mov",
-          "dest": {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "di + zzz",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "di"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "zzz"
+              }
+            ]
+          },
+          "src": {
             "kind": "const",
             "value": 0
           },
-          "src": {
-            "kind": "local",
-            "index": 5,
-            "size": 16,
-            "isHigh": false
-          }
+          "size": 16
         },
         {
           "op": "pop",
@@ -6846,6 +8004,24 @@
           "target": "@@m1"
         },
         {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "patdir",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "patdir"
+              }
+            ]
+          },
+          "src": {
+            "kind": "const",
+            "value": -3
+          },
+          "size": 16
+        },
+        {
           "op": "label",
           "name": "@@m1",
           "local": true
@@ -6869,22 +8045,47 @@
           "target": "@@m2"
         },
         {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "patdir",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "patdir"
+              }
+            ]
+          },
+          "src": {
+            "kind": "const",
+            "value": -3
+          },
+          "size": 16
+        },
+        {
           "op": "label",
           "name": "@@m2",
           "local": true
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 1,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "scrnrot",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "scrnrot"
+              }
+            ]
+          },
+          "size": 16
         },
         {
           "op": "add",
@@ -6925,6 +8126,26 @@
           }
         },
         {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "scrnrot",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "scrnrot"
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          },
+          "size": 16
+        },
+        {
           "op": "shl",
           "dest": {
             "kind": "local",
@@ -6944,17 +8165,32 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 0,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "_sin1024 + bx",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "_sin1024"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "bx"
+              }
+            ]
+          },
+          "size": 16
         },
         {
           "op": "sar",
@@ -6995,6 +8231,26 @@
           }
         },
         {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "scrnx",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "scrnx"
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "size": 16
+        },
+        {
           "op": "add",
           "dest": {
             "kind": "local",
@@ -7033,17 +8289,32 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 0,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "_sin1024 + bx",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "_sin1024"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "bx"
+              }
+            ]
+          },
+          "size": 16
         },
         {
           "op": "sar",
@@ -7084,17 +8355,44 @@
           }
         },
         {
-          "op": "mov",
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "scrny",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "scrny"
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "size": 16
+        },
+        {
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 1,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "overrot",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "overrot"
+              }
+            ]
+          },
+          "size": 16
         },
         {
           "op": "add",
@@ -7135,6 +8433,26 @@
           }
         },
         {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "overrot",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "overrot"
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          },
+          "size": 16
+        },
+        {
           "op": "shl",
           "dest": {
             "kind": "local",
@@ -7154,17 +8472,32 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 0,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "_sin1024 + bx",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "_sin1024"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "bx"
+              }
+            ]
+          },
+          "size": 16
         },
         {
           "op": "sar",
@@ -7205,6 +8538,26 @@
           }
         },
         {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "overx",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "overx"
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "size": 16
+        },
+        {
           "op": "add",
           "dest": {
             "kind": "local",
@@ -7243,17 +8596,32 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 0,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "_sin1024 + bx",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "_sin1024"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "bx"
+              }
+            ]
+          },
+          "size": 16
         },
         {
           "op": "sar",
@@ -7316,17 +8684,44 @@
           }
         },
         {
-          "op": "mov",
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "overya",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "overya"
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "size": 16
+        },
+        {
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 0,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "scrnx",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "scrnx"
+              }
+            ]
+          },
+          "size": 16
         },
         {
           "op": "mov",
@@ -7363,6 +8758,26 @@
           }
         },
         {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "scrnposl",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "scrnposl"
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "size": 16
+        },
+        {
           "op": "mov",
           "dest": {
             "kind": "local",
@@ -7378,8 +8793,14 @@
         {
           "op": "mul",
           "src": {
-            "kind": "const",
-            "value": 0
+            "kind": "mem",
+            "exprText": "scrny",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "scrny"
+              }
+            ]
           }
         },
         {
@@ -7423,17 +8844,44 @@
           }
         },
         {
-          "op": "mov",
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "scrnpos",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "scrnpos"
+              }
+            ]
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "size": 16
+        },
+        {
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 1,
             "size": 16,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "scrnpos",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "scrnpos"
+              }
+            ]
+          },
+          "size": 16
         },
         {
           "op": "mov",
@@ -7541,6 +8989,23 @@
           }
         },
         {
+          "op": "cmp",
+          "a": {
+            "kind": "mem",
+            "exprText": "framecount",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "framecount"
+              }
+            ]
+          },
+          "b": {
+            "kind": "const",
+            "value": 70
+          }
+        },
+        {
           "op": "jcond",
           "cond": "cf",
           "target": "@@p1"
@@ -7548,12 +9013,24 @@
         {
           "op": "add",
           "dest": {
-            "kind": "const",
-            "value": 0
+            "kind": "mem",
+            "exprText": "powercnt",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "powercnt"
+              }
+            ]
           },
           "a": {
-            "kind": "const",
-            "value": 0
+            "kind": "mem",
+            "exprText": "powercnt",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "powercnt"
+              }
+            ]
           },
           "b": {
             "kind": "const",
@@ -7561,9 +9038,61 @@
           }
         },
         {
+          "op": "cmp",
+          "a": {
+            "kind": "mem",
+            "exprText": "powercnt",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "powercnt"
+              }
+            ]
+          },
+          "b": {
+            "kind": "const",
+            "value": 16
+          }
+        },
+        {
           "op": "jcond",
           "cond": "cf",
           "target": "@@p1"
+        },
+        {
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "powercnt",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "powercnt"
+              }
+            ]
+          },
+          "src": {
+            "kind": "const",
+            "value": 0
+          },
+          "size": 16
+        },
+        {
+          "op": "cmp",
+          "a": {
+            "kind": "mem",
+            "exprText": "sinuspower",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "sinuspower"
+              }
+            ]
+          },
+          "b": {
+            "kind": "const",
+            "value": 15
+          }
         },
         {
           "op": "jcond",
@@ -7573,12 +9102,24 @@
         {
           "op": "add",
           "dest": {
-            "kind": "const",
-            "value": 0
+            "kind": "mem",
+            "exprText": "sinuspower",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "sinuspower"
+              }
+            ]
           },
           "a": {
-            "kind": "const",
-            "value": 0
+            "kind": "mem",
+            "exprText": "sinuspower",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "sinuspower"
+              }
+            ]
           },
           "b": {
             "kind": "const",
@@ -7593,12 +9134,24 @@
         {
           "op": "add",
           "dest": {
-            "kind": "const",
-            "value": 0
+            "kind": "mem",
+            "exprText": "framecount",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "framecount"
+              }
+            ]
           },
           "a": {
-            "kind": "const",
-            "value": 0
+            "kind": "mem",
+            "exprText": "framecount",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "framecount"
+              }
+            ]
           },
           "b": {
             "kind": "const",
@@ -7862,15 +9415,22 @@
           "target": "do_interference"
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "const",
             "value": 0
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "memseg",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "memseg"
+              }
+            ]
+          },
+          "size": 16
         },
         {
           "op": "mov",
@@ -8607,43 +10167,152 @@
           }
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 0,
             "size": 8,
             "isHigh": false
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "si + ( zzz + 0 ) * 4 + zpl",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "PUNCT",
+                "value": "("
+              },
+              {
+                "type": "IDENT",
+                "value": "zzz"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 0
+              },
+              {
+                "type": "PUNCT",
+                "value": ")"
+              },
+              {
+                "type": "PUNCT",
+                "value": "*"
+              },
+              {
+                "type": "NUMBER",
+                "value": 4
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "zpl"
+              }
+            ]
+          },
+          "size": 8
         },
         {
-          "op": "mov",
+          "op": "load",
           "dest": {
             "kind": "local",
             "index": 0,
             "size": 8,
             "isHigh": true
           },
-          "src": {
-            "kind": "const",
-            "value": 0
-          }
+          "addr": {
+            "kind": "mem",
+            "exprText": "si + ( zzz + 1 ) * 4 + zpl",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "si"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "PUNCT",
+                "value": "("
+              },
+              {
+                "type": "IDENT",
+                "value": "zzz"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "NUMBER",
+                "value": 1
+              },
+              {
+                "type": "PUNCT",
+                "value": ")"
+              },
+              {
+                "type": "PUNCT",
+                "value": "*"
+              },
+              {
+                "type": "NUMBER",
+                "value": 4
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "zpl"
+              }
+            ]
+          },
+          "size": 8
         },
         {
-          "op": "mov",
-          "dest": {
-            "kind": "const",
-            "value": 0
+          "op": "store",
+          "addr": {
+            "kind": "mem",
+            "exprText": "di + zzz",
+            "exprTokens": [
+              {
+                "type": "IDENT",
+                "value": "di"
+              },
+              {
+                "type": "PUNCT",
+                "value": "+"
+              },
+              {
+                "type": "IDENT",
+                "value": "zzz"
+              }
+            ]
           },
           "src": {
             "kind": "local",
-            "index": 5,
+            "index": 0,
             "size": 16,
             "isHigh": false
-          }
+          },
+          "size": 16
         },
         {
           "op": "pop",

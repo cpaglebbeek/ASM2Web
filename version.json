@@ -1,9 +1,9 @@
 {
-  "version": "0.4.0-Wilkes",
-  "codename": "Wilkes",
-  "codenameSource": "Maurice Wilkes (1913-2010), schreef EDSAC en bedacht microprogrammering (1951). Hier voor audio-bridge + 2e scene + P-DET-01.",
-  "released": "2026-06-08",
-  "phase": "phase-6-audio-starfield-golden-frame",
+  "version": "0.5.0-Stibitz",
+  "codename": "Stibitz",
+  "codenameSource": "George Stibitz (1904-1995), bouwde de Complex Number Calculator (1940) en pionierde relais-computing + remote job entry. Hier voor de x86 segment:offset memory-tracker (exacte adres-semantiek).",
+  "released": "2026-06-07",
+  "phase": "phase-7-segment-tracker",
   "completed": [
     "fase 0 skeleton",
     "fase 1 tokenizer+parser+symtab",
@@ -18,20 +18,25 @@
     "fase 5 TECHNO end-to-end gelinkt: KOEA+KOEB+POLYCLIP samen in 59699 B WASM, 27 exports, build-determinisme bewezen",
     "fase 5 KOE.C driver in JS rewritten (~150 regels, orchestrator)",
     "fase 5 TECHNO browser-runtime live op /techno/ — frame-loop + canvas + driver",
-    "audio-engine basis (silent-mode fallback, deterministic music-row counter)"
+    "audio-engine basis (silent-mode fallback, deterministic music-row counter)",
+    "fase 7 x86 segment:offset memory-tracker — `mov ax,0a000h / mov es,ax` herkend als segment-base const-load; ES:[DI]/DS:[SI]/byte-ptr resolveren naar linear 0xA0000+offset; data-symbooltabel + recursieve effectief-adres-evaluatie (emitEA)",
+    "fase 7 BUGFIX (geel/logisch): tokenizer merget `es:` tot één LABEL-token; parser herkende segment-override alleen in IDENT+':'-vorm -> segref viel terug op raw-operand. Fix: segreg-genaamde LABEL midden in operand = segment-override. + byte/word ptr sizeHint propageert nu naar inner mem.",
+    "fase 7 seg-test.asm: zelf-bevattende proof van segment-tracker (3/3 pixels byte-exact op 0xA0000, regressietest in suite)",
+    "fase 7 TUNNELI scene geport (build schoon, 39 ops, 0 unknown) — rendert beperkt door zelfmodificerende code-afhankelijkheid (eerlijk gedocumenteerd)",
+    "web-demo demo-selector (?demo=) voor hello-pixel / seg-test / starfield / rot"
   ],
   "open": [
     "chiptune3 (libopenmpt) vendor + AudioWorklet voor echte S3M-playback",
-    "exacte x86-semantiek (segment:offset memory, zelfmodificerende code)",
+    "zelfmodificerende code-detectie/emulatie (TUNNELI @yad-patch) — nu nog approximatie",
     "gouden-frame test (PNG-SHA snapshots) voor P-DET-01 vol bewijs op TECHNO",
-    "andere SR-scenes (STARFIELD, GLENZ, DOTS, TUNNELI, ...)"
+    "andere SR-scenes (GLENZ, DOTS, TWIST, GRID, WATER, ...)"
   ],
   "miniDemoLive": true,
   "technoCompiles": true,
   "technoPlayable": false,
   "determinismProven": {
     "buildDeterminism":  "yes — sha256(.wasm) constant tussen runs voor ALLE demos",
-    "runtimeDeterminism": "yes — mini-demo + ROT.ASM byte-exact reproduceerbaar",
+    "runtimeDeterminism": "yes — mini-demo + ROT.ASM + seg-test byte-exact reproduceerbaar (14/14 tests groen)",
     "audioDeterminism":  "n.v.t. — geen audio nog geïntegreerd"
   }
 }

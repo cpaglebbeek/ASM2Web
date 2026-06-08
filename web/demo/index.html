@@ -142,6 +142,13 @@
         <div class="canvas-box">
           <canvas id="screen" width="320" height="200"></canvas>
           <div class="controls">
+            <label for="demo-select" style="font-size:0.85rem;">Demo:</label>
+            <select id="demo-select" style="background:#11151c;color:inherit;border:1px solid #2a3140;border-radius:4px;padding:0.3rem;">
+              <option value="hello-pixel">hello-pixel</option>
+              <option value="seg-test">seg-test (es:[di] / ds:[si])</option>
+              <option value="starfield">starfield</option>
+              <option value="rot">rot</option>
+            </select>
             <button id="btn-run">Run main()</button>
             <button id="btn-reload">Reload WASM</button>
             <button id="btn-clear">Clear framebuffer</button>

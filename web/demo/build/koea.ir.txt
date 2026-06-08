@@ -3,7 +3,7 @@
 
 function __init (near) locals=12
   .l1:
-  r0.l = 0x0
+  r0.l = load.u8 [si]
   r4 = add r4, 0x1
   io.out r3, r0.l
   r2 = sub r2, 0x1
@@ -19,6 +19,7 @@ function _asminit (far) locals=12
   push r5
   push 0x0
   r0 = load.u16 [bp + 8]
+  store.u16 [_vbufseg], r0
   call blitinit
   pop 0x0
   pop r5
@@ -62,7 +63,7 @@ function blitinit (near) locals=12
   r3 = 0x28
   r0 = xor r0, r0
   .@@l1:
-  0x0 = r1
+  store.u16 [bx], r0
   r0 = add r0, r3
   r1 = add r1, 0x2
   loop_dec_cx .@@l1
@@ -78,10 +79,10 @@ function blitinit (near) locals=12
   r0.h = xor r0.h, r3.h
   .l2:
   r3.h = shr r3.h, 0x1
-  0x0 = r1
+  store.u8 [bx], r0.h
   r0.h = ror r0.h, 0x1
   r0.h = and r0.h, 0x80
-  0x0 = r1
+  store.u8 [bx + 1], r0.h
   r1 = add r1, 0x2
   r0.l = add r0.l, 0x1
   loop_dec_cx .@@1
@@ -93,14 +94,14 @@ function blit16 (near) locals=12
   jump .@@1
   .@@1:
   r3.h = xor r3.h, r3.h
-  r1.l = 0x0
+  r1.l = load.u8 [si + zzz]
   r1.l = xor r1.l, r3.h
-  r0 = 0x0
-  r1.l = 0x0
+  r0 = load.u16 [_blit16t + ebx * 2]
+  r1.l = load.u8 [si + 1 + zzz]
   r1.l = xor r1.l, r0.h
-  r3 = 0x0
+  r3 = load.u16 [_blit16t + ebx * 2]
   r0.h = r3.l
-  0x0 = r5
+  store.u16 [di + zzz], r0
   r4 = add r4, 0x28
   r5 = add r5, 0x28
   r2 = sub r2, 0x1
@@ -115,14 +116,14 @@ function blit16b (near) locals=12
   jump .@@1
   .@@1:
   r3.h = xor r3.h, r3.h
-  r1.l = 0x0
+  r1.l = load.u8 [si + zzz]
   r1.l = xor r1.l, r3.h
-  r0 = 0x0
-  r1.l = 0x0
+  r0 = load.u16 [_blit16t + ebx * 2]
+  r1.l = load.u8 [si + 1 + zzz]
   r1.l = xor r1.l, r0.h
-  r3 = 0x0
+  r3 = load.u16 [_blit16t + ebx * 2]
   r0.h = r3.l
-  0x0 = r5
+  store.u16 [di + zzz], r0
   r4 = add r4, 0x28
   r5 = add r5, 0x50
   r2 = sub r2, 0x1
@@ -145,21 +146,21 @@ function drawline (near) locals=12
   .@@1:
   r2 = sub r2, r1
   r5 = r2
-  r4 = 0x0
-  r6 = 0x0
+  r4 = load.u16 [_rows + ebx * 2]
+  r6 = load.u16 [clipleft]
   r6 = or r6, r6
   jzf .@@nl
   push r4
   jge_s .@@ndn
   .@@nup:
   r4 = add r4, 0x28
-  0x0 = xor 0x0, r4
+  [si] = xor [si], 0x80
   r6 = add r6, 0x1
   jnzf .@@nup
   jump .@@nl2
   .@@ndn:
   r4 = sub r4, 0x28
-  0x0 = xor 0x0, r4
+  [si] = xor [si], 0x80
   r6 = sub r6, 0x1
   jnzf .@@ndn
   .@@nl2:
@@ -181,7 +182,7 @@ function drawline (near) locals=12
   r1 = sub 0x0, r1
   jump .?
   .l1:
-  0x0 = xor 0x0, r4
+  [si] = xor [si], @mask
   r4 = add r4, 0x28
   r2 = sub r2, 0x1
   jzf .@@0
@@ -228,7 +229,7 @@ function drawline (near) locals=12
   r1 = sub 0x0, r1
   jump .?
   .l1:
-  0x0 = xor 0x0, r4
+  [si] = xor [si], @mask
   r4 = add r4, 0x28
   r2 = sub r2, 0x1
   jzf .@@0
@@ -281,31 +282,36 @@ function _asmbox (far) locals=12
   push r5
   push 0x0
   0x0 = load.u16 [bp + 6]
+  store.u32 [polyixy + 0], 0x0
   0x0 = load.u16 [bp + 10]
+  store.u32 [polyixy + 4], 0x0
   0x0 = load.u16 [bp + 14]
+  store.u32 [polyixy + 8], 0x0
   0x0 = load.u16 [bp + 18]
+  store.u32 [polyixy + 12], 0x0
+  store.u16 [polyisides], 0x4
   call clipanypoly
-  0x0 = 0x0
+  0x0 = load.u16 [_vbufseg]
   r4 = @OFFSET
-  r5 = 0x0
+  r5 = load.u16 [polysides]
   r5 = or r5, r5
   jzf .@@0
   r5 = sub r5, 0x1
   jzf .@@2
   .@@1:
-  r0 = 0x0
-  r1 = 0x0
-  r3 = 0x0
-  r2 = 0x0
+  r0 = load.u16 [si + 0]
+  r1 = load.u16 [si + 2]
+  r3 = load.u16 [si + 4]
+  r2 = load.u16 [si + 6]
   call drawline
   r4 = add r4, 0x4
   r5 = sub r5, 0x1
   jnzf .@@1
   .@@2:
-  r0 = 0x0
-  r1 = 0x0
-  r3 = 0x0
-  r2 = 0x0
+  r0 = load.u16 [si + 0]
+  r1 = load.u16 [si + 2]
+  r3 = load.u16 [polyxy + 0]
+  r2 = load.u16 [polyxy + 2]
   call drawline
   .@@0:
   pop 0x0
@@ -323,8 +329,8 @@ function bltline (near) locals=12
   .@@1:
   r0.l = r2.h
   io.out r3, r0.l
-  0x0 = 0x0
-  0x0 = r5
+  0x0 = load.u16 [si + zzz]
+  store.u16 [di + zzz], 0x0
   r4 = add r4, 0x28
   r2.h = shl r2.h, 0x1
   r2.l = sub r2.l, 0x1
@@ -342,18 +348,18 @@ function bltlinerev (near) locals=12
   .@@1:
   r0.l = r2.h
   io.out r3, r0.l
-  r1.l = 0x0
-  r0.l = 0x0
+  r1.l = load.u8 [si + 36 - zzz]
+  r0.l = load.u8 [flip8 + bx]
   0x0 = rol 0x0, 0x8
-  r1.l = 0x0
-  r0.l = 0x0
+  r1.l = load.u8 [si + 37 - zzz]
+  r0.l = load.u8 [flip8 + bx]
   0x0 = rol 0x0, 0x8
-  r1.l = 0x0
-  r0.l = 0x0
+  r1.l = load.u8 [si + 38 - zzz]
+  r0.l = load.u8 [flip8 + bx]
   0x0 = rol 0x0, 0x8
-  r1.l = 0x0
-  r0.l = 0x0
-  0x0 = r5
+  r1.l = load.u8 [si + 39 - zzz]
+  r0.l = load.u8 [flip8 + bx]
+  store.u16 [di + zzz], 0x0
   r4 = add r4, 0x28
   r2.h = shl r2.h, 0x1
   r2.l = sub r2.l, 0x1
@@ -407,10 +413,10 @@ function rotate1 (near) locals=12
   jump .@@2
   .@@1:
   pop r0
-  r0 = 0x0
+  r0 = load.u16 [si + zzz]
   r0.l = rcr r0.l, 0x1
   r0.h = rcr r0.h, 0x1
-  0x0 = r4
+  store.u16 [si + zzz], r0
   .@@2:
   push r0
   r4 = add r4, @zzz
@@ -429,6 +435,8 @@ function init_interference (near) locals=12
   r0.h = 0x48
   r1 = 0x4000
   int 0x21
+  store.u16 [memseg], r0
+  store.u16 [circles + zzz], r0
   r0 = add r0, 0x800
   r0 = @SEG
   0x0 = r0
@@ -464,15 +472,15 @@ function init_interference (near) locals=12
   r0 = 0x204
   io.out r3, r0
   r2 = 0x190
-  0x0 = 0x0
+  0x0 = load.u16 [circles + 0]
   r0 = 0xa000
   0x0 = r0
   r2 = 0x7d00
   r4 = xor r4, r4
   r5 = xor r5, r5
   nop ; rep-prefix
-  0x0 = 0x0
-  0x0 = 0x0
+  0x0 = load.u16 [circles + zzz]
+  0x0 = load.u16 [circles + zzz + 2]
   call rotate1
   r0 = @SEG
   0x0 = r0
@@ -504,6 +512,7 @@ function init_interference (near) locals=12
   r4 = add r4, 0x28
   pop r2
   loop_dec_cx .@@10
+  store.u16 [framecount], 0x0
   ret
 
 function do_interference (near) locals=12
@@ -512,12 +521,12 @@ function do_interference (near) locals=12
   r3 = 0x3c0
   r0.l = 0x13
   io.out r3, r0.l
-  r0.l = 0x0
+  r0.l = load.u8 [scrnposl]
   io.out r3, r0.l
   r0.l = 0x20
   io.out r3, r0.l
-  r4 = 0x0
-  r4 = add r4, 0x0
+  r4 = load.u16 [palanimc]
+  r4 = add r4, [patdir]
   cmp r4, 0x0
   jge_s .@@a11
   r4 = 0x8
@@ -526,12 +535,14 @@ function do_interference (near) locals=12
   jcf .@@a1
   r4 = xor r4, r4
   .@@a1:
-  r4 = 0x0
+  store.u16 [palanimc], r4
+  store.u16 [palanimc2], r4
+  r4 = load.u16 [palanimc]
   r4 = add r4, @OFFSET
   r0.l = xor r0.l, r0.l
   r2 = 0x8
   call outpal
-  r4 = 0x0
+  r4 = load.u16 [palanimc]
   r4 = add r4, @OFFSET
   r0.l = 0x8
   r2 = 0x8
@@ -539,31 +550,32 @@ function do_interference (near) locals=12
   r0 = 0xa000
   0x0 = r0
   r4 = xor r4, r4
-  r5 = 0x0
-  r6 = 0x0
+  r5 = load.u16 [scrnpos]
+  r6 = load.u16 [sinurot]
   r6 = add r6, 0x7
   r6 = and r6, 0x7ff
+  store.u16 [sinurot], r6
   r2 = 0xc8
   .@@cp1:
   push r4
   r6 = add r6, 0x9
   r6 = and r6, 0x7ff
-  r1 = 0x0
+  r1 = load.u16 [_sin1024 + bp]
   r1 = sar r1, 0x3
-  r1.h = 0x0
-  r0 = 0x0
-  r0 = sub r0, 0x0
-  r0 = add r0, 0x0
+  r1.h = load.u8 [sinuspower]
+  r0 = load.u8 [power0 + bx]
+  r0 = sub r0, [scrnposl]
+  r0 = add r0, [overx]
   r1 = r0
   r1 = and r1, 0x7
   r1 = shl r1, 0x1
   r1 = sub 0x0, r1
-  0x0 = 0x0
+  0x0 = load.u16 [circles + bx + 7 * 2]
   r0 = sar r0, 0x3
   r4 = add r4, r0
-  r4 = add r4, 0x0
-  0x0 = 0x0
-  0x0 = r5
+  r4 = add r4, [overya]
+  0x0 = load.u16 [si + zzz]
+  store.u16 [di + zzz], 0x0
   pop r4
   r5 = add r5, 0x50
   r4 = add r4, 0x50
@@ -576,44 +588,54 @@ function do_interference (near) locals=12
   r1 = and r1, 0x7
   cmp r1, 0x0
   jnzf .@@m1
+  store.u16 [patdir], 0xfffffffd
   .@@m1:
   cmp r1, 0x4
   jnzf .@@m2
+  store.u16 [patdir], 0xfffffffd
   .@@m2:
-  r1 = 0x0
+  r1 = load.u16 [scrnrot]
   r1 = add r1, 0x5
   r1 = and r1, 0x3ff
+  store.u16 [scrnrot], r1
   r1 = shl r1, 0x1
-  r0 = 0x0
+  r0 = load.u16 [_sin1024 + bx]
   r0 = sar r0, 0x2
   r0 = add r0, 0xa0
+  store.u16 [scrnx], r0
   r1 = add r1, 0x100
   r1 = and r1, 0x400
-  r0 = 0x0
+  r0 = load.u16 [_sin1024 + bx]
   r0 = sar r0, 0x2
   r0 = add r0, 0x64
-  r1 = 0x0
+  store.u16 [scrny], r0
+  r1 = load.u16 [overrot]
   r1 = add r1, 0x7
   r1 = and r1, 0x3ff
+  store.u16 [overrot], r1
   r1 = shl r1, 0x1
-  r0 = 0x0
+  r0 = load.u16 [_sin1024 + bx]
   r0 = sar r0, 0x2
   r0 = add r0, 0xa0
+  store.u16 [overx], r0
   r1 = add r1, 0x100
   r1 = and r1, 0x400
-  r0 = 0x0
+  r0 = load.u16 [_sin1024 + bx]
   r0 = sar r0, 0x2
   r0 = add r0, 0x64
   r1 = 0x50
   mul r1
-  r0 = 0x0
+  store.u16 [overya], r0
+  r0 = load.u16 [scrnx]
   r1 = r0
   r0 = and r0, 0x7
+  store.u16 [scrnposl], r0
   r0 = 0x50
-  mul 0x0
+  mul [scrny]
   r1 = sar r1, 0x3
   r0 = add r0, r1
-  r1 = 0x0
+  store.u16 [scrnpos], r0
+  r1 = load.u16 [scrnpos]
   r3 = 0x3d4
   r0.l = 0xc
   r0.h = r1.h
@@ -621,13 +643,17 @@ function do_interference (near) locals=12
   r0.l = add r0.l, 0x1
   r0.h = r1.l
   io.out r3, r0
+  cmp [framecount], 0x46
   jcf .@@p1
-  0x0 = add 0x0, 0x1
+  [powercnt] = add [powercnt], 0x1
+  cmp [powercnt], 0x10
   jcf .@@p1
+  store.u16 [powercnt], 0x0
+  cmp [sinuspower], 0xf
   jncf .@@p1
-  0x0 = add 0x0, 0x1
+  [sinuspower] = add [sinuspower], 0x1
   .@@p1:
-  0x0 = add 0x0, 0x1
+  [framecount] = add [framecount], 0x1
   r0 = 0x0
   r1 = 0x9
   int 0xfc
@@ -660,7 +686,7 @@ function _dointerference (far) locals=12
   push r5
   push 0x0
   call do_interference
-  0x0 = 0x0
+  0x0 = load.u16 [memseg]
   r0.h = 0x49
   int 0x21
   pop 0x0
@@ -722,9 +748,9 @@ function _lineblit (far) locals=12
   r3 = 0x3c4
   r0 = 0x2
   io.out r3, r0
-  r0.l = 0x0
-  r0.h = 0x0
-  0x0 = r5
+  r0.l = load.u8 [si + ( zzz + 0 ) * 4 + zpl]
+  r0.h = load.u8 [si + ( zzz + 1 ) * 4 + zpl]
+  store.u16 [di + zzz], r0
   pop 0x0
   pop r5
   pop r4
