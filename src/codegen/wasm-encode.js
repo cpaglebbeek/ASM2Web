@@ -245,6 +245,20 @@ export function buildModule(spec) {
     out.bytes(section(5, p.out));
   }
 
+  // 6. Global section. Each global: i32 valtype, mutability, i32.const init.
+  if (spec.globals && spec.globals.length) {
+    const p = new Bytes();
+    p.uleb(spec.globals.length);
+    for (const g of spec.globals) {
+      p.u8(g.type ?? ValType.i32);
+      p.u8(g.mutable === false ? 0x00 : 0x01);
+      p.u8(Op.i32_const);
+      p.bytes(sleb128(g.init | 0));
+      p.u8(Op.end);
+    }
+    out.bytes(section(6, p.out));
+  }
+
   // 7. Export section.
   if (spec.exports && spec.exports.length) {
     const p = new Bytes();
@@ -317,6 +331,8 @@ export class InstrBuilder {
   localGet(i) { this.emit(Op.local_get); this.uleb(i); return this; }
   localSet(i) { this.emit(Op.local_set); this.uleb(i); return this; }
   localTee(i) { this.emit(Op.local_tee); this.uleb(i); return this; }
+  globalGet(i){ this.emit(Op.global_get); this.uleb(i); return this; }
+  globalSet(i){ this.emit(Op.global_set); this.uleb(i); return this; }
   call(i)     { this.emit(Op.call); this.uleb(i); return this; }
   ret()       { this.emit(Op.return); return this; }
   add()       { this.emit(Op.i32_add); return this; }

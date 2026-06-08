@@ -9,7 +9,7 @@
     {
       "name": "main",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "mov",
@@ -27,8 +27,9 @@
         {
           "op": "mov",
           "dest": {
-            "kind": "const",
-            "value": 0
+            "kind": "local",
+            "index": 12,
+            "size": 16
           },
           "src": {
             "kind": "local",
@@ -149,8 +150,9 @@
         {
           "op": "mov",
           "dest": {
-            "kind": "const",
-            "value": 0
+            "kind": "local",
+            "index": 13,
+            "size": 16
           },
           "src": {
             "kind": "local",

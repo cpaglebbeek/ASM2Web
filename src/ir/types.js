@@ -41,11 +41,21 @@
  */
 "use strict";
 
+// x86 machine registers are modeled as persistent WASM *globals* (not per-function
+// locals), so a value set in one exported/internal call survives into the next.
+// The IR refers to them by these fixed indices; codegen routes index < NUM_FIXED_LOCALS
+// to a module global, and index >= NUM_FIXED_LOCALS to a per-function scratch local.
 export const LOCAL_AX = 0, LOCAL_BX = 1, LOCAL_CX = 2, LOCAL_DX = 3;
 export const LOCAL_SI = 4, LOCAL_DI = 5, LOCAL_BP = 6, LOCAL_SP = 7;
 export const LOCAL_ZF = 8, LOCAL_CF = 9, LOCAL_SF = 10, LOCAL_OF = 11;
-export const LOCAL_SCRATCH_START = 12;
-export const NUM_FIXED_LOCALS = 12;
+// Segment registers (paragraph values). Written by `mov es,ax` etc.
+export const LOCAL_ES = 12, LOCAL_DS = 13, LOCAL_CS = 14, LOCAL_SS = 15;
+export const LOCAL_SCRATCH_START = 16;
+export const NUM_FIXED_LOCALS = 16;
+
+export const SREG_TO_LOCAL = Object.freeze({
+  es: LOCAL_ES, ds: LOCAL_DS, cs: LOCAL_CS, ss: LOCAL_SS,
+});
 
 export const REG_TO_LOCAL = Object.freeze({
   ax: LOCAL_AX, bx: LOCAL_BX, cx: LOCAL_CX, dx: LOCAL_DX,

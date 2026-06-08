@@ -9,7 +9,7 @@
     {
       "name": "poly",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "mov",
@@ -20,15 +20,17 @@
             "isHigh": false
           },
           "src": {
-            "kind": "const",
-            "value": 0
+            "kind": "local",
+            "index": 14,
+            "size": 16
           }
         },
         {
           "op": "mov",
           "dest": {
-            "kind": "const",
-            "value": 0
+            "kind": "local",
+            "index": 13,
+            "size": 16
           },
           "src": {
             "kind": "local",
@@ -60,8 +62,9 @@
         {
           "op": "mov",
           "dest": {
-            "kind": "const",
-            "value": 0
+            "kind": "local",
+            "index": 12,
+            "size": 16
           },
           "src": {
             "kind": "local",
@@ -82,7 +85,7 @@
     {
       "name": "polyf",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "mov",
@@ -93,8 +96,9 @@
             "isHigh": false
           },
           "src": {
-            "kind": "const",
-            "value": 0
+            "kind": "local",
+            "index": 14,
+            "size": 16
           }
         },
         {
@@ -113,8 +117,9 @@
         {
           "op": "mov",
           "dest": {
-            "kind": "const",
-            "value": 0
+            "kind": "local",
+            "index": 13,
+            "size": 16
           },
           "src": {
             "kind": "local",
@@ -3345,7 +3350,7 @@
     {
       "name": "polyn_disp",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "mov",
@@ -3624,7 +3629,7 @@
     {
       "name": "hline1",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "sub",
@@ -4737,7 +4742,7 @@
     {
       "name": "random",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "push",
@@ -4833,7 +4838,7 @@
     {
       "name": "setborder",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "push",
@@ -4945,7 +4950,7 @@
     {
       "name": "init_stars",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "mov",
@@ -5228,8 +5233,9 @@
         {
           "op": "mov",
           "dest": {
-            "kind": "const",
-            "value": 0
+            "kind": "local",
+            "index": 12,
+            "size": 16
           },
           "src": {
             "kind": "local",
@@ -5687,15 +5693,17 @@
             "isHigh": false
           },
           "src": {
-            "kind": "const",
-            "value": 0
+            "kind": "local",
+            "index": 14,
+            "size": 16
           }
         },
         {
           "op": "mov",
           "dest": {
-            "kind": "const",
-            "value": 0
+            "kind": "local",
+            "index": 12,
+            "size": 16
           },
           "src": {
             "kind": "local",
@@ -6309,7 +6317,7 @@
     {
       "name": "deinit_stars",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "mov",
@@ -6356,7 +6364,7 @@
     {
       "name": "fetch4ax",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "shl",
@@ -6537,7 +6545,7 @@
     {
       "name": "fetch4ax2",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "shl",
@@ -6737,7 +6745,7 @@
     {
       "name": "fetch4ax3",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "shl",
@@ -6937,7 +6945,7 @@
     {
       "name": "clearsbu",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "mov",
@@ -6995,8 +7003,9 @@
         {
           "op": "mov",
           "dest": {
-            "kind": "const",
-            "value": 0
+            "kind": "local",
+            "index": 12,
+            "size": 16
           },
           "src": {
             "kind": "local",
@@ -7107,7 +7116,7 @@
     {
       "name": "starfetch0",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "load",
@@ -7194,8 +7203,9 @@
         {
           "op": "mov",
           "dest": {
-            "kind": "const",
-            "value": 0
+            "kind": "local",
+            "index": 12,
+            "size": 16
           },
           "src": {
             "kind": "local",
@@ -7212,7 +7222,7 @@
     {
       "name": "starfetch1",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "load",
@@ -7297,7 +7307,7 @@
     {
       "name": "starfetch2",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "load",
@@ -7382,7 +7392,7 @@
     {
       "name": "staradd",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "mov",
@@ -7393,15 +7403,17 @@
             "isHigh": false
           },
           "src": {
-            "kind": "const",
-            "value": 0
+            "kind": "local",
+            "index": 14,
+            "size": 16
           }
         },
         {
           "op": "mov",
           "dest": {
-            "kind": "const",
-            "value": 0
+            "kind": "local",
+            "index": 13,
+            "size": 16
           },
           "src": {
             "kind": "local",
@@ -8475,7 +8487,7 @@
     {
       "name": "staradd2",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "call",
@@ -8490,15 +8502,17 @@
             "isHigh": false
           },
           "src": {
-            "kind": "const",
-            "value": 0
+            "kind": "local",
+            "index": 14,
+            "size": 16
           }
         },
         {
           "op": "mov",
           "dest": {
-            "kind": "const",
-            "value": 0
+            "kind": "local",
+            "index": 13,
+            "size": 16
           },
           "src": {
             "kind": "local",
@@ -9728,7 +9742,7 @@
     {
       "name": "risetext",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "load",
@@ -10133,8 +10147,9 @@
         {
           "op": "mov",
           "dest": {
-            "kind": "const",
-            "value": 0
+            "kind": "local",
+            "index": 13,
+            "size": 16
           },
           "src": {
             "kind": "local",
@@ -11128,7 +11143,7 @@
     {
       "name": "do_stars",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "label",
@@ -12728,15 +12743,17 @@
             "isHigh": false
           },
           "src": {
-            "kind": "const",
-            "value": 0
+            "kind": "local",
+            "index": 12,
+            "size": 16
           }
         },
         {
           "op": "mov",
           "dest": {
-            "kind": "const",
-            "value": 0
+            "kind": "local",
+            "index": 13,
+            "size": 16
           },
           "src": {
             "kind": "local",
@@ -12768,8 +12785,9 @@
         {
           "op": "mov",
           "dest": {
-            "kind": "const",
-            "value": 0
+            "kind": "local",
+            "index": 12,
+            "size": 16
           },
           "src": {
             "kind": "local",
@@ -13237,8 +13255,9 @@
         {
           "op": "mov",
           "dest": {
-            "kind": "const",
-            "value": 0
+            "kind": "local",
+            "index": 13,
+            "size": 16
           },
           "src": {
             "kind": "local",
@@ -13687,8 +13706,9 @@
         {
           "op": "mov",
           "dest": {
-            "kind": "const",
-            "value": 0
+            "kind": "local",
+            "index": 13,
+            "size": 16
           },
           "src": {
             "kind": "local",
@@ -14073,7 +14093,7 @@
     {
       "name": "__init",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "mov",
@@ -14143,8 +14163,9 @@
             "isHigh": false
           },
           "src": {
-            "kind": "const",
-            "value": 0
+            "kind": "local",
+            "index": 12,
+            "size": 16
           }
         },
         {
@@ -14268,7 +14289,7 @@
     {
       "name": "resetmode13",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "mov",
@@ -14595,7 +14616,7 @@
     {
       "name": "outpal",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "mov",
@@ -14634,15 +14655,17 @@
             "isHigh": false
           },
           "src": {
-            "kind": "const",
-            "value": 0
+            "kind": "local",
+            "index": 14,
+            "size": 16
           }
         },
         {
           "op": "mov",
           "dest": {
-            "kind": "const",
-            "value": 0
+            "kind": "local",
+            "index": 13,
+            "size": 16
           },
           "src": {
             "kind": "local",
@@ -14682,7 +14705,7 @@
     {
       "name": "waitb",
       "attr": "near",
-      "locals": 12,
+      "locals": 16,
       "ops": [
         {
           "op": "mov",

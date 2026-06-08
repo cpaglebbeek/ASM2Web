@@ -9,7 +9,7 @@
 
 import {
   newModule, newFunction, addOp, allocScratch,
-  REG_TO_LOCAL, REG_IS_HIGH_BYTE, REG_SIZE, NUM_FIXED_LOCALS,
+  REG_TO_LOCAL, REG_IS_HIGH_BYTE, REG_SIZE, NUM_FIXED_LOCALS, SREG_TO_LOCAL,
   LOCAL_AX, LOCAL_BX, LOCAL_CX, LOCAL_DX, LOCAL_SI, LOCAL_DI, LOCAL_BP, LOCAL_SP,
   LOCAL_ZF, LOCAL_CF, LOCAL_SF, LOCAL_OF,
 } from "./types.js";
@@ -230,6 +230,8 @@ export function emitIR(ast, opts = {}) {
   function operandToValue(fn, op) {
     if (!op) return { kind: "const", value: 0 };
     if (op.kind === "reg") {
+      const sr = SREG_TO_LOCAL[op.name];
+      if (sr !== undefined) return { kind: "local", index: sr, size: 16 };
       const li = REG_TO_LOCAL[op.name];
       if (li === undefined) return { kind: "const", value: 0 };
       return { kind: "local", index: li, size: REG_SIZE[op.name] || 16, isHigh: !!REG_IS_HIGH_BYTE[op.name] };

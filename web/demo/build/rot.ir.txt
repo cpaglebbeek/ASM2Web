@@ -1,11 +1,11 @@
 ; IR module: rot
 ; functions: 3, data: 0, ops: 12, unknown: 0
 
-function __init (near) locals=12
+function __init (near) locals=16
   r0 = 0x4c00
   int 0x21
 
-function waitb (near) locals=12
+function waitb (near) locals=16
   r3 = 0x3da
   .@@1:
   r0.l = io.in r3
@@ -17,6 +17,6 @@ function waitb (near) locals=12
   jnzf .@@2
   ret
 
-function rol (near) locals=12
+function rol (near) locals=16
   call waitb
   ret

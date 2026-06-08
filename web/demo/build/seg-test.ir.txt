@@ -1,9 +1,9 @@
 ; IR module: seg-test
 ; functions: 1, data: 0, ops: 14, unknown: 0
 
-function main (near) locals=12
+function main (near) locals=16
   r0 = 0xa000
-  0x0 = r0
+  r12 = r0
   r5 = 0xc8a
   r0.l = 0xf
   store.u8 [di], r0.l
@@ -11,7 +11,7 @@ function main (near) locals=12
   r0.l = 0x1f
   store.u8 [di], r0.l
   r0 = 0xa000
-  0x0 = r0
+  r13 = r0
   r4 = 0x64
   r0.l = 0x7
   store.u8 [si], r0.l

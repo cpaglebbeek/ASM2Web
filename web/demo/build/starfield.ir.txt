@@ -1,18 +1,18 @@
 ; IR module: starfield
 ; functions: 23, data: 60, ops: 969, unknown: 0
 
-function poly (near) locals=12
-  r0 = 0x0
-  0x0 = r0
+function poly (near) locals=16
+  r0 = r14
+  r13 = r0
   r0 = load.u16 [starvram]
-  0x0 = r0
+  r12 = r0
   jump .polyf
   ret
 
-function polyf (near) locals=12
-  r0 = 0x0
+function polyf (near) locals=16
+  r0 = r14
   0x0 = r0
-  0x0 = r0
+  r13 = r0
   r2 = load.u16 [polysides]
   r0 = r2
   r0 = shl r0, 0x4
@@ -237,7 +237,7 @@ function polyf (near) locals=12
   store.u16 [bx + 2], r0
   ret
 
-function polyn_disp (near) locals=12
+function polyn_disp (near) locals=16
   r4 = @OFFSET
   r1 = load.u16 [si]
   r4 = add r4, 0x2
@@ -262,7 +262,7 @@ function polyn_disp (near) locals=12
   io.out r3, r0
   ret
 
-function hline1 (near) locals=12
+function hline1 (near) locals=16
   r1 = sub r1, 0x100
   cmp r1, 0xc7
   jgt_u .hlixx
@@ -345,7 +345,7 @@ function hline1 (near) locals=12
   store.u8 [di], 0xff
   ret
 
-function random (near) locals=12
+function random (near) locals=16
   push 0x0
   0x0 = 0x343fd
   mul [seed]
@@ -355,7 +355,7 @@ function random (near) locals=12
   pop 0x0
   ret
 
-function setborder (near) locals=12
+function setborder (near) locals=16
   push r0
   r3 = 0x3da
   r0.l = io.in r3
@@ -366,7 +366,7 @@ function setborder (near) locals=12
   io.out r3, r0.l
   ret
 
-function init_stars (near) locals=12
+function init_stars (near) locals=16
   r0 = 0xd
   int 0x10
   r3 = 0x3da
@@ -386,7 +386,7 @@ function init_stars (near) locals=12
   r0.l = and r0.l, 0x7f
   io.out r3, r0.l
   r0 = 0xa000
-  0x0 = r0
+  r12 = r0
   r5 = xor r5, r5
   r2 = 0x8000
   r0 = xor r0, r0
@@ -422,8 +422,8 @@ function init_stars (near) locals=12
   r0 = add r0, r3
   r1 = add r1, 0x2
   loop_dec_cx .@@4b
-  r0 = 0x0
-  0x0 = r0
+  r0 = r14
+  r12 = r0
   r5 = @OFFSET
   r2 = @STARS2
   .@@3:
@@ -477,13 +477,13 @@ function init_stars (near) locals=12
   loop_dec_cx .@@sa
   ret
 
-function deinit_stars (near) locals=12
+function deinit_stars (near) locals=16
   r0.h = 0x45
   r3 = load.u16 [emmhandle]
   int 0x67
   ret
 
-function fetch4ax (near) locals=12
+function fetch4ax (near) locals=16
   r0 = shl r0, 0x1
   r1 = r0
   push r0
@@ -497,7 +497,7 @@ function fetch4ax (near) locals=12
   r0 = add r0, [emmseg]
   ret
 
-function fetch4ax2 (near) locals=12
+function fetch4ax2 (near) locals=16
   r0 = shl r0, 0x1
   r1 = r0
   push r0
@@ -512,7 +512,7 @@ function fetch4ax2 (near) locals=12
   r0 = add r0, 0x400
   ret
 
-function fetch4ax3 (near) locals=12
+function fetch4ax3 (near) locals=16
   r0 = shl r0, 0x1
   r1 = r0
   push r0
@@ -527,14 +527,14 @@ function fetch4ax3 (near) locals=12
   r0 = add r0, 0x800
   ret
 
-function clearsbu (near) locals=12
+function clearsbu (near) locals=16
   r2 = 0x80
   r0 = 0x0
   .@@1:
   push r2
   push r0
   call fetch4ax
-  0x0 = r0
+  r12 = r0
   r2 = 0x1000
   0x0 = xor 0x0, 0x0
   r5 = xor r5, r5
@@ -545,16 +545,16 @@ function clearsbu (near) locals=12
   loop_dec_cx .@@1
   ret
 
-function starfetch0 (near) locals=12
+function starfetch0 (near) locals=16
   r0 = load.u16 [emmpage4]
   r0 = add r0, 0x1
   r0 = and r0, 0x3f
   store.u16 [emmpage4], r0
   call fetch4ax
-  0x0 = r0
+  r12 = r0
   ret
 
-function starfetch1 (near) locals=12
+function starfetch1 (near) locals=16
   r0 = load.u16 [emmpage4]
   r0 = add r0, 0x11
   r0 = and r0, 0x3f
@@ -562,7 +562,7 @@ function starfetch1 (near) locals=12
   0x0 = r0
   ret
 
-function starfetch2 (near) locals=12
+function starfetch2 (near) locals=16
   r0 = load.u16 [emmpage4]
   r0 = add r0, 0x2b
   r0 = and r0, 0x3f
@@ -570,9 +570,9 @@ function starfetch2 (near) locals=12
   0x0 = r0
   ret
 
-function staradd (near) locals=12
-  r0 = 0x0
-  0x0 = r0
+function staradd (near) locals=16
+  r0 = r14
+  r13 = r0
   r0 = load.u16 [starlimit]
   r0 = or r0, r0
   jzf .@@11
@@ -641,10 +641,10 @@ function staradd (near) locals=12
   jump .@@2
   ret
 
-function staradd2 (near) locals=12
+function staradd2 (near) locals=16
   call starfetch1
-  r0 = 0x0
-  0x0 = r0
+  r0 = r14
+  r13 = r0
   r0 = load.u16 [starlimit]
   r0 = or r0, r0
   jzf .@@11
@@ -717,7 +717,7 @@ function staradd2 (near) locals=12
   jump .@@2
   ret
 
-function risetext (near) locals=12
+function risetext (near) locals=16
   r0 = load.u16 [startxtopen]
   cmp r0, 0x63
   jge_s .@@12
@@ -751,7 +751,7 @@ function risetext (near) locals=12
   r5 = r0
   store.u16 [_nostar1], r5
   r0 = @SEG
-  0x0 = r0
+  r13 = r0
   r4 = 0x40
   r4 = add r4, [startxtp0]
   pop r2
@@ -819,7 +819,7 @@ function risetext (near) locals=12
   store.u16 [di + zzz], 0x0
   ret
 
-function do_stars (near) locals=12
+function do_stars (near) locals=16
   .@@aga:
   r0.l = 0x0
   r3 = 0x3d4
@@ -946,10 +946,10 @@ function do_stars (near) locals=12
   .@@stz:
   call staradd2
   .@@stz0:
-  r0 = 0x0
-  0x0 = r0
+  r0 = r12
+  r13 = r0
   r0 = load.u16 [starvram]
-  0x0 = r0
+  r12 = r0
   r5 = xor r5, r5
   r3 = 0x3c4
   r0 = 0x102
@@ -982,7 +982,7 @@ function do_stars (near) locals=12
   r0 = add r0, 0x20
   r0 = and r0, 0x3f
   call fetch4ax
-  0x0 = r0
+  r13 = r0
   r5 = 0xc8
   r4 = 0x63
   r3 = 0x3c4
@@ -1017,7 +1017,7 @@ function do_stars (near) locals=12
   jzf .@@aga
   ret
   r0 = 0xa000
-  0x0 = r0
+  r13 = r0
   r4 = xor r4, r4
   r2 = 0x28
   r3 = 0x0
@@ -1043,13 +1043,13 @@ function do_stars (near) locals=12
   int 0x3
   ret
 
-function __init (near) locals=12
+function __init (near) locals=16
   r3 = 0x3c4
   r0 = 0x2
   io.out r3, r0
   .start:
   r1 = @SEG
-  r0 = 0x0
+  r0 = r12
   r1 = sub r1, r0
   r1 = add r1, 0x40
   r0.h = 0x4a
@@ -1065,7 +1065,7 @@ function __init (near) locals=12
   r0 = 0x4c00
   int 0x21
 
-function resetmode13 (near) locals=12
+function resetmode13 (near) locals=16
   r0 = 0xd
   int 0x10
   r3 = 0x3da
@@ -1091,16 +1091,16 @@ function resetmode13 (near) locals=12
   loop_dec_cx .@@clp
   ret
 
-function outpal (near) locals=12
+function outpal (near) locals=16
   r3 = 0x3c8
   io.out r3, r0.l
-  r0 = 0x0
-  0x0 = r0
+  r0 = r14
+  r13 = r0
   r3 = add r3, 0x1
   nop ; rep-prefix
   ret
 
-function waitb (near) locals=12
+function waitb (near) locals=16
   r1 = 0x1
   int 0xfc
   ret
