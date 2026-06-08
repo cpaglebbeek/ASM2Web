@@ -82,6 +82,19 @@ export function compileIRtoWASM(ir) {
   const wasmFns = ir.functions.map((fn, fnIdx) => emitFunction(fn, userFnIndex, TYPE_VOID));
 
   // ----- build module -----
+  // Build data segments: pre-built (from linker) + IR-data
+  const dataSegments = [];
+  if (ir.preBuiltData) {
+    for (const d of ir.preBuiltData) {
+      dataSegments.push({ offset: d.offset, bytes: Array.from(d.bytes) });
+    }
+  }
+  // IR-data segments
+  for (let idx = 0; idx < ir.data.length; idx++) {
+    const seg = emitDataSegment(ir.data[idx], idx);
+    if (seg) dataSegments.push(seg);
+  }
+
   const spec = {
     types,
     imports: [
@@ -98,7 +111,7 @@ export function compileIRtoWASM(ir) {
     })),
     start: null,
     functions: wasmFns.map(f => ({ typeIndex: f.typeIndex, locals: f.locals, body: f.body })),
-    data: ir.data.map(emitDataSegment).filter(Boolean),
+    data: dataSegments,
   };
 
   const wasm = buildModule(spec);

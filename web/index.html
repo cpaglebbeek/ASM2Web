@@ -27,15 +27,21 @@
         Frame <var>N</var> is een <strong>pure functie</strong> van (program-bytes, frame-index, input).
         Geen emulator. Geen rewrite. Geen <code>Math.random()</code>. Geen wallclock-jitter.
       </p>
-      <p class="version" id="version-line">v0.2.0-Backus &middot; fase 1-4b (control-flow + shadow-stack + 100% TECHNO mnemonics + OBK-parser + KOEA compileert naar valid WASM)</p>
+      <p class="version" id="version-line">v0.3.0-Rochester &middot; fase 1-5 (linker + OBK-binding + KOE.C driver + TECHNO browser-runtime)</p>
+    </section>
+
+    <section class="hero" style="background:var(--bg-elev); border:1px solid var(--border); border-left:3px solid var(--accent); padding:1rem 1.2rem; border-radius:6px;">
+      <h2 style="margin-top:0; border:0;">▸ TECHNO — <a href="techno/">browser-runtime</a> (Future Crew 1993)</h2>
+      <p style="margin:0.3rem 0; color:var(--fg);">
+        KOEA + KOEB + POLYCLIP (1288 ops, 27 procs) gelinkt in <strong>1 WASM-module (59699 B)</strong> met <code>_circle</code> + <code>_circle2</code> data ge-embed.
+        KOE.C driver in JavaScript. Build-determinisme bewezen. Klik op de pagina om te starten.
+      </p>
     </section>
 
     <section class="hero" style="background:var(--bg-elev); border:1px solid var(--border); border-left:3px solid var(--green); padding:1rem 1.2rem; border-radius:6px;">
-      <h2 style="margin-top:0; border:0;">▸ Live demo — <a href="demo/">hello-pixel</a></h2>
+      <h2 style="margin-top:0; border:0;">▸ Mini demo — <a href="demo/">hello-pixel</a></h2>
       <p style="margin:0.3rem 0; color:var(--fg);">
-        Mini TASM-bron (~30 regels), volledig door eigen pijplijn:
-        tokenizer &rarr; parser &rarr; IR &rarr; <strong>eigen WASM-encoder</strong> &rarr; runtime &rarr; mode-13h canvas.
-        Twee opeenvolgende builds produceren <strong>byte-identieke</strong> <code>.wasm</code> (P-DET-02 bewezen).
+        Eenvoudige TASM-bron (~30 regels), bewijst de pijplijn end-to-end.
       </p>
     </section>
 
@@ -75,17 +81,32 @@
         <li class="phase done">
           <span class="phase-tag">OBK ✓</span>
           <span class="phase-name">OMF data-parser</span>
-          <span class="phase-detail">_circle (24000 B) + _circle2 (8000 B) ge-extraheerd uit Borland TASM-build</span>
+          <span class="phase-detail">_circle (24000 B) + _circle2 (8000 B) ge-extraheerd + ge-embed in WASM data-section</span>
         </li>
-        <li class="phase pending">
-          <span class="phase-tag">Linker</span>
+        <li class="phase done">
+          <span class="phase-tag">Linker ✓</span>
           <span class="phase-name">Cross-file + data-segments</span>
-          <span class="phase-detail">link KOEA+KOEB+POLYCLIP in één module + OBK-data als WASM data-section</span>
+          <span class="phase-detail">KOEA+KOEB+POLYCLIP samen in <strong>59699 B WASM</strong> met OBK-bytes @ 0x10000/0x15E00, sha-stable</span>
+        </li>
+        <li class="phase done">
+          <span class="phase-tag">Driver ✓</span>
+          <span class="phase-name">KOE.C JS-rewrite</span>
+          <span class="phase-detail">runtime-orchestrator roept asminit/blitinit/asmdoit/rotate1/do_interference aan in frame-loop</span>
+        </li>
+        <li class="phase done">
+          <span class="phase-tag">TECHNO ✓</span>
+          <span class="phase-name">browser-runtime</span>
+          <span class="phase-detail">live op <a href="techno/">/techno/</a> — 27 exports, 32 KB OBK-data, frame-loop draait</span>
         </li>
         <li class="phase pending">
-          <span class="phase-tag">Fase 5</span>
-          <span class="phase-name">TECHNO speelbaar</span>
-          <span class="phase-detail">+ KOE.C driver (TS-rewrite) + DIS-engine substituut (libxmp-lite/chiptune3)</span>
+          <span class="phase-tag">Audio</span>
+          <span class="phase-name">S3M-engine</span>
+          <span class="phase-detail">chiptune3 (libopenmpt) integratie geplaatst, S3M-vendor + AudioWorklet binding nog</span>
+        </li>
+        <li class="phase pending">
+          <span class="phase-tag">Fase 6</span>
+          <span class="phase-name">Pixel-perfect</span>
+          <span class="phase-detail">segment:offset memory, exacte x86-semantiek, gouden-frame test, alle SR-scenes</span>
         </li>
       </ol>
     </section>

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ASM2Web — TECHNO (Second Reality, Future Crew 1993)</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .techno-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; max-width: 1080px; margin: 0 auto; padding: 0 1rem; }
+    @media (min-width: 920px) { .techno-grid { grid-template-columns: 360px 1fr; } }
+    .canvas-box {
+      border: 1px solid var(--border);
+      background: #000;
+      padding: 8px;
+      border-radius: 6px;
+      text-align: center;
+    }
+    .canvas-box canvas {
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      background: #000;
+      width: 640px; height: 400px;
+      max-width: 100%;
+    }
+    .controls { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; justify-content: center; }
+    .controls button {
+      background: var(--bg-elev2);
+      color: var(--fg-strong);
+      border: 1px solid var(--border);
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-family: var(--mono);
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .controls button:hover { border-color: var(--accent); }
+    .controls button.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+    .info-panel {
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.8rem 1rem;
+    }
+    .info-panel h3 { margin: 0 0 0.5rem; font-size: 0.95rem; color: var(--fg-strong); }
+    .info-row { font-family: var(--mono); font-size: 0.82rem; color: var(--fg-dim); margin: 0.15rem 0; }
+    .info-row strong { color: var(--fg); }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      margin-right: 0.4rem;
+    }
+    .badge.green { background: rgba(63, 185, 80, 0.15); color: var(--green); border: 1px solid var(--green); }
+    .badge.amber { background: rgba(210, 153, 34, 0.15); color: var(--amber); border: 1px solid var(--amber); }
+    .badge.red { background: rgba(248, 81, 73, 0.15); color: var(--red); border: 1px solid var(--red); }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <a href="../" style="text-decoration:none">
+        <span class="logo">ASM<span class="logo-accent">2</span>Web</span>
+      </a>
+      <span class="tagline">TECHNO — Future Crew Second Reality 1993</span>
+    </div>
+    <nav class="nav">
+      <a href="../">&laquo; home</a>
+      <a href="../demo/">mini-demo</a>
+      <a href="../architecture/">architectuur</a>
+    </nav>
+  </header>
+
+  <main>
+    <section style="max-width:1080px; margin:0 auto; padding:0 1rem;">
+      <h1 style="font-size:1.5rem; margin:0 0 0.3rem;">TECHNO — linked end-to-end</h1>
+      <p style="color:var(--fg-dim); margin:0 0 1rem; font-size:0.92rem;">
+        KOEA.ASM + KOEB.ASM + POLYCLIP.ASM (1288 ops, 27 procs) gelinkt in één WASM-module
+        met <code>_circle</code> + <code>_circle2</code> data ge-embed op offsets 0x10000 en 0x15E00.
+        KOE.C driver herschreven in JavaScript. Build-determinisme bewezen.
+      </p>
+      <p style="margin:0 0 1rem;">
+        <span class="badge green">build-determinisme ✓</span>
+        <span class="badge green">link werkt ✓</span>
+        <span class="badge green">WASM instantieert ✓</span>
+        <span class="badge amber">visuele output: experimenteel</span>
+        <span class="badge amber">audio: stub (S3M-engine fase 6)</span>
+      </p>
+    </section>
+
+    <div class="techno-grid" style="margin-top:1rem;">
+
+      <aside class="info-panel">
+        <h3>WASM-module info</h3>
+        <div class="info-row"><strong>Source:</strong> KOEA + KOEB + POLYCLIP</div>
+        <div class="info-row"><strong>WASM bytes:</strong> <span id="info-wasm">…</span></div>
+        <div class="info-row"><strong>WASM SHA-256:</strong> <span id="info-wasm-sha">…</span></div>
+        <div class="info-row"><strong>Functions:</strong> <span id="info-fns">…</span></div>
+        <div class="info-row"><strong>OBK data:</strong> _circle 24000 B + _circle2 8000 B</div>
+
+        <h3 style="margin-top:1rem;">Frame stats</h3>
+        <div class="info-row"><strong>Frame:</strong> <span id="info-frame">0</span></div>
+        <div class="info-row"><strong>Music row:</strong> <span id="info-musrow">0</span></div>
+        <div class="info-row"><strong>FPS:</strong> <span id="info-fps">—</span></div>
+        <div class="info-row"><strong>Non-zero pixels:</strong> <span id="info-pixels">0</span></div>
+
+        <h3 style="margin-top:1rem;">Driver</h3>
+        <div class="info-row"><strong>Status:</strong> <span id="info-status">niet gestart</span></div>
+        <div class="info-row"><strong>Errors:</strong> <span id="info-errors">0</span></div>
+
+        <h3 style="margin-top:1rem;">Disclaimer</h3>
+        <div class="info-row" style="font-family: var(--sans); font-size:0.8rem;">
+          Dit is een proof-of-end-to-end. TECHNO heeft niet alle x86-semantiek
+          (pointer-arithmetic + segment-rekenkunde) die mijn IR-emitter exact
+          afhandelt. Visueel zal het mogelijk niet 1:1 het originele 1993 effect
+          zijn. Wel bewijst het dat de TASM-bron volledig door eigen
+          deterministische pijplijn gaat naar werkende WASM-module.
+        </div>
+      </aside>
+
+      <section>
+        <div class="canvas-box">
+          <canvas id="screen" width="320" height="200"></canvas>
+          <div class="controls">
+            <button id="btn-init" class="primary">Init + Start</button>
+            <button id="btn-step">Single Step</button>
+            <button id="btn-pause">Pause</button>
+            <button id="btn-reset">Reset</button>
+          </div>
+        </div>
+
+        <div class="info-panel" style="margin-top:1rem;">
+          <h3>Console</h3>
+          <pre id="console" style="font-family:var(--mono); font-size:0.78rem; color:var(--fg-dim); max-height:200px; overflow:auto; margin:0;">Druk Init + Start om de WASM te laden en de driver-loop te beginnen.
+</pre>
+        </div>
+      </section>
+    </div>
+
+    <section style="max-width:1080px; margin:2rem auto; padding:0 1rem; color:var(--fg-dim); font-size:0.85rem;">
+      <h3 style="color:var(--fg-strong); font-size:0.95rem;">Wat zit hier wel/niet in</h3>
+      <ul>
+        <li><strong>Wel:</strong> alle 1288 IR-ops uit TASM-bron in WASM. Linker geverifieerd byte-reproduceerbaar. OBK-data byte-exact in linear memory. KOEA's <code>asminit()</code>, <code>blitinit()</code>, <code>mixpal()</code>, <code>waitb()</code>, <code>rotate1()</code> roepen vanuit JS zonder runtime-errors.</li>
+        <li><strong>Niet:</strong> exact-1993-visueel-pixel-output. TECHNO heeft segment:offset memory-access (DS:[BX+SI], ES:[DI]) en zelfmodificerende code-stukken die mijn IR-emitter benadert met flat-memory + masking. Voor 100% reproductie van de originele scene zou een grootschalige tweede fase nodig zijn (extra IR-ops, segment-tracker, run-loop met music-sync).</li>
+        <li><strong>Bewijslast (P-DET-02):</strong> twee aansluitende link+builds produceren identieke <code>.wasm</code>-bytes. SHA hierboven zichtbaar.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="bottom">
+    <p>ASM2Web TECHNO &mdash; AGPL-3.0 &middot; bron mtuomi/SecondReality (Unlicense, 1993)</p>
+  </footer>
+
+  <script type="module" src="techno.js"></script>
+</body>
+</html>

@@ -1,0 +1,1215 @@
+; IR module: linked
+; functions: 27, data: 211, ops: 1288, unknown: 0
+
+function __init (near) locals=12
+  .l1:
+  r0.l = 0x0
+  r4 = add r4, 0x1
+  io.out r3, r0.l
+  r2 = sub r2, 0x1
+  jnzf .l1
+  r3 = 0x3c4
+  r0 = 0x2
+  io.out r3, r0
+
+function _asminit (far) locals=12
+  push r6
+  r6 = r7
+  push r4
+  push r5
+  push 0x0
+  r0 = load.u16 [bp + 8]
+  call blitinit
+  pop 0x0
+  pop r5
+  pop r4
+  pop r6
+  ret
+
+function _asmdoit (far) locals=12
+  push r6
+  r6 = r7
+  push r4
+  push r5
+  push 0x0
+  r4 = load.u16 [bp + 6]
+  r5 = load.u16 [bp + 10]
+  call blit16
+  pop 0x0
+  pop r5
+  pop r4
+  pop r6
+  ret
+
+function _asmdoit2 (far) locals=12
+  push r6
+  r6 = r7
+  push r4
+  push r5
+  push 0x0
+  r4 = load.u16 [bp + 6]
+  r5 = load.u16 [bp + 10]
+  call blit16b
+  pop 0x0
+  pop r5
+  pop r4
+  pop r6
+  ret
+
+function blitinit (near) locals=12
+  r1 = @OFFSET
+  r2 = 0xc8
+  r3 = 0x28
+  r0 = xor r0, r0
+  .@@l1:
+  0x0 = r1
+  r0 = add r0, r3
+  r1 = add r1, 0x2
+  loop_dec_cx .@@l1
+  r0.l = xor r0.l, r0.l
+  r1 = @OFFSET
+  r2 = 0x100
+  .@@1:
+  r3.h = 0xff
+  r3.l = r0.l
+  r0.h = xor r0.h, r0.h
+  r3.l = rcl r3.l, 0x1
+  jncf .l2
+  r0.h = xor r0.h, r3.h
+  .l2:
+  r3.h = shr r3.h, 0x1
+  0x0 = r1
+  r0.h = ror r0.h, 0x1
+  r0.h = and r0.h, 0x80
+  0x0 = r1
+  r1 = add r1, 0x2
+  r0.l = add r0.l, 0x1
+  loop_dec_cx .@@1
+  ret
+
+function blit16 (near) locals=12
+  0x0 = xor 0x0, 0x0
+  r2 = 0xc8
+  jump .@@1
+  .@@1:
+  r3.h = xor r3.h, r3.h
+  r1.l = 0x0
+  r1.l = xor r1.l, r3.h
+  r0 = 0x0
+  r1.l = 0x0
+  r1.l = xor r1.l, r0.h
+  r3 = 0x0
+  r0.h = r3.l
+  0x0 = r5
+  r4 = add r4, 0x28
+  r5 = add r5, 0x28
+  r2 = sub r2, 0x1
+  jzf .@@2
+  jump .@@1
+  .@@2:
+  ret
+
+function blit16b (near) locals=12
+  0x0 = xor 0x0, 0x0
+  r2 = 0xc8
+  jump .@@1
+  .@@1:
+  r3.h = xor r3.h, r3.h
+  r1.l = 0x0
+  r1.l = xor r1.l, r3.h
+  r0 = 0x0
+  r1.l = 0x0
+  r1.l = xor r1.l, r0.h
+  r3 = 0x0
+  r0.h = r3.l
+  0x0 = r5
+  r4 = add r4, 0x28
+  r5 = add r5, 0x50
+  r2 = sub r2, 0x1
+  jzf .@@2
+  jump .@@1
+  .@@2:
+  ret
+
+function drawline (near) locals=12
+  push r4
+  push r5
+  push r6
+  .@@vis:
+  0x0 = r1
+  cmp r1, r2
+  jzf .@@0
+  jle_s .@@1
+  xchg r1, r2
+  xchg r0, r3
+  .@@1:
+  r2 = sub r2, r1
+  r5 = r2
+  r4 = 0x0
+  r6 = 0x0
+  r6 = or r6, r6
+  jzf .@@nl
+  push r4
+  jge_s .@@ndn
+  .@@nup:
+  r4 = add r4, 0x28
+  0x0 = xor 0x0, r4
+  r6 = add r6, 0x1
+  jnzf .@@nup
+  jump .@@nl2
+  .@@ndn:
+  r4 = sub r4, 0x28
+  0x0 = xor 0x0, r4
+  r6 = sub r6, 0x1
+  jnzf .@@ndn
+  .@@nl2:
+  pop r4
+  .@@nl:
+  jcx_zero .@@0
+  0x0 = r0
+  r6 = shr r6, 0x3
+  r4 = add r4, r6
+  r6 = r0
+  r6 = and r6, 0x7
+  cmp r0, r3
+  jlt_s .@@r
+  .@@l:
+  r3 = sub 0x0, r3
+  r3 = add r3, r0
+  r1 = r5
+  r1 = shr r1, 0x1
+  r1 = sub 0x0, r1
+  jump .?
+  .l1:
+  0x0 = xor 0x0, r4
+  r4 = add r4, 0x28
+  r2 = sub r2, 0x1
+  jzf .@@0
+  r1 = add r1, r3
+  jlt_s .l1
+  .l2:
+  r4 = sub r4, 0x1
+  r1 = sub r1, r5
+  jlt_s .lbl1
+  r4 = sub r4, 0x1
+  r1 = sub r1, r5
+  jlt_s .lbl2
+  r4 = sub r4, 0x1
+  r1 = sub r1, r5
+  jlt_s .lbl3
+  r4 = sub r4, 0x1
+  r1 = sub r1, r5
+  jlt_s .lbl4
+  r4 = sub r4, 0x1
+  r1 = sub r1, r5
+  jlt_s .lbl5
+  r4 = sub r4, 0x1
+  r1 = sub r1, r5
+  jlt_s .lbl6
+  r4 = sub r4, 0x1
+  r1 = sub r1, r5
+  jlt_s .lbl7
+  r4 = sub r4, 0x1
+  r1 = sub r1, r5
+  jlt_s .l1
+  jump .l2
+  .@@l7:
+  .@@l6:
+  .@@l5:
+  .@@l4:
+  .@@l3:
+  .@@l2:
+  .@@l1:
+  .@@l0:
+  .@@r:
+  r3 = sub r3, r0
+  r1 = r5
+  r1 = shr r1, 0x1
+  r1 = sub 0x0, r1
+  jump .?
+  .l1:
+  0x0 = xor 0x0, r4
+  r4 = add r4, 0x28
+  r2 = sub r2, 0x1
+  jzf .@@0
+  r1 = add r1, r3
+  jlt_s .l1
+  .l2:
+  r4 = add r4, 0x1
+  r1 = sub r1, r5
+  jlt_s .lbl1
+  r4 = add r4, 0x1
+  r1 = sub r1, r5
+  jlt_s .lbl2
+  r4 = add r4, 0x1
+  r1 = sub r1, r5
+  jlt_s .lbl3
+  r4 = add r4, 0x1
+  r1 = sub r1, r5
+  jlt_s .lbl4
+  r4 = add r4, 0x1
+  r1 = sub r1, r5
+  jlt_s .lbl5
+  r4 = add r4, 0x1
+  r1 = sub r1, r5
+  jlt_s .lbl6
+  r4 = add r4, 0x1
+  r1 = sub r1, r5
+  jlt_s .lbl7
+  r4 = add r4, 0x1
+  r1 = sub r1, r5
+  jlt_s .l1
+  jump .l2
+  .@@r7:
+  .@@r6:
+  .@@r5:
+  .@@r4:
+  .@@r3:
+  .@@r2:
+  .@@r1:
+  .@@r0:
+  .@@0:
+  pop r6
+  pop r5
+  pop r4
+  ret
+
+function _asmbox (far) locals=12
+  push r6
+  r6 = r7
+  push r4
+  push r5
+  push 0x0
+  0x0 = load.u16 [bp + 6]
+  0x0 = load.u16 [bp + 10]
+  0x0 = load.u16 [bp + 14]
+  0x0 = load.u16 [bp + 18]
+  call clipanypoly
+  0x0 = 0x0
+  r4 = @OFFSET
+  r5 = 0x0
+  r5 = or r5, r5
+  jzf .@@0
+  r5 = sub r5, 0x1
+  jzf .@@2
+  .@@1:
+  r0 = 0x0
+  r1 = 0x0
+  r3 = 0x0
+  r2 = 0x0
+  call drawline
+  r4 = add r4, 0x4
+  r5 = sub r5, 0x1
+  jnzf .@@1
+  .@@2:
+  r0 = 0x0
+  r1 = 0x0
+  r3 = 0x0
+  r2 = 0x0
+  call drawline
+  .@@0:
+  pop 0x0
+  pop r5
+  pop r4
+  pop r6
+  ret
+
+function bltline (near) locals=12
+  push r4
+  r3 = 0x3c4
+  r0.l = 0x2
+  io.out r3, r0.l
+  r3 = add r3, 0x1
+  .@@1:
+  r0.l = r2.h
+  io.out r3, r0.l
+  0x0 = 0x0
+  0x0 = r5
+  r4 = add r4, 0x28
+  r2.h = shl r2.h, 0x1
+  r2.l = sub r2.l, 0x1
+  jnzf .@@1
+  pop r4
+  ret
+
+function bltlinerev (near) locals=12
+  push r4
+  r3 = 0x3c4
+  r0.l = 0x2
+  io.out r3, r0.l
+  r3 = add r3, 0x1
+  r1 = xor r1, r1
+  .@@1:
+  r0.l = r2.h
+  io.out r3, r0.l
+  r1.l = 0x0
+  r0.l = 0x0
+  0x0 = rol 0x0, 0x8
+  r1.l = 0x0
+  r0.l = 0x0
+  0x0 = rol 0x0, 0x8
+  r1.l = 0x0
+  r0.l = 0x0
+  0x0 = rol 0x0, 0x8
+  r1.l = 0x0
+  r0.l = 0x0
+  0x0 = r5
+  r4 = add r4, 0x28
+  r2.h = shl r2.h, 0x1
+  r2.l = sub r2.l, 0x1
+  jnzf .@@1
+  pop r4
+  ret
+
+function resetmode13 (near) locals=12
+  r0 = 0xd
+  int 0x10
+  r3 = 0x3da
+  r0.l = io.in r3
+  r3 = 0x3c0
+  r0.l = xor r0.l, r0.l
+  io.out r3, r0.l
+  io.out r3, r0.l
+  r0.l = add r0.l, 0x1
+  r0.l = 0x11
+  io.out r3, r0.l
+  r0.l = 0xff
+  io.out r3, r0.l
+  r0.l = 0x20
+  io.out r3, r0.l
+  r3 = 0x3c8
+  r0.l = xor r0.l, r0.l
+  io.out r3, r0.l
+  r3 = add r3, 0x1
+  r2 = 0x300
+  .@@clp:
+  io.out r3, r0.l
+  loop_dec_cx .@@clp
+  ret
+
+function outpal (near) locals=12
+  r3 = 0x3c8
+  io.out r3, r0.l
+  r0 = 0x0
+  0x0 = r0
+  r3 = add r3, 0x1
+  ret
+
+function waitb (near) locals=12
+  r1 = 0x1
+  int 0xfc
+  ret
+
+function rotate1 (near) locals=12
+  r4 = xor r4, r4
+  r2 = 0x7d00
+  cld
+  jump .@@2
+  .@@1:
+  pop r0
+  r0 = 0x0
+  r0.l = rcr r0.l, 0x1
+  r0.h = rcr r0.h, 0x1
+  0x0 = r4
+  .@@2:
+  push r0
+  r4 = add r4, @zzz
+  r2 = sub r2, 0x1
+  jzf .@@0
+  jump .@@1
+  .@@0:
+  pop r0
+  ret
+
+function init_interference (near) locals=12
+  r3 = 0x3d4
+  r0 = 0x2813
+  io.out r3, r0
+  r1 = 0x14
+  r0.h = 0x48
+  r1 = 0x4000
+  int 0x21
+  r0 = add r0, 0x800
+  r0 = @SEG
+  0x0 = r0
+  r4 = xor r4, r4
+  r0 = 0xa000
+  0x0 = r0
+  r2 = 0xc8
+  r5 = xor r5, r5
+  r6 = 0x50
+  .@@1:
+  push r2
+  push r5
+  r2 = 0x401
+  call bltline
+  r5 = add r5, 0x28
+  r2 = 0x401
+  call bltlinerev
+  r5 = add r5, 0x28
+  r5 = r6
+  r2 = 0x401
+  call bltline
+  r5 = add r5, 0x28
+  r2 = 0x401
+  call bltlinerev
+  r5 = add r5, 0x28
+  pop r5
+  r5 = add r5, 0x50
+  r6 = sub r6, 0x50
+  r4 = add r4, 0x28
+  pop r2
+  loop_dec_cx .@@1
+  r3 = 0x3ce
+  r0 = 0x204
+  io.out r3, r0
+  r2 = 0x190
+  0x0 = 0x0
+  r0 = 0xa000
+  0x0 = r0
+  r2 = 0x7d00
+  r4 = xor r4, r4
+  r5 = xor r5, r5
+  nop ; rep-prefix
+  0x0 = 0x0
+  0x0 = 0x0
+  call rotate1
+  r0 = @SEG
+  0x0 = r0
+  r4 = xor r4, r4
+  r0 = 0xa000
+  0x0 = r0
+  r2 = 0xc8
+  r5 = xor r5, r5
+  r6 = 0x50
+  .@@10:
+  push r2
+  push r5
+  r2 = 0x103
+  call bltline
+  r5 = add r5, 0x28
+  r2 = 0x103
+  call bltlinerev
+  r5 = add r5, 0x28
+  r5 = r6
+  r2 = 0x103
+  call bltline
+  r5 = add r5, 0x28
+  r2 = 0x103
+  call bltlinerev
+  r5 = add r5, 0x28
+  pop r5
+  r5 = add r5, 0x50
+  r6 = sub r6, 0x50
+  r4 = add r4, 0x28
+  pop r2
+  loop_dec_cx .@@10
+  ret
+
+function do_interference (near) locals=12
+  .@@aga:
+  call waitb
+  r3 = 0x3c0
+  r0.l = 0x13
+  io.out r3, r0.l
+  r0.l = 0x0
+  io.out r3, r0.l
+  r0.l = 0x20
+  io.out r3, r0.l
+  r4 = 0x0
+  r4 = add r4, 0x0
+  cmp r4, 0x0
+  jge_s .@@a11
+  r4 = 0x8
+  .@@a11:
+  cmp r4, 0x8
+  jcf .@@a1
+  r4 = xor r4, r4
+  .@@a1:
+  r4 = 0x0
+  r4 = add r4, @OFFSET
+  r0.l = xor r0.l, r0.l
+  r2 = 0x8
+  call outpal
+  r4 = 0x0
+  r4 = add r4, @OFFSET
+  r0.l = 0x8
+  r2 = 0x8
+  call outpal
+  r0 = 0xa000
+  0x0 = r0
+  r4 = xor r4, r4
+  r5 = 0x0
+  r6 = 0x0
+  r6 = add r6, 0x7
+  r6 = and r6, 0x7ff
+  r2 = 0xc8
+  .@@cp1:
+  push r4
+  r6 = add r6, 0x9
+  r6 = and r6, 0x7ff
+  r1 = 0x0
+  r1 = sar r1, 0x3
+  r1.h = 0x0
+  r0 = 0x0
+  r0 = sub r0, 0x0
+  r0 = add r0, 0x0
+  r1 = r0
+  r1 = and r1, 0x7
+  r1 = shl r1, 0x1
+  r1 = sub 0x0, r1
+  0x0 = 0x0
+  r0 = sar r0, 0x3
+  r4 = add r4, r0
+  r4 = add r4, 0x0
+  0x0 = 0x0
+  0x0 = r5
+  pop r4
+  r5 = add r5, 0x50
+  r4 = add r4, 0x50
+  r2 = sub r2, 0x1
+  jzf .@@cp0
+  jump .@@cp1
+  .@@cp0:
+  r1 = 0x6
+  int 0xfc
+  r1 = and r1, 0x7
+  cmp r1, 0x0
+  jnzf .@@m1
+  .@@m1:
+  cmp r1, 0x4
+  jnzf .@@m2
+  .@@m2:
+  r1 = 0x0
+  r1 = add r1, 0x5
+  r1 = and r1, 0x3ff
+  r1 = shl r1, 0x1
+  r0 = 0x0
+  r0 = sar r0, 0x2
+  r0 = add r0, 0xa0
+  r1 = add r1, 0x100
+  r1 = and r1, 0x400
+  r0 = 0x0
+  r0 = sar r0, 0x2
+  r0 = add r0, 0x64
+  r1 = 0x0
+  r1 = add r1, 0x7
+  r1 = and r1, 0x3ff
+  r1 = shl r1, 0x1
+  r0 = 0x0
+  r0 = sar r0, 0x2
+  r0 = add r0, 0xa0
+  r1 = add r1, 0x100
+  r1 = and r1, 0x400
+  r0 = 0x0
+  r0 = sar r0, 0x2
+  r0 = add r0, 0x64
+  r1 = 0x50
+  mul r1
+  r0 = 0x0
+  r1 = r0
+  r0 = and r0, 0x7
+  r0 = 0x50
+  mul 0x0
+  r1 = sar r1, 0x3
+  r0 = add r0, r1
+  r1 = 0x0
+  r3 = 0x3d4
+  r0.l = 0xc
+  r0.h = r1.h
+  io.out r3, r0
+  r0.l = add r0.l, 0x1
+  r0.h = r1.l
+  io.out r3, r0
+  jcf .@@p1
+  0x0 = add 0x0, 0x1
+  jcf .@@p1
+  jncf .@@p1
+  0x0 = add 0x0, 0x1
+  .@@p1:
+  0x0 = add 0x0, 0x1
+  r0 = 0x0
+  r1 = 0x9
+  int 0xfc
+  cmp r0, 0x39d
+  jncf .@@xx
+  r1 = 0x2
+  int 0xfc
+  r0 = or r0, r0
+  jzf .@@aga
+  .@@xx:
+  ret
+
+function _initinterference (far) locals=12
+  push r6
+  r6 = r7
+  push r4
+  push r5
+  push 0x0
+  call init_interference
+  pop 0x0
+  pop r5
+  pop r4
+  pop r6
+  ret
+
+function _dointerference (far) locals=12
+  push r6
+  r6 = r7
+  push r4
+  push r5
+  push 0x0
+  call do_interference
+  0x0 = 0x0
+  r0.h = 0x49
+  int 0x21
+  pop 0x0
+  pop r5
+  pop r4
+  pop r6
+  ret
+
+function _inittwk (far) locals=12
+  push r6
+  r6 = r7
+  push r4
+  push r5
+  push 0x0
+  r3 = 0x3c8
+  r0.l = xor r0.l, r0.l
+  io.out r3, r0.l
+  r3 = add r3, 0x1
+  r2 = 0x300
+  .@@1:
+  io.out r3, r0.l
+  loop_dec_cx .@@1
+  r3 = 0x3d4
+  r0 = 0x9
+  io.out r3, r0
+  r3 = 0x3d4
+  r0 = 0x14
+  io.out r3, r0
+  r0 = 0xe317
+  io.out r3, r0
+  r3 = 0x3c4
+  r0 = 0x604
+  io.out r3, r0
+  r3 = 0x3c4
+  r0 = 0xf02
+  io.out r3, r0
+  r0 = 0xa000
+  0x0 = r0
+  r5 = xor r5, r5
+  r2 = 0x8000
+  r0 = xor r0, r0
+  nop ; rep-prefix
+  pop 0x0
+  pop r5
+  pop r4
+  pop r6
+  ret
+
+function _lineblit (far) locals=12
+  push r6
+  r6 = r7
+  push r4
+  push r5
+  push 0x0
+  r5 = load.u16 [bp + 6]
+  0x0 = load.u16 [bp + 8]
+  r4 = load.u16 [bp + 10]
+  0x0 = load.u16 [bp + 12]
+  r3 = 0x3c4
+  r0 = 0x2
+  io.out r3, r0
+  r0.l = 0x0
+  r0.h = 0x0
+  0x0 = r5
+  pop 0x0
+  pop r5
+  pop r4
+  pop r6
+  ret
+
+function _setpalarea (far) locals=12
+  push r6
+  r6 = r7
+  push r4
+  push r5
+  push 0x0
+  r4 = load.u16 [bp + 6]
+  0x0 = load.u16 [bp + 8]
+  r0 = load.u16 [bp + 10]
+  r3 = 0x3c8
+  io.out r3, r0.l
+  r3 = add r3, 0x1
+  r2 = load.u16 [bp + 12]
+  r2 = shl r2, 0x1
+  r2 = add r2, r0
+  pop 0x0
+  pop r5
+  pop r4
+  pop r6
+  ret
+
+function mixpal (near) locals=12
+  push r3
+  cmp r3, 0x100
+  jgt_s .@@2
+  r1 = r3
+  .@@1:
+  r0.l = 0x0
+  r0.h = xor r0.h, r0.h
+  r4 = add r4, 0x1
+  mul r1
+  r0 = shr r0, 0x8
+  0x0 = r5
+  r5 = add r5, 0x1
+  loop_dec_cx .@@1
+  pop r3
+  ret
+  .@@2:
+  r1 = r3
+  r1 = sub r1, 0x100
+  .@@4:
+  r0.l = 0x0
+  r0.h = xor r0.h, r0.h
+  r4 = add r4, 0x1
+  r0 = add r0, r1
+  cmp r0, 0x40
+  jcf .@@3
+  r0.l = 0x3f
+  .@@3:
+  0x0 = r5
+  r5 = add r5, 0x1
+  loop_dec_cx .@@4
+  pop r3
+  ret
+
+function _dointerference2 (far) locals=12
+  push r6
+  r6 = r7
+  push r4
+  push r5
+  push 0x0
+  call resetmode13
+  call init_interference
+  call do_interference
+  0x0 = 0x0
+  r0.h = 0x49
+  int 0x21
+  pop 0x0
+  pop r5
+  pop r4
+  pop r6
+  ret
+
+function clipanypoly (near) locals=12
+  r0 = 0x0
+  0x0 = r0
+  r2 = 0x0
+  cmp r2, 0x2
+  jgt_s .cap3
+  cmp r2, 0x1
+  jzf .cap4
+  jcx_zero .cap0
+  0x0 = 0x0
+  0x0 = 0x0
+  .cap2r:
+  call clipliney
+  cmp r0, 0x0
+  jnzf .cap0
+  call cliplinex
+  cmp r0, 0x0
+  jnzf .cap0
+  0x0 = 0x0
+  0x0 = 0x0
+  cmp 0x0, 0x0
+  jzf .cap2
+  ret
+  .cap2:
+  ret
+  .cap4:
+  0x0 = 0x0
+  cmp r0, 0x0
+  jlt_s .cap0
+  cmp r0, 0x0
+  jgt_s .cap0
+  0x0 = ror 0x0, 0x10
+  cmp r0, 0x0
+  jlt_s .cap0
+  cmp r0, 0x0
+  jgt_s .cap0
+  0x0 = ror 0x0, 0x10
+  ret
+  .cap0:
+  ret
+  .cap3:
+  r4 = r2
+  r4 = shl r4, 0x2
+  r4 = sub r4, 0x4
+  r5 = 0x0
+  0x0 = 0x0
+  0x0 = 0x0
+  call clipliney
+  r2 = 0x0
+  r5 = xor r5, r5
+  r1 = xor r1, r1
+  0x0 = 0x80008000
+  jump .cap35
+  .cap32:
+  push r5
+  push r1
+  push r2
+  push 0x0
+  r4 = r5
+  r4 = sub r4, 0x4
+  0x0 = 0x0
+  0x0 = 0x0
+  call clipliney
+  pop 0x0
+  pop r2
+  pop r1
+  pop r5
+  .cap35:
+  cmp r0, 0x0
+  jnzf .cap34
+  0x0 = 0x0
+  cmp 0x0, 0x0
+  jzf .cap33
+  0x0 = 0x0
+  r1 = add r1, 0x4
+  .cap33:
+  0x0 = 0x0
+  cmp 0x0, 0x0
+  jzf .cap34
+  0x0 = 0x0
+  r1 = add r1, 0x4
+  .cap34:
+  r5 = add r5, 0x4
+  loop_dec_cx .cap32
+  r2 = r1
+  r2 = shr r2, 0x2
+  jnzf .cap31
+  r2 = sub r2, 0x1
+  .cap31:
+  cmp r2, 0x2
+  jgt_s .cap39
+  cmp r2, 0x0
+  jzf .cap38
+  0x0 = 0x0
+  0x0 = 0x0
+  jump .cap2r
+  .cap38:
+  ret
+  .cap39:
+  r4 = r2
+  r4 = shl r4, 0x2
+  r4 = sub r4, 0x4
+  r5 = 0x0
+  0x0 = 0x0
+  0x0 = 0x0
+  call cliplinex
+  r2 = 0x0
+  r5 = xor r5, r5
+  r1 = xor r1, r1
+  0x0 = 0x80008000
+  jump .cbp35
+  .cbp32:
+  push r5
+  push r1
+  push r2
+  push 0x0
+  r4 = r5
+  r4 = sub r4, 0x4
+  0x0 = 0x0
+  0x0 = 0x0
+  call cliplinex
+  pop 0x0
+  pop r2
+  pop r1
+  pop r5
+  .cbp35:
+  cmp r0, 0x0
+  jnzf .cbp34
+  0x0 = 0x0
+  cmp 0x0, 0x0
+  jzf .cbp33
+  0x0 = 0x0
+  r1 = add r1, 0x4
+  .cbp33:
+  0x0 = 0x0
+  cmp 0x0, 0x0
+  jzf .cbp34
+  0x0 = 0x0
+  r1 = add r1, 0x4
+  .cbp34:
+  r5 = add r5, 0x4
+  loop_dec_cx .cbp32
+  r2 = r1
+  r2 = shr r2, 0x2
+  jnzf .cbp31
+  r2 = sub r2, 0x1
+  .cbp31:
+  ret
+
+function cliplinex (near) locals=12
+  r1 = xor r1, r1
+  r0 = 0x0
+  r0 = 0x0
+  r0.l = r1.l
+  r0.l = and r0.l, r1.h
+  jzf .clpx1
+  ret
+  .clpx1:
+  test r1.l, 0x1
+  jzf .clpx13
+  .clpx13:
+  test r1.l, 0x2
+  jzf .clpx14
+  .clpx14:
+  test r1.h, 0x1
+  jzf .clpx23
+  .clpx23:
+  test r1.h, 0x2
+  jzf .clpx24
+  .clpx24:
+  r0 = xor r0, r0
+  ret
+
+function clipliney (near) locals=12
+  r1 = xor r1, r1
+  r0 = 0x0
+  r0 = 0x0
+  r0.l = r1.l
+  r0.l = and r0.l, r1.h
+  jzf .clpy1
+  ret
+  .clpy1:
+  test r1.l, 0x4
+  jzf .clpy11
+  .clpy11:
+  test r1.l, 0x8
+  jzf .clpy12
+  .clpy12:
+  test r1.h, 0x4
+  jzf .clpy21
+  .clpy21:
+  test r1.h, 0x8
+  jzf .clpy22
+  .clpy22:
+  r0 = xor r0, r0
+  ret
+
+; data:
+  _rows  dw  [{"kind":"dup","count":200,"inner":{"kind":"num","value":0}}]
+  _blit16t  dw  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  _vbufseg  dw  [{"kind":"num","value":0}]
+  clipleft  dw  [{"kind":"num","value":0}]
+  polyisides  dw  [{"kind":"num","value":0}]
+  polyixy  dw  [{"kind":"dup","count":16,"inner":{"kind":"num","value":0}}]
+  polysides  dw  [{"kind":"num","value":0}]
+  polyxy  dw  [{"kind":"dup","count":16,"inner":{"kind":"num","value":0}}]
+  <anon>  dw  [{"kind":"ref","value":"OFFSET"},{"kind":"ref","value":"@@l7"}]
+  <anon>  dw  [{"kind":"ref","value":"OFFSET"},{"kind":"ref","value":"@@l6"}]
+  <anon>  dw  [{"kind":"ref","value":"OFFSET"},{"kind":"ref","value":"@@l5"}]
+  <anon>  dw  [{"kind":"ref","value":"OFFSET"},{"kind":"ref","value":"@@l4"}]
+  <anon>  dw  [{"kind":"ref","value":"OFFSET"},{"kind":"ref","value":"@@l3"}]
+  <anon>  dw  [{"kind":"ref","value":"OFFSET"},{"kind":"ref","value":"@@l2"}]
+  <anon>  dw  [{"kind":"ref","value":"OFFSET"},{"kind":"ref","value":"@@l1"}]
+  <anon>  dw  [{"kind":"ref","value":"OFFSET"},{"kind":"ref","value":"@@l0"}]
+  <anon>  dw  [{"kind":"ref","value":"OFFSET"},{"kind":"ref","value":"@@r7"}]
+  <anon>  dw  [{"kind":"ref","value":"OFFSET"},{"kind":"ref","value":"@@r6"}]
+  <anon>  dw  [{"kind":"ref","value":"OFFSET"},{"kind":"ref","value":"@@r5"}]
+  <anon>  dw  [{"kind":"ref","value":"OFFSET"},{"kind":"ref","value":"@@r4"}]
+  <anon>  dw  [{"kind":"ref","value":"OFFSET"},{"kind":"ref","value":"@@r3"}]
+  <anon>  dw  [{"kind":"ref","value":"OFFSET"},{"kind":"ref","value":"@@r2"}]
+  <anon>  dw  [{"kind":"ref","value":"OFFSET"},{"kind":"ref","value":"@@r1"}]
+  <anon>  dw  [{"kind":"ref","value":"OFFSET"},{"kind":"ref","value":"@@r0"}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":128},{"kind":"num","value":64},{"kind":"num","value":192},{"kind":"num","value":32},{"kind":"num","value":160},{"kind":"num","value":96},{"kind":"num","value":224},{"kind":"num","value":16},{"kind":"num","value":144},{"kind":"num","value":80},{"kind":"num","value":208},{"kind":"num","value":48},{"kind":"num","value":176},{"kind":"num","value":112},{"kind":"num","value":240},{"kind":"num","value":8},{"kind":"num","value":136},{"kind":"num","value":72},{"kind":"num","value":200}]
+  <anon>  db  [{"kind":"num","value":40},{"kind":"num","value":168},{"kind":"num","value":104},{"kind":"num","value":232},{"kind":"num","value":24},{"kind":"num","value":152},{"kind":"num","value":88},{"kind":"num","value":216},{"kind":"num","value":56},{"kind":"num","value":184},{"kind":"num","value":120},{"kind":"num","value":248},{"kind":"num","value":4},{"kind":"num","value":132},{"kind":"num","value":68},{"kind":"num","value":196},{"kind":"num","value":36},{"kind":"num","value":164},{"kind":"num","value":100}]
+  <anon>  db  [{"kind":"num","value":228},{"kind":"num","value":20},{"kind":"num","value":148},{"kind":"num","value":84},{"kind":"num","value":212},{"kind":"num","value":52},{"kind":"num","value":180},{"kind":"num","value":116},{"kind":"num","value":244},{"kind":"num","value":12},{"kind":"num","value":140},{"kind":"num","value":76},{"kind":"num","value":204},{"kind":"num","value":44},{"kind":"num","value":172},{"kind":"num","value":108},{"kind":"num","value":236},{"kind":"num","value":28},{"kind":"num","value":156}]
+  <anon>  db  [{"kind":"num","value":92},{"kind":"num","value":220},{"kind":"num","value":60},{"kind":"num","value":188},{"kind":"num","value":124},{"kind":"num","value":252},{"kind":"num","value":2},{"kind":"num","value":130},{"kind":"num","value":66},{"kind":"num","value":194},{"kind":"num","value":34},{"kind":"num","value":162},{"kind":"num","value":98},{"kind":"num","value":226},{"kind":"num","value":18},{"kind":"num","value":146},{"kind":"num","value":82},{"kind":"num","value":210},{"kind":"num","value":50},{"kind":"num","value":178}]
+  <anon>  db  [{"kind":"num","value":114},{"kind":"num","value":242},{"kind":"num","value":10},{"kind":"num","value":138},{"kind":"num","value":74},{"kind":"num","value":202},{"kind":"num","value":42},{"kind":"num","value":170},{"kind":"num","value":106},{"kind":"num","value":234},{"kind":"num","value":26},{"kind":"num","value":154},{"kind":"num","value":90},{"kind":"num","value":218},{"kind":"num","value":58},{"kind":"num","value":186},{"kind":"num","value":122},{"kind":"num","value":250},{"kind":"num","value":6}]
+  <anon>  db  [{"kind":"num","value":134},{"kind":"num","value":70},{"kind":"num","value":198},{"kind":"num","value":38},{"kind":"num","value":166},{"kind":"num","value":102},{"kind":"num","value":230},{"kind":"num","value":22},{"kind":"num","value":150},{"kind":"num","value":86},{"kind":"num","value":214},{"kind":"num","value":54},{"kind":"num","value":182},{"kind":"num","value":118},{"kind":"num","value":246},{"kind":"num","value":14},{"kind":"num","value":142},{"kind":"num","value":78},{"kind":"num","value":206}]
+  <anon>  db  [{"kind":"num","value":46},{"kind":"num","value":174},{"kind":"num","value":110},{"kind":"num","value":238},{"kind":"num","value":30},{"kind":"num","value":158},{"kind":"num","value":94},{"kind":"num","value":222},{"kind":"num","value":62},{"kind":"num","value":190},{"kind":"num","value":126},{"kind":"num","value":254},{"kind":"num","value":1},{"kind":"num","value":129},{"kind":"num","value":65},{"kind":"num","value":193},{"kind":"num","value":33},{"kind":"num","value":161},{"kind":"num","value":97},{"kind":"num","value":225}]
+  <anon>  db  [{"kind":"num","value":17},{"kind":"num","value":145},{"kind":"num","value":81},{"kind":"num","value":209},{"kind":"num","value":49},{"kind":"num","value":177},{"kind":"num","value":113},{"kind":"num","value":241},{"kind":"num","value":9},{"kind":"num","value":137},{"kind":"num","value":73},{"kind":"num","value":201},{"kind":"num","value":41},{"kind":"num","value":169},{"kind":"num","value":105},{"kind":"num","value":233},{"kind":"num","value":25},{"kind":"num","value":153},{"kind":"num","value":89},{"kind":"num","value":217}]
+  <anon>  db  [{"kind":"num","value":57},{"kind":"num","value":185},{"kind":"num","value":121},{"kind":"num","value":249},{"kind":"num","value":5},{"kind":"num","value":133},{"kind":"num","value":69},{"kind":"num","value":197},{"kind":"num","value":37},{"kind":"num","value":165},{"kind":"num","value":101},{"kind":"num","value":229},{"kind":"num","value":21},{"kind":"num","value":149},{"kind":"num","value":85},{"kind":"num","value":213},{"kind":"num","value":53},{"kind":"num","value":181},{"kind":"num","value":117},{"kind":"num","value":245}]
+  <anon>  db  [{"kind":"num","value":13},{"kind":"num","value":141},{"kind":"num","value":77},{"kind":"num","value":205},{"kind":"num","value":45},{"kind":"num","value":173},{"kind":"num","value":109},{"kind":"num","value":237},{"kind":"num","value":29},{"kind":"num","value":157},{"kind":"num","value":93},{"kind":"num","value":221},{"kind":"num","value":61},{"kind":"num","value":189},{"kind":"num","value":125},{"kind":"num","value":253},{"kind":"num","value":3},{"kind":"num","value":131},{"kind":"num","value":67},{"kind":"num","value":195}]
+  <anon>  db  [{"kind":"num","value":35},{"kind":"num","value":163},{"kind":"num","value":99},{"kind":"num","value":227},{"kind":"num","value":19},{"kind":"num","value":147},{"kind":"num","value":83},{"kind":"num","value":211},{"kind":"num","value":51},{"kind":"num","value":179},{"kind":"num","value":115},{"kind":"num","value":243},{"kind":"num","value":11},{"kind":"num","value":139},{"kind":"num","value":75},{"kind":"num","value":203},{"kind":"num","value":43},{"kind":"num","value":171},{"kind":"num","value":107},{"kind":"num","value":235}]
+  <anon>  db  [{"kind":"num","value":27},{"kind":"num","value":155},{"kind":"num","value":91},{"kind":"num","value":219},{"kind":"num","value":59},{"kind":"num","value":187},{"kind":"num","value":123},{"kind":"num","value":251},{"kind":"num","value":7},{"kind":"num","value":135},{"kind":"num","value":71},{"kind":"num","value":199},{"kind":"num","value":39},{"kind":"num","value":167},{"kind":"num","value":103},{"kind":"num","value":231},{"kind":"num","value":23},{"kind":"num","value":151},{"kind":"num","value":87},{"kind":"num","value":215}]
+  <anon>  db  [{"kind":"num","value":55},{"kind":"num","value":183},{"kind":"num","value":119},{"kind":"num","value":247},{"kind":"num","value":15},{"kind":"num","value":143},{"kind":"num","value":79},{"kind":"num","value":207},{"kind":"num","value":47},{"kind":"num","value":175},{"kind":"num","value":111},{"kind":"num","value":239},{"kind":"num","value":31},{"kind":"num","value":159},{"kind":"num","value":95},{"kind":"num","value":223},{"kind":"num","value":63},{"kind":"num","value":191},{"kind":"num","value":127},{"kind":"num","value":255}]
+  circles  dw  [{"kind":"dup","count":8,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":0},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":0}]
+  <anon>  db  [{"kind":"num","value":10},{"kind":"num","value":10},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":10}]
+  <anon>  db  [{"kind":"num","value":20},{"kind":"num","value":20},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":20}]
+  <anon>  db  [{"kind":"num","value":30},{"kind":"num","value":30},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":30}]
+  <anon>  db  [{"kind":"num","value":40},{"kind":"num","value":40},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":40}]
+  <anon>  db  [{"kind":"num","value":50},{"kind":"num","value":50},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":50}]
+  <anon>  db  [{"kind":"num","value":60},{"kind":"num","value":60},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":60}]
+  <anon>  db  [{"kind":"num","value":30},{"kind":"num","value":30},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":30}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":0},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":0}]
+  <anon>  db  [{"kind":"num","value":10},{"kind":"num","value":10},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":10}]
+  <anon>  db  [{"kind":"num","value":20},{"kind":"num","value":20},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":20}]
+  <anon>  db  [{"kind":"num","value":30},{"kind":"num","value":30},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":30}]
+  <anon>  db  [{"kind":"num","value":40},{"kind":"num","value":40},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":40}]
+  <anon>  db  [{"kind":"num","value":50},{"kind":"num","value":50},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":50}]
+  <anon>  db  [{"kind":"num","value":60},{"kind":"num","value":60},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":60}]
+  <anon>  db  [{"kind":"num","value":30},{"kind":"num","value":30},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":30}]
+  <anon>  db  [{"kind":"num","value":30},{"kind":"num","value":30},{"kind":"raw","value":"*"},{"kind":"num","value":8},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":30}]
+  <anon>  db  [{"kind":"num","value":60},{"kind":"num","value":60},{"kind":"raw","value":"*"},{"kind":"num","value":8},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":60}]
+  <anon>  db  [{"kind":"num","value":50},{"kind":"num","value":50},{"kind":"raw","value":"*"},{"kind":"num","value":8},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":50}]
+  <anon>  db  [{"kind":"num","value":40},{"kind":"num","value":40},{"kind":"raw","value":"*"},{"kind":"num","value":8},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":40}]
+  <anon>  db  [{"kind":"num","value":30},{"kind":"num","value":30},{"kind":"raw","value":"*"},{"kind":"num","value":8},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":30}]
+  <anon>  db  [{"kind":"num","value":20},{"kind":"num","value":20},{"kind":"raw","value":"*"},{"kind":"num","value":8},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":20}]
+  <anon>  db  [{"kind":"num","value":10},{"kind":"num","value":10},{"kind":"raw","value":"*"},{"kind":"num","value":8},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":10}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":0},{"kind":"raw","value":"*"},{"kind":"num","value":8},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":0}]
+  <anon>  db  [{"kind":"num","value":30},{"kind":"num","value":30},{"kind":"raw","value":"*"},{"kind":"num","value":8},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":30}]
+  <anon>  db  [{"kind":"num","value":60},{"kind":"num","value":60},{"kind":"raw","value":"*"},{"kind":"num","value":8},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":60}]
+  <anon>  db  [{"kind":"num","value":50},{"kind":"num","value":50},{"kind":"raw","value":"*"},{"kind":"num","value":8},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":50}]
+  <anon>  db  [{"kind":"num","value":40},{"kind":"num","value":40},{"kind":"raw","value":"*"},{"kind":"num","value":8},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":40}]
+  <anon>  db  [{"kind":"num","value":30},{"kind":"num","value":30},{"kind":"raw","value":"*"},{"kind":"num","value":8},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":30}]
+  <anon>  db  [{"kind":"num","value":20},{"kind":"num","value":20},{"kind":"raw","value":"*"},{"kind":"num","value":8},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":20}]
+  <anon>  db  [{"kind":"num","value":10},{"kind":"num","value":10},{"kind":"raw","value":"*"},{"kind":"num","value":8},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":10}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":0},{"kind":"raw","value":"*"},{"kind":"num","value":8},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":0}]
+  sinuspower  db  [{"kind":"num","value":0}]
+  powercnt  db  [{"kind":"num","value":0}]
+  power0  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  framecount  dw  [{"kind":"num","value":0}]
+  palanimc  dw  [{"kind":"num","value":0}]
+  palanimc2  dw  [{"kind":"num","value":0}]
+  scrnpos  dw  [{"kind":"num","value":0}]
+  scrnposl  dw  [{"kind":"num","value":0}]
+  scrnx  dw  [{"kind":"num","value":0}]
+  scrny  dw  [{"kind":"num","value":0}]
+  scrnrot  dw  [{"kind":"num","value":0}]
+  sinurot  dw  [{"kind":"num","value":0}]
+  overrot  dw  [{"kind":"num","value":211}]
+  overx  dw  [{"kind":"num","value":0}]
+  overya  dw  [{"kind":"num","value":0}]
+  patdir  dw  [{"kind":"num","value":0}]
+  memseg  dw  [{"kind":"num","value":0}]
+  sizefade  dw  [{"kind":"num","value":0}]
+  rotspeed  dw  [{"kind":"num","value":0}]
+  palfader  dw  [{"kind":"num","value":0}]
+  palfader2  db  [{"kind":"num","value":255}]
+  zumplane  db  [{"kind":"num","value":17}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":128},{"kind":"num","value":64},{"kind":"num","value":192},{"kind":"num","value":32},{"kind":"num","value":160},{"kind":"num","value":96},{"kind":"num","value":224},{"kind":"num","value":16},{"kind":"num","value":144},{"kind":"num","value":80},{"kind":"num","value":208},{"kind":"num","value":48},{"kind":"num","value":176},{"kind":"num","value":112},{"kind":"num","value":240},{"kind":"num","value":8},{"kind":"num","value":136},{"kind":"num","value":72},{"kind":"num","value":200}]
+  <anon>  db  [{"kind":"num","value":40},{"kind":"num","value":168},{"kind":"num","value":104},{"kind":"num","value":232},{"kind":"num","value":24},{"kind":"num","value":152},{"kind":"num","value":88},{"kind":"num","value":216},{"kind":"num","value":56},{"kind":"num","value":184},{"kind":"num","value":120},{"kind":"num","value":248},{"kind":"num","value":4},{"kind":"num","value":132},{"kind":"num","value":68},{"kind":"num","value":196},{"kind":"num","value":36},{"kind":"num","value":164},{"kind":"num","value":100}]
+  <anon>  db  [{"kind":"num","value":228},{"kind":"num","value":20},{"kind":"num","value":148},{"kind":"num","value":84},{"kind":"num","value":212},{"kind":"num","value":52},{"kind":"num","value":180},{"kind":"num","value":116},{"kind":"num","value":244},{"kind":"num","value":12},{"kind":"num","value":140},{"kind":"num","value":76},{"kind":"num","value":204},{"kind":"num","value":44},{"kind":"num","value":172},{"kind":"num","value":108},{"kind":"num","value":236},{"kind":"num","value":28},{"kind":"num","value":156}]
+  <anon>  db  [{"kind":"num","value":92},{"kind":"num","value":220},{"kind":"num","value":60},{"kind":"num","value":188},{"kind":"num","value":124},{"kind":"num","value":252},{"kind":"num","value":2},{"kind":"num","value":130},{"kind":"num","value":66},{"kind":"num","value":194},{"kind":"num","value":34},{"kind":"num","value":162},{"kind":"num","value":98},{"kind":"num","value":226},{"kind":"num","value":18},{"kind":"num","value":146},{"kind":"num","value":82},{"kind":"num","value":210},{"kind":"num","value":50},{"kind":"num","value":178}]
+  <anon>  db  [{"kind":"num","value":114},{"kind":"num","value":242},{"kind":"num","value":10},{"kind":"num","value":138},{"kind":"num","value":74},{"kind":"num","value":202},{"kind":"num","value":42},{"kind":"num","value":170},{"kind":"num","value":106},{"kind":"num","value":234},{"kind":"num","value":26},{"kind":"num","value":154},{"kind":"num","value":90},{"kind":"num","value":218},{"kind":"num","value":58},{"kind":"num","value":186},{"kind":"num","value":122},{"kind":"num","value":250},{"kind":"num","value":6}]
+  <anon>  db  [{"kind":"num","value":134},{"kind":"num","value":70},{"kind":"num","value":198},{"kind":"num","value":38},{"kind":"num","value":166},{"kind":"num","value":102},{"kind":"num","value":230},{"kind":"num","value":22},{"kind":"num","value":150},{"kind":"num","value":86},{"kind":"num","value":214},{"kind":"num","value":54},{"kind":"num","value":182},{"kind":"num","value":118},{"kind":"num","value":246},{"kind":"num","value":14},{"kind":"num","value":142},{"kind":"num","value":78},{"kind":"num","value":206}]
+  <anon>  db  [{"kind":"num","value":46},{"kind":"num","value":174},{"kind":"num","value":110},{"kind":"num","value":238},{"kind":"num","value":30},{"kind":"num","value":158},{"kind":"num","value":94},{"kind":"num","value":222},{"kind":"num","value":62},{"kind":"num","value":190},{"kind":"num","value":126},{"kind":"num","value":254},{"kind":"num","value":1},{"kind":"num","value":129},{"kind":"num","value":65},{"kind":"num","value":193},{"kind":"num","value":33},{"kind":"num","value":161},{"kind":"num","value":97},{"kind":"num","value":225}]
+  <anon>  db  [{"kind":"num","value":17},{"kind":"num","value":145},{"kind":"num","value":81},{"kind":"num","value":209},{"kind":"num","value":49},{"kind":"num","value":177},{"kind":"num","value":113},{"kind":"num","value":241},{"kind":"num","value":9},{"kind":"num","value":137},{"kind":"num","value":73},{"kind":"num","value":201},{"kind":"num","value":41},{"kind":"num","value":169},{"kind":"num","value":105},{"kind":"num","value":233},{"kind":"num","value":25},{"kind":"num","value":153},{"kind":"num","value":89},{"kind":"num","value":217}]
+  <anon>  db  [{"kind":"num","value":57},{"kind":"num","value":185},{"kind":"num","value":121},{"kind":"num","value":249},{"kind":"num","value":5},{"kind":"num","value":133},{"kind":"num","value":69},{"kind":"num","value":197},{"kind":"num","value":37},{"kind":"num","value":165},{"kind":"num","value":101},{"kind":"num","value":229},{"kind":"num","value":21},{"kind":"num","value":149},{"kind":"num","value":85},{"kind":"num","value":213},{"kind":"num","value":53},{"kind":"num","value":181},{"kind":"num","value":117},{"kind":"num","value":245}]
+  <anon>  db  [{"kind":"num","value":13},{"kind":"num","value":141},{"kind":"num","value":77},{"kind":"num","value":205},{"kind":"num","value":45},{"kind":"num","value":173},{"kind":"num","value":109},{"kind":"num","value":237},{"kind":"num","value":29},{"kind":"num","value":157},{"kind":"num","value":93},{"kind":"num","value":221},{"kind":"num","value":61},{"kind":"num","value":189},{"kind":"num","value":125},{"kind":"num","value":253},{"kind":"num","value":3},{"kind":"num","value":131},{"kind":"num","value":67},{"kind":"num","value":195}]
+  <anon>  db  [{"kind":"num","value":35},{"kind":"num","value":163},{"kind":"num","value":99},{"kind":"num","value":227},{"kind":"num","value":19},{"kind":"num","value":147},{"kind":"num","value":83},{"kind":"num","value":211},{"kind":"num","value":51},{"kind":"num","value":179},{"kind":"num","value":115},{"kind":"num","value":243},{"kind":"num","value":11},{"kind":"num","value":139},{"kind":"num","value":75},{"kind":"num","value":203},{"kind":"num","value":43},{"kind":"num","value":171},{"kind":"num","value":107},{"kind":"num","value":235}]
+  <anon>  db  [{"kind":"num","value":27},{"kind":"num","value":155},{"kind":"num","value":91},{"kind":"num","value":219},{"kind":"num","value":59},{"kind":"num","value":187},{"kind":"num","value":123},{"kind":"num","value":251},{"kind":"num","value":7},{"kind":"num","value":135},{"kind":"num","value":71},{"kind":"num","value":199},{"kind":"num","value":39},{"kind":"num","value":167},{"kind":"num","value":103},{"kind":"num","value":231},{"kind":"num","value":23},{"kind":"num","value":151},{"kind":"num","value":87},{"kind":"num","value":215}]
+  <anon>  db  [{"kind":"num","value":55},{"kind":"num","value":183},{"kind":"num","value":119},{"kind":"num","value":247},{"kind":"num","value":15},{"kind":"num","value":143},{"kind":"num","value":79},{"kind":"num","value":207},{"kind":"num","value":47},{"kind":"num","value":175},{"kind":"num","value":111},{"kind":"num","value":239},{"kind":"num","value":31},{"kind":"num","value":159},{"kind":"num","value":95},{"kind":"num","value":223},{"kind":"num","value":63},{"kind":"num","value":191},{"kind":"num","value":127},{"kind":"num","value":255}]
+  circles  dw  [{"kind":"dup","count":8,"inner":{"kind":"num","value":0}}]
+  pal  db  [{"kind":"num","value":32},{"kind":"raw","value":"*"},{"kind":"dup","count":3,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":30},{"kind":"num","value":40}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":0},{"kind":"num","value":0}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":0},{"kind":"num","value":0}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":0},{"kind":"num","value":0}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":0},{"kind":"num","value":0}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":0},{"kind":"num","value":0}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":0},{"kind":"num","value":0}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":0},{"kind":"num","value":0}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":30},{"kind":"num","value":40}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":0},{"kind":"num","value":0}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":0},{"kind":"num","value":0}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":0},{"kind":"num","value":0}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":0},{"kind":"num","value":0}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":0},{"kind":"num","value":0}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":0},{"kind":"num","value":0}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":0},{"kind":"num","value":0}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":0},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":0}]
+  <anon>  db  [{"kind":"num","value":10},{"kind":"num","value":10},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":10}]
+  <anon>  db  [{"kind":"num","value":20},{"kind":"num","value":20},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":20}]
+  <anon>  db  [{"kind":"num","value":30},{"kind":"num","value":30},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":30}]
+  <anon>  db  [{"kind":"num","value":40},{"kind":"num","value":40},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":40}]
+  <anon>  db  [{"kind":"num","value":50},{"kind":"num","value":50},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":50}]
+  <anon>  db  [{"kind":"num","value":60},{"kind":"num","value":60},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":60}]
+  <anon>  db  [{"kind":"num","value":30},{"kind":"num","value":30},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":30}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":0},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":0}]
+  <anon>  db  [{"kind":"num","value":10},{"kind":"num","value":10},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":10}]
+  <anon>  db  [{"kind":"num","value":20},{"kind":"num","value":20},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":20}]
+  <anon>  db  [{"kind":"num","value":30},{"kind":"num","value":30},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":30}]
+  <anon>  db  [{"kind":"num","value":40},{"kind":"num","value":40},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":40}]
+  <anon>  db  [{"kind":"num","value":50},{"kind":"num","value":50},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":50}]
+  <anon>  db  [{"kind":"num","value":60},{"kind":"num","value":60},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":60}]
+  <anon>  db  [{"kind":"num","value":30},{"kind":"num","value":30},{"kind":"raw","value":"*"},{"kind":"num","value":7},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":30}]
+  <anon>  db  [{"kind":"num","value":50},{"kind":"num","value":50},{"kind":"raw","value":"*"},{"kind":"num","value":6},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":50}]
+  <anon>  db  [{"kind":"num","value":60},{"kind":"num","value":60},{"kind":"raw","value":"*"},{"kind":"num","value":6},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":60}]
+  <anon>  db  [{"kind":"num","value":30},{"kind":"num","value":30},{"kind":"raw","value":"*"},{"kind":"num","value":6},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":30}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":0},{"kind":"raw","value":"*"},{"kind":"num","value":6},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":0}]
+  <anon>  db  [{"kind":"num","value":10},{"kind":"num","value":10},{"kind":"raw","value":"*"},{"kind":"num","value":6},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":10}]
+  <anon>  db  [{"kind":"num","value":20},{"kind":"num","value":20},{"kind":"raw","value":"*"},{"kind":"num","value":6},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":20}]
+  <anon>  db  [{"kind":"num","value":30},{"kind":"num","value":30},{"kind":"raw","value":"*"},{"kind":"num","value":6},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":30}]
+  <anon>  db  [{"kind":"num","value":40},{"kind":"num","value":40},{"kind":"raw","value":"*"},{"kind":"num","value":6},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":40}]
+  <anon>  db  [{"kind":"num","value":50},{"kind":"num","value":50},{"kind":"raw","value":"*"},{"kind":"num","value":6},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":50}]
+  <anon>  db  [{"kind":"num","value":60},{"kind":"num","value":60},{"kind":"raw","value":"*"},{"kind":"num","value":6},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":60}]
+  <anon>  db  [{"kind":"num","value":30},{"kind":"num","value":30},{"kind":"raw","value":"*"},{"kind":"num","value":6},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":30}]
+  <anon>  db  [{"kind":"num","value":0},{"kind":"num","value":0},{"kind":"raw","value":"*"},{"kind":"num","value":6},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":0}]
+  <anon>  db  [{"kind":"num","value":10},{"kind":"num","value":10},{"kind":"raw","value":"*"},{"kind":"num","value":6},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":10}]
+  <anon>  db  [{"kind":"num","value":20},{"kind":"num","value":20},{"kind":"raw","value":"*"},{"kind":"num","value":6},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":20}]
+  <anon>  db  [{"kind":"num","value":30},{"kind":"num","value":30},{"kind":"raw","value":"*"},{"kind":"num","value":6},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":30}]
+  <anon>  db  [{"kind":"num","value":40},{"kind":"num","value":40},{"kind":"raw","value":"*"},{"kind":"num","value":6},{"kind":"raw","value":"/"},{"kind":"num","value":9},{"kind":"num","value":40}]
+  sinuspower  db  [{"kind":"num","value":0}]
+  powercnt  db  [{"kind":"num","value":0}]
+  power0  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  <anon>  db  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  framecount  dw  [{"kind":"num","value":0}]
+  palanimc  dw  [{"kind":"num","value":0}]
+  palanimc2  dw  [{"kind":"num","value":0}]
+  scrnpos  dw  [{"kind":"num","value":0}]
+  scrnposl  dw  [{"kind":"num","value":0}]
+  scrnx  dw  [{"kind":"num","value":0}]
+  scrny  dw  [{"kind":"num","value":0}]
+  scrnrot  dw  [{"kind":"num","value":0}]
+  sinurot  dw  [{"kind":"num","value":0}]
+  overrot  dw  [{"kind":"num","value":0}]
+  overx  dw  [{"kind":"num","value":0}]
+  overya  dw  [{"kind":"num","value":0}]
+  patdir  dw  [{"kind":"raw","value":"-"},{"kind":"num","value":3}]
+  memseg  dw  [{"kind":"num","value":0}]
+  WMINY  dw  [{"kind":"num","value":0}]
+  WMAXY  dw  [{"kind":"num","value":199}]
+  WMINX  dw  [{"kind":"num","value":0}]
+  WMAXX  dw  [{"kind":"num","value":319}]
+  clip_x1  dw  [{"kind":"num","value":0}]
+  clip_y1  dw  [{"kind":"num","value":0}]
+  clip_x2  dw  [{"kind":"num","value":0}]
+  clip_y2  dw  [{"kind":"num","value":0}]
+  clipxy2  dw  [{"kind":"dup","count":32,"inner":{"kind":"num","value":0}}]

@@ -1,0 +1,105 @@
+{
+  "name": "techno-linked",
+  "built": "2026-06-08",
+  "wasm": {
+    "bytes": 59699,
+    "sha256": "556f2ad80fa8c9329cc61750cb223a5376f804a1831ccea9536d21bffaac0a79"
+  },
+  "stats": {
+    "ops": 1288,
+    "unknownOps": 0,
+    "unknownMnemonics": [],
+    "modulesLinked": 3,
+    "duplicateFunctions": [
+      "bltline",
+      "bltlinerev",
+      "resetmode13",
+      "outpal",
+      "waitb",
+      "rotate1",
+      "init_interference",
+      "do_interference"
+    ],
+    "externSymbolsResolved": [
+      {
+        "name": "_circle",
+        "offset": 65536
+      },
+      {
+        "name": "_circle2",
+        "offset": 89600
+      }
+    ],
+    "unresolvedSymbols": [
+      "OFFSET",
+      "SEG",
+      "zzz"
+    ]
+  },
+  "layout": {
+    "moduleNames": [
+      "KOEA",
+      "KOEB",
+      "POLYCLIP"
+    ],
+    "functions": [
+      "__init",
+      "_asminit",
+      "_asmdoit",
+      "_asmdoit2",
+      "blitinit",
+      "blit16",
+      "blit16b",
+      "drawline",
+      "_asmbox",
+      "bltline",
+      "bltlinerev",
+      "resetmode13",
+      "outpal",
+      "waitb",
+      "rotate1",
+      "init_interference",
+      "do_interference",
+      "_initinterference",
+      "_dointerference",
+      "_inittwk",
+      "_lineblit",
+      "_setpalarea",
+      "mixpal",
+      "_dointerference2",
+      "clipanypoly",
+      "cliplinex",
+      "clipliney"
+    ],
+    "dataBase": 65536,
+    "dataCursor": 97792,
+    "symbolOffsets": {
+      "_circle": 65536,
+      "_circle2": 89600
+    },
+    "duplicates": [
+      "bltline (from KOEB)",
+      "bltlinerev (from KOEB)",
+      "resetmode13 (from KOEB)",
+      "outpal (from KOEB)",
+      "waitb (from KOEB)",
+      "rotate1 (from KOEB)",
+      "init_interference (from KOEB)",
+      "do_interference (from KOEB)"
+    ],
+    "unresolvedSymbols": [
+      "OFFSET",
+      "SEG",
+      "zzz"
+    ]
+  },
+  "modules": [
+    "KOEA.ASM",
+    "KOEB.ASM",
+    "POLYCLIP.ASM"
+  ],
+  "obkFiles": [
+    "_CIRCLE.OBK",
+    "_CIRCLE2.OBK"
+  ]
+}

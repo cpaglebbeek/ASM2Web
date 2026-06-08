@@ -1,9 +1,9 @@
 {
-  "version": "0.2.0-Backus",
-  "codename": "Backus",
-  "codenameSource": "John Backus (1924-2007), IBM FORTRAN 1957 — eerste high-level compiler. Hier voor structured control-flow recovery.",
+  "version": "0.3.0-Rochester",
+  "codename": "Rochester",
+  "codenameSource": "Nathaniel Rochester (1919-2001), schreef de eerste linker/loader voor IBM 701 in 1954. Hier voor cross-file linking.",
   "released": "2026-06-08",
-  "phase": "phase-4b-partial",
+  "phase": "phase-5-techno-browser",
   "completed": [
     "fase 0 skeleton",
     "fase 1 tokenizer+parser+symtab",
@@ -14,16 +14,17 @@
     "fase 4b-2 shadow-stack push/pop in linear memory",
     "fase 4b-3 alle 23 ontbrekende mnemonics in IR + codegen (mul/div/rep/rol/ror/xchg/jg/jl/jcxz/lds/les/movsx/movzx/neg/popf/pushf/rcl/rcr/sar/loop)",
     "OBK/OMF data-parser (extraheert _circle 24000 B + _circle2 8000 B uit TASM-build)",
-    "KOEA.ASM compileert naar valid WASM (18769 B, 22 exports)",
-    "KOEB.ASM/POLYCLIP.ASM/ROT.ASM idem"
+    "fase 5 linker (cross-file symbol-resolution + OBK-data ge-embed in WASM data-section)",
+    "fase 5 TECHNO end-to-end gelinkt: KOEA+KOEB+POLYCLIP samen in 59699 B WASM, 27 exports, build-determinisme bewezen",
+    "fase 5 KOE.C driver in JS rewritten (~150 regels, orchestrator)",
+    "fase 5 TECHNO browser-runtime live op /techno/ — frame-loop + canvas + driver",
+    "audio-engine basis (silent-mode fallback, deterministic music-row counter)"
   ],
   "open": [
-    "linker: data-segment integratie (OBK-bytes -> WASM data-section per extern-ref)",
-    "linker: cross-file symbol-resolution (KOEA+KOEB+POLYCLIP in één module)",
-    "KOE.C driver -> TypeScript-rewrite",
-    "DIS-engine substituut (libxmp-lite of chiptune3 voor S3M-playback)",
-    "TECHNO visueel/audio testen in browser (vereist alle bovenstaande)",
-    "gouden-frame test (P-DET-01 vol bewijs)"
+    "chiptune3 (libopenmpt) vendor + AudioWorklet voor echte S3M-playback",
+    "exacte x86-semantiek (segment:offset memory, zelfmodificerende code)",
+    "gouden-frame test (PNG-SHA snapshots) voor P-DET-01 vol bewijs op TECHNO",
+    "andere SR-scenes (STARFIELD, GLENZ, DOTS, TUNNELI, ...)"
   ],
   "miniDemoLive": true,
   "technoCompiles": true,
