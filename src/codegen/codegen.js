@@ -40,6 +40,19 @@ const ABI_IMPORTS = [
   { name: "dis_waitb",         params: [],                         results: [] },
 ];
 
+// Base for IR-data segments in linear memory (small-model data area).
+const DATA_BASE = 0x1000;
+
+// Per-compile data symbol-table (name -> linear offset). Set in compileIRtoWASM
+// before function emission; read by emitEA(). Not re-entrant (one compile at a time).
+let CURRENT_SYMBOLS = new Map();
+
+// Register names usable as address components in a memory expression.
+const ADDR_REG_LOCAL = Object.freeze({
+  ax: LOCAL_AX, bx: LOCAL_BX, cx: LOCAL_CX, dx: LOCAL_DX,
+  si: LOCAL_SI, di: LOCAL_DI, bp: LOCAL_BP, sp: LOCAL_SP,
+});
+
 const FN_IO_OUT = 0;
 const FN_IO_IN  = 1;
 const FN_EXIT   = 2;
@@ -78,22 +91,34 @@ export function compileIRtoWASM(ir) {
   const userFnIndex = new Map(); // ir-name -> wasm fn index
   ir.functions.forEach((fn, i) => userFnIndex.set(fn.name, ABI_IMPORTS.length + i));
 
-  // ----- emit per function -----
-  const wasmFns = ir.functions.map((fn, fnIdx) => emitFunction(fn, userFnIndex, TYPE_VOID));
-
-  // ----- build module -----
-  // Build data segments: pre-built (from linker) + IR-data
+  // ----- data segments + symbol table (must precede function emission) -----
+  // Pre-built (from linker) data: symbols already rewritten to consts in IR.
   const dataSegments = [];
   if (ir.preBuiltData) {
     for (const d of ir.preBuiltData) {
       dataSegments.push({ offset: d.offset, bytes: Array.from(d.bytes) });
     }
   }
-  // IR-data segments
+  // IR-data segments: laid out sequentially (non-overlapping) from DATA_BASE,
+  // building a symbol-table (name -> linear offset) used by the effective-address
+  // emitter to resolve `[symbol]` / `symbol[reg]` references at runtime.
+  const symbols = new Map();
+  let dataCursor = DATA_BASE;
   for (let idx = 0; idx < ir.data.length; idx++) {
-    const seg = emitDataSegment(ir.data[idx], idx);
-    if (seg) dataSegments.push(seg);
+    const d = ir.data[idx];
+    const bytes = [];
+    if (d && d.items) for (const it of d.items) appendDataItem(bytes, it, d.size);
+    if (dataCursor & 1) dataCursor++;  // word-align
+    if (d && d.name) symbols.set(d.name, dataCursor);
+    if (bytes.length) {
+      dataSegments.push({ offset: dataCursor, bytes });
+      dataCursor += bytes.length;
+    }
   }
+  CURRENT_SYMBOLS = symbols;
+
+  // ----- emit per function (uses CURRENT_SYMBOLS for address resolution) -----
+  const wasmFns = ir.functions.map((fn, fnIdx) => emitFunction(fn, userFnIndex, TYPE_VOID));
 
   const spec = {
     types,
@@ -501,12 +526,11 @@ function emitStore(b, op, tmps) {
   const sz = op.size || 16;
   // Compute address.
   if (op.addr.kind === "mem") {
-    b.i32Const(0);  // base
-    const lit = parseMemExpr(op.addr) | 0;
+    emitEA(b, op.addr);             // runtime effective address
     pushValue(b, op.src, tmps);
-    if (sz === 8)       b.store8(0, lit);
-    else if (sz === 32) b.store(0, lit);
-    else                b.store16(0, lit);
+    if (sz === 8)       b.store8(0, 0);
+    else if (sz === 32) b.store(0, 0);
+    else                b.store16(0, 0);
     return;
   }
   if (op.addr.kind === "const") {
@@ -533,11 +557,10 @@ function emitStore(b, op, tmps) {
 function emitLoad(b, op, tmps) {
   const sz = op.size || 16;
   if (op.addr.kind === "mem") {
-    b.i32Const(0);
-    const lit = parseMemExpr(op.addr) | 0;
-    if (sz === 8)       b.load8U(0, lit);
-    else if (sz === 32) b.load(0, lit);
-    else                b.load16U(0, lit);
+    emitEA(b, op.addr);             // runtime effective address
+    if (sz === 8)       b.load8U(0, 0);
+    else if (sz === 32) b.load(0, 0);
+    else                b.load16U(0, 0);
   } else if (op.addr.kind === "const") {
     b.i32Const(0);
     if (sz === 8)       b.load8U(0, op.addr.value | 0);
@@ -646,10 +669,14 @@ function pushValue(b, v, tmps) {
       // unresolved symbol -> 0 (todo: data-segment offsets)
       b.i32Const(0);
       return;
-    case "mem":
-      b.i32Const(0);
-      b.load16U(0, parseMemExpr(v) | 0);
+    case "mem": {
+      emitEA(b, v);
+      const msz = v.sizeHint === "byte" ? 8 : v.sizeHint === "dword" ? 32 : 16;
+      if (msz === 8)       b.load8U(0, 0);
+      else if (msz === 32) b.load(0, 0);
+      else                 b.load16U(0, 0);
       return;
+    }
     default:
       b.i32Const(0);
       return;
@@ -684,6 +711,62 @@ function storeTo(b, v, tmps) {
     return;
   }
   b.drop();
+}
+
+/**
+ * Emit a runtime i32 effective address from a memory operand's exprTokens.
+ * Resolves register components (di, bx, si, ...) via their locals, data symbols
+ * via CURRENT_SYMBOLS, and numeric displacements as constants. An optional
+ * segment base (memOperand.segBase, already paragraph-shifted) is added last.
+ *
+ * Grammar (sufficient for real-mode addressing): expr := term (('+'|'-') term)*
+ *   term := primary ('*' primary)*   primary := NUMBER | reg | symbol | '(' expr ')' | '-' primary
+ */
+function emitEA(b, memOperand) {
+  const toks = (memOperand.exprTokens || []).filter(t => t.type !== "WS" && t.type !== "NEWLINE");
+  let i = 0;
+  // Fold the multiplicative chain when both sides are constant; otherwise emit
+  // runtime i32.mul. Returns true if the (sub)expression is a compile-time const,
+  // with the value folded into `constAcc`. We keep it simple: emit eagerly.
+  function emitPrimary() {
+    const t = toks[i++];
+    if (!t) { b.i32Const(0); return; }
+    if (t.type === "NUMBER") { b.i32Const(Number(t.value) | 0); return; }
+    if (t.type === "IDENT") {
+      const reg = String(t.value).toLowerCase();
+      if (ADDR_REG_LOCAL[reg] !== undefined) {
+        b.localGet(ADDR_REG_LOCAL[reg]);
+        b.i32Const(0xFFFF); b.and();         // 16-bit register in addressing
+        return;
+      }
+      if (CURRENT_SYMBOLS.has(t.value)) { b.i32Const(CURRENT_SYMBOLS.get(t.value) | 0); return; }
+      b.i32Const(0);                          // unknown symbol -> 0 (approximation)
+      return;
+    }
+    if (t.type === "PUNCT" && t.value === "-") { emitPrimary(); b.i32Const(-1); b.mul(); return; }
+    if (t.type === "PUNCT" && t.value === "(") {
+      emitExpr();
+      if (toks[i] && toks[i].type === "PUNCT" && toks[i].value === ")") i++;
+      return;
+    }
+    b.i32Const(0);
+  }
+  function emitTerm() {
+    emitPrimary();
+    while (i < toks.length && toks[i].type === "PUNCT" && toks[i].value === "*") {
+      i++; emitPrimary(); b.mul();
+    }
+  }
+  function emitExpr() {
+    emitTerm();
+    while (i < toks.length && toks[i].type === "PUNCT" && (toks[i].value === "+" || toks[i].value === "-")) {
+      const opv = toks[i].value; i++;
+      emitTerm();
+      if (opv === "+") b.add(); else b.sub();
+    }
+  }
+  emitExpr();
+  if (memOperand.segBase) { b.i32Const(memOperand.segBase | 0); b.add(); }
 }
 
 function parseMemExpr(memOperand) {

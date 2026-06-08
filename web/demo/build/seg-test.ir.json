@@ -1,0 +1,190 @@
+{
+  "name": "seg-test",
+  "stats": {
+    "ops": 14,
+    "unknownOps": 0,
+    "unknownMnemonics": []
+  },
+  "functions": [
+    {
+      "name": "main",
+      "attr": "near",
+      "locals": 12,
+      "ops": [
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 40960
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "const",
+            "value": 0
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 5,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 3210
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 15
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "const",
+            "value": 0
+          },
+          "src": {
+            "kind": "local",
+            "index": 5,
+            "size": 16,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 5,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 6420
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 31
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "const",
+            "value": 0
+          },
+          "src": {
+            "kind": "local",
+            "index": 5,
+            "size": 16,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 40960
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "const",
+            "value": 0
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 4,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 100
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 8,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 7
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "const",
+            "value": 0
+          },
+          "src": {
+            "kind": "local",
+            "index": 4,
+            "size": 16,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "ret"
+        }
+      ]
+    }
+  ],
+  "data": []
+}

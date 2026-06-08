@@ -1,0 +1,18 @@
+; IR module: seg-test
+; functions: 1, data: 0, ops: 14, unknown: 0
+
+function main (near) locals=12
+  r0 = 0xa000
+  0x0 = r0
+  r5 = 0xc8a
+  r0.l = 0xf
+  0x0 = r5
+  r5 = 0x1914
+  r0.l = 0x1f
+  0x0 = r5
+  r0 = 0xa000
+  0x0 = r0
+  r4 = 0x64
+  r0.l = 0x7
+  0x0 = r4
+  ret

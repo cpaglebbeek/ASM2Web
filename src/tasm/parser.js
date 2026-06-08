@@ -531,6 +531,23 @@ export function parse(tokens, opts = {}) {
         if (rest) rest.sizeHint = lc(name);
         return rest;
       }
+      // Based/indexed on a symbol: `oldpos[bx]` -> mem operand combining the
+      // symbol with the bracket expression (symbol + index).
+      if (peek().type === TOK.PUNCT && peek().value === "[") {
+        eat();
+        const exprToks = [{ type: TOK.IDENT, value: name }, { type: TOK.PUNCT, value: "+" }];
+        while (peek().type !== TOK.PUNCT || peek().value !== "]") {
+          if (peek().type === TOK.NEWLINE || peek().type === TOK.EOF) break;
+          const x = eat();
+          exprToks.push({ type: x.type, value: x.value });
+        }
+        if (peek().type === TOK.PUNCT && peek().value === "]") eat();
+        return {
+          kind: "mem",
+          exprText: exprToks.map(x => String(x.value)).join(" "),
+          exprTokens: exprToks,
+        };
+      }
       return { kind: "label", name };
     }
     if (t.type === TOK.NUMBER) { eat(); return { kind: "imm", value: t.value }; }

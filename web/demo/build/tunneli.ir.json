@@ -1,0 +1,529 @@
+{
+  "name": "tunneli",
+  "stats": {
+    "ops": 39,
+    "unknownOps": 0,
+    "unknownMnemonics": []
+  },
+  "functions": [
+    {
+      "name": "rowinit",
+      "attr": "far",
+      "locals": 12,
+      "ops": [
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 2,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 200
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 0
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 0
+          }
+        },
+        {
+          "op": "label",
+          "name": "@ri",
+          "local": false
+        },
+        {
+          "op": "add",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "a": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "b": {
+            "kind": "const",
+            "value": 320
+          }
+        },
+        {
+          "op": "add",
+          "dest": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          },
+          "a": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          },
+          "b": {
+            "kind": "const",
+            "value": 2
+          }
+        },
+        {
+          "op": "loop_dec_cx",
+          "target": "@ri"
+        },
+        {
+          "op": "ret"
+        }
+      ]
+    },
+    {
+      "name": "init",
+      "attr": "far",
+      "locals": 12,
+      "ops": [
+        {
+          "op": "ret"
+        }
+      ]
+    },
+    {
+      "name": "Putrouts",
+      "attr": "far",
+      "locals": 12,
+      "ops": [
+        {
+          "op": "push",
+          "src": {
+            "kind": "const",
+            "value": 0
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "const",
+            "value": 0
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 40960
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "const",
+            "value": 0
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "const",
+            "value": 0
+          },
+          "src": {
+            "kind": "sym",
+            "name": "@yad"
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 0
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 2,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 64
+          }
+        },
+        {
+          "op": "label",
+          "name": "@dr",
+          "local": false
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 5,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 0
+          }
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "const",
+            "value": 0
+          },
+          "src": {
+            "kind": "local",
+            "index": 5,
+            "size": 16,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "label",
+          "name": "@yad",
+          "local": false
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 1234
+          }
+        },
+        {
+          "op": "add",
+          "dest": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          },
+          "a": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          },
+          "b": {
+            "kind": "const",
+            "value": 0
+          }
+        },
+        {
+          "op": "cmp",
+          "a": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          },
+          "b": {
+            "kind": "const",
+            "value": 199
+          }
+        },
+        {
+          "op": "jcond",
+          "cond": "gt_u",
+          "target": "@yli"
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 5,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "const",
+            "value": 0
+          }
+        },
+        {
+          "op": "add",
+          "dest": {
+            "kind": "local",
+            "index": 5,
+            "size": 16,
+            "isHigh": false
+          },
+          "a": {
+            "kind": "local",
+            "index": 5,
+            "size": 16,
+            "isHigh": false
+          },
+          "b": {
+            "kind": "local",
+            "index": 3,
+            "size": 16,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "cmp",
+          "a": {
+            "kind": "local",
+            "index": 5,
+            "size": 16,
+            "isHigh": false
+          },
+          "b": {
+            "kind": "const",
+            "value": 319
+          }
+        },
+        {
+          "op": "jcond",
+          "cond": "gt_u",
+          "target": "@yli"
+        },
+        {
+          "op": "add",
+          "dest": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          },
+          "a": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          },
+          "b": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "add",
+          "dest": {
+            "kind": "local",
+            "index": 5,
+            "size": 16,
+            "isHigh": false
+          },
+          "a": {
+            "kind": "local",
+            "index": 5,
+            "size": 16,
+            "isHigh": false
+          },
+          "b": {
+            "kind": "const",
+            "value": 0
+          }
+        },
+        {
+          "op": "label",
+          "name": "@c",
+          "local": false
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "const",
+            "value": 0
+          },
+          "src": {
+            "kind": "local",
+            "index": 5,
+            "size": 16,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "label",
+          "name": "@yli",
+          "local": false
+        },
+        {
+          "op": "mov",
+          "dest": {
+            "kind": "local",
+            "index": 1,
+            "size": 16,
+            "isHigh": false
+          },
+          "src": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          }
+        },
+        {
+          "op": "add",
+          "dest": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "a": {
+            "kind": "local",
+            "index": 0,
+            "size": 16,
+            "isHigh": false
+          },
+          "b": {
+            "kind": "const",
+            "value": 2
+          }
+        },
+        {
+          "op": "add",
+          "dest": {
+            "kind": "local",
+            "index": 4,
+            "size": 16,
+            "isHigh": false
+          },
+          "a": {
+            "kind": "local",
+            "index": 4,
+            "size": 16,
+            "isHigh": false
+          },
+          "b": {
+            "kind": "const",
+            "value": 4
+          }
+        },
+        {
+          "op": "loop_dec_cx",
+          "target": "@dr"
+        },
+        {
+          "op": "pop",
+          "dest": {
+            "kind": "const",
+            "value": 0
+          }
+        },
+        {
+          "op": "ret"
+        }
+      ]
+    }
+  ],
+  "data": [
+    {
+      "name": "oldpos",
+      "size": "dw",
+      "items": [
+        {
+          "kind": "dup",
+          "count": 7000,
+          "inner": {
+            "kind": "num",
+            "value": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "rows",
+      "size": "dw",
+      "items": [
+        {
+          "kind": "dup",
+          "count": 210,
+          "inner": {
+            "kind": "num",
+            "value": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "op",
+      "size": "dw",
+      "items": [
+        {
+          "kind": "num",
+          "value": 0
+        }
+      ]
+    }
+  ]
+}

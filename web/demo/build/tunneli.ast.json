@@ -1,0 +1,1074 @@
+{
+  "file": "tunneli.asm",
+  "items": [
+    {
+      "kind": "directive",
+      "loc": {
+        "col": 11,
+        "line": 1,
+        "offset": 10
+      },
+      "name": ".model",
+      "operandText": "large , PASCAL"
+    },
+    {
+      "kind": "directive",
+      "loc": {
+        "col": 11,
+        "line": 2,
+        "offset": 42
+      },
+      "name": ".code",
+      "operandText": ""
+    },
+    {
+      "kind": "directive",
+      "loc": {
+        "col": 11,
+        "line": 3,
+        "offset": 59
+      },
+      "name": ".386",
+      "operandText": ""
+    },
+    {
+      "items": [
+        {
+          "count": 7000,
+          "inner": {
+            "kind": "num",
+            "value": 0
+          },
+          "kind": "dup"
+        }
+      ],
+      "kind": "data",
+      "loc": {
+        "col": 1,
+        "line": 5,
+        "offset": 67
+      },
+      "name": "oldpos",
+      "size": "dw"
+    },
+    {
+      "items": [
+        {
+          "count": 210,
+          "inner": {
+            "kind": "num",
+            "value": 0
+          },
+          "kind": "dup"
+        }
+      ],
+      "kind": "data",
+      "loc": {
+        "col": 1,
+        "line": 6,
+        "offset": 98
+      },
+      "name": "rows",
+      "size": "dw"
+    },
+    {
+      "items": [
+        {
+          "kind": "num",
+          "value": 0
+        }
+      ],
+      "kind": "data",
+      "loc": {
+        "col": 1,
+        "line": 7,
+        "offset": 127
+      },
+      "name": "op",
+      "size": "dw"
+    },
+    {
+      "attr": "far",
+      "items": [
+        {
+          "kind": "public",
+          "loc": {
+            "col": 11,
+            "line": 10,
+            "offset": 181
+          },
+          "names": [
+            "rowinit"
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 11,
+            "offset": 207
+          },
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "kind": "reg",
+              "name": "cx",
+              "regKind": "r16"
+            },
+            {
+              "kind": "imm",
+              "value": 200
+            }
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 12,
+            "offset": 232
+          },
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "kind": "reg",
+              "name": "ax",
+              "regKind": "r16"
+            },
+            {
+              "kind": "imm",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 13,
+            "offset": 255
+          },
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "kind": "reg",
+              "name": "bx",
+              "regKind": "r16"
+            },
+            {
+              "kind": "imm",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "kind": "label",
+          "loc": {
+            "col": 1,
+            "line": 14,
+            "offset": 268
+          },
+          "local": false,
+          "name": "@ri"
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 14,
+            "offset": 278
+          },
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "kind": "raw",
+              "text": "cs"
+            }
+          ]
+        },
+        {
+          "kind": "raw",
+          "loc": {
+            "col": 21,
+            "line": 14,
+            "offset": 288
+          },
+          "text": "rows [ bx ] , ax"
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 15,
+            "offset": 311
+          },
+          "mnemonic": "add",
+          "operands": [
+            {
+              "kind": "reg",
+              "name": "ax",
+              "regKind": "r16"
+            },
+            {
+              "kind": "imm",
+              "value": 320
+            }
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 16,
+            "offset": 336
+          },
+          "mnemonic": "add",
+          "operands": [
+            {
+              "kind": "reg",
+              "name": "bx",
+              "regKind": "r16"
+            },
+            {
+              "kind": "imm",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 17,
+            "offset": 359
+          },
+          "mnemonic": "loop",
+          "operands": [
+            {
+              "kind": "label",
+              "name": "@ri"
+            }
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 18,
+            "offset": 381
+          },
+          "mnemonic": "ret",
+          "operands": []
+        }
+      ],
+      "kind": "proc",
+      "loc": {
+        "col": 1,
+        "line": 9,
+        "offset": 149
+      },
+      "name": "rowinit"
+    },
+    {
+      "attr": "far",
+      "items": [
+        {
+          "kind": "public",
+          "loc": {
+            "col": 11,
+            "line": 23,
+            "offset": 438
+          },
+          "names": [
+            "init"
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 24,
+            "offset": 461
+          },
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "kind": "raw",
+              "sizeHint": "word",
+              "text": "cs"
+            }
+          ]
+        },
+        {
+          "kind": "raw",
+          "loc": {
+            "col": 30,
+            "line": 24,
+            "offset": 480
+          },
+          "text": "op , 0"
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 25,
+            "offset": 496
+          },
+          "mnemonic": "ret",
+          "operands": []
+        }
+      ],
+      "kind": "proc",
+      "loc": {
+        "col": 1,
+        "line": 22,
+        "offset": 406
+      },
+      "name": "init"
+    },
+    {
+      "attr": "far",
+      "items": [
+        {
+          "kind": "public",
+          "loc": {
+            "col": 11,
+            "line": 29,
+            "offset": 549
+          },
+          "names": [
+            "Putrouts"
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 30,
+            "offset": 576
+          },
+          "mnemonic": "push",
+          "operands": [
+            {
+              "kind": "reg",
+              "name": "ds",
+              "regKind": "sreg"
+            }
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 31,
+            "offset": 597
+          },
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "kind": "reg",
+              "name": "ds",
+              "regKind": "sreg"
+            },
+            {
+              "kind": "reg",
+              "name": "ax",
+              "regKind": "r16"
+            }
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 33,
+            "offset": 623
+          },
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "kind": "reg",
+              "name": "ax",
+              "regKind": "r16"
+            },
+            {
+              "kind": "imm",
+              "value": 40960
+            }
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 34,
+            "offset": 651
+          },
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "kind": "reg",
+              "name": "es",
+              "regKind": "sreg"
+            },
+            {
+              "kind": "reg",
+              "name": "ax",
+              "regKind": "r16"
+            }
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 37,
+            "offset": 718
+          },
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "kind": "raw",
+              "sizeHint": "word",
+              "text": "cs"
+            },
+            {
+              "kind": "label",
+              "name": "@yad"
+            },
+            {
+              "kind": "imm",
+              "value": 1
+            },
+            {
+              "kind": "raw",
+              "text": ","
+            }
+          ]
+        },
+        {
+          "kind": "raw",
+          "loc": {
+            "col": 39,
+            "line": 37,
+            "offset": 746
+          },
+          "text": "bx"
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 39,
+            "offset": 762
+          },
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "kind": "reg",
+              "name": "ax",
+              "regKind": "r16"
+            },
+            {
+              "kind": "raw",
+              "text": "cs"
+            }
+          ]
+        },
+        {
+          "kind": "raw",
+          "loc": {
+            "col": 24,
+            "line": 39,
+            "offset": 775
+          },
+          "text": "Op"
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 40,
+            "offset": 789
+          },
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "kind": "reg",
+              "name": "cx",
+              "regKind": "r16"
+            },
+            {
+              "kind": "imm",
+              "value": 64
+            }
+          ]
+        },
+        {
+          "kind": "label",
+          "loc": {
+            "col": 1,
+            "line": 41,
+            "offset": 803
+          },
+          "local": false,
+          "name": "@dr"
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 42,
+            "offset": 819
+          },
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "kind": "reg",
+              "name": "bx",
+              "regKind": "r16"
+            },
+            {
+              "kind": "reg",
+              "name": "ax",
+              "regKind": "r16"
+            }
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 43,
+            "offset": 843
+          },
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "kind": "reg",
+              "name": "di",
+              "regKind": "r16"
+            },
+            {
+              "kind": "raw",
+              "sizeHint": "word",
+              "text": "cs"
+            }
+          ]
+        },
+        {
+          "kind": "raw",
+          "loc": {
+            "col": 33,
+            "line": 43,
+            "offset": 865
+          },
+          "text": "oldpos [ bx ]"
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 44,
+            "offset": 887
+          },
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "kind": "raw",
+              "sizeHint": "byte",
+              "text": "es"
+            },
+            {
+              "kind": "reg",
+              "name": "di",
+              "regKind": "r16"
+            },
+            {
+              "kind": "raw",
+              "text": ","
+            }
+          ]
+        },
+        {
+          "kind": "raw",
+          "loc": {
+            "col": 35,
+            "line": 44,
+            "offset": 911
+          },
+          "text": "0"
+        },
+        {
+          "kind": "label",
+          "loc": {
+            "col": 1,
+            "line": 46,
+            "offset": 916
+          },
+          "local": false,
+          "name": "@yad"
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 46,
+            "offset": 926
+          },
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "kind": "reg",
+              "name": "bx",
+              "regKind": "r16"
+            },
+            {
+              "kind": "imm",
+              "value": 1234
+            }
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 47,
+            "offset": 1004
+          },
+          "mnemonic": "add",
+          "operands": [
+            {
+              "kind": "reg",
+              "name": "bx",
+              "regKind": "r16"
+            },
+            {
+              "kind": "raw",
+              "sizeHint": "word",
+              "text": "ds"
+            },
+            {
+              "kind": "reg",
+              "name": "si",
+              "regKind": "r16"
+            },
+            {
+              "kind": "imm",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 48,
+            "offset": 1060
+          },
+          "mnemonic": "cmp",
+          "operands": [
+            {
+              "kind": "reg",
+              "name": "bx",
+              "regKind": "r16"
+            },
+            {
+              "kind": "imm",
+              "value": 199
+            }
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 49,
+            "offset": 1085
+          },
+          "mnemonic": "ja",
+          "operands": [
+            {
+              "kind": "label",
+              "name": "@yli"
+            }
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 50,
+            "offset": 1108
+          },
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "kind": "reg",
+              "name": "di",
+              "regKind": "r16"
+            },
+            {
+              "kind": "raw",
+              "sizeHint": "word",
+              "text": "ds"
+            },
+            {
+              "kind": "reg",
+              "name": "si",
+              "regKind": "r16"
+            }
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 51,
+            "offset": 1166
+          },
+          "mnemonic": "add",
+          "operands": [
+            {
+              "kind": "reg",
+              "name": "di",
+              "regKind": "r16"
+            },
+            {
+              "kind": "reg",
+              "name": "dx",
+              "regKind": "r16"
+            }
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 52,
+            "offset": 1190
+          },
+          "mnemonic": "cmp",
+          "operands": [
+            {
+              "kind": "reg",
+              "name": "di",
+              "regKind": "r16"
+            },
+            {
+              "kind": "imm",
+              "value": 319
+            }
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 53,
+            "offset": 1215
+          },
+          "mnemonic": "ja",
+          "operands": [
+            {
+              "kind": "label",
+              "name": "@yli"
+            }
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 54,
+            "offset": 1238
+          },
+          "mnemonic": "add",
+          "operands": [
+            {
+              "kind": "reg",
+              "name": "bx",
+              "regKind": "r16"
+            },
+            {
+              "kind": "reg",
+              "name": "bx",
+              "regKind": "r16"
+            }
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 55,
+            "offset": 1262
+          },
+          "mnemonic": "add",
+          "operands": [
+            {
+              "kind": "reg",
+              "name": "di",
+              "regKind": "r16"
+            },
+            {
+              "kind": "raw",
+              "sizeHint": "word",
+              "text": "cs"
+            }
+          ]
+        },
+        {
+          "kind": "raw",
+          "loc": {
+            "col": 33,
+            "line": 55,
+            "offset": 1284
+          },
+          "text": "rows [ bx ]"
+        },
+        {
+          "kind": "label",
+          "loc": {
+            "col": 1,
+            "line": 56,
+            "offset": 1294
+          },
+          "local": false,
+          "name": "@c"
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 56,
+            "offset": 1304
+          },
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "kind": "raw",
+              "sizeHint": "byte",
+              "text": "es"
+            },
+            {
+              "kind": "reg",
+              "name": "di",
+              "regKind": "r16"
+            },
+            {
+              "kind": "raw",
+              "text": ","
+            }
+          ]
+        },
+        {
+          "kind": "raw",
+          "loc": {
+            "col": 35,
+            "line": 56,
+            "offset": 1328
+          },
+          "text": "15"
+        },
+        {
+          "kind": "label",
+          "loc": {
+            "col": 1,
+            "line": 58,
+            "offset": 1334
+          },
+          "local": false,
+          "name": "@yli"
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 58,
+            "offset": 1344
+          },
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "kind": "reg",
+              "name": "bx",
+              "regKind": "r16"
+            },
+            {
+              "kind": "reg",
+              "name": "ax",
+              "regKind": "r16"
+            }
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 59,
+            "offset": 1368
+          },
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "kind": "raw",
+              "sizeHint": "word",
+              "text": "cs"
+            }
+          ]
+        },
+        {
+          "kind": "raw",
+          "loc": {
+            "col": 30,
+            "line": 59,
+            "offset": 1387
+          },
+          "text": "oldpos [ bx ] , di"
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 60,
+            "offset": 1412
+          },
+          "mnemonic": "add",
+          "operands": [
+            {
+              "kind": "reg",
+              "name": "ax",
+              "regKind": "r16"
+            },
+            {
+              "kind": "imm",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 62,
+            "offset": 1437
+          },
+          "mnemonic": "add",
+          "operands": [
+            {
+              "kind": "reg",
+              "name": "si",
+              "regKind": "r16"
+            },
+            {
+              "kind": "imm",
+              "value": 4
+            }
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 63,
+            "offset": 1460
+          },
+          "mnemonic": "loop",
+          "operands": [
+            {
+              "kind": "label",
+              "name": "@dr"
+            }
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 64,
+            "offset": 1482
+          },
+          "mnemonic": "mov",
+          "operands": [
+            {
+              "kind": "raw",
+              "text": "cs"
+            }
+          ]
+        },
+        {
+          "kind": "raw",
+          "loc": {
+            "col": 21,
+            "line": 64,
+            "offset": 1492
+          },
+          "text": "Op , ax"
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 65,
+            "offset": 1509
+          },
+          "mnemonic": "pop",
+          "operands": [
+            {
+              "kind": "reg",
+              "name": "ds",
+              "regKind": "sreg"
+            }
+          ]
+        },
+        {
+          "kind": "instr",
+          "loc": {
+            "col": 11,
+            "line": 66,
+            "offset": 1530
+          },
+          "mnemonic": "ret",
+          "operands": []
+        }
+      ],
+      "kind": "proc",
+      "loc": {
+        "col": 1,
+        "line": 28,
+        "offset": 519
+      },
+      "name": "Putrouts"
+    },
+    {
+      "kind": "directive",
+      "loc": {
+        "col": 1,
+        "line": 69,
+        "offset": 1553
+      },
+      "name": "end",
+      "operandText": ""
+    }
+  ],
+  "kind": "module",
+  "stats": {
+    "dataLines": 3,
+    "externs": 0,
+    "instructions": 39,
+    "labels": 8,
+    "procs": 3,
+    "publics": 3,
+    "raw": 10,
+    "segments": 0,
+    "unknownMnemonics": [
+      "Op",
+      "bx",
+      "oldpos",
+      "op",
+      "rows"
+    ]
+  }
+}
