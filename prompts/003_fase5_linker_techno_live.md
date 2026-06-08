@@ -1,8 +1,12 @@
 ---
 date: 2026-06-08
 repo: ASM2Web
-status: open
-resume: "verder met ASM2Web fase 6 — (1) chiptune3 (libopenmpt, BSD-3-Clause) vendoren + AudioWorklet binding voor S3M-playback van MUSIC0.S3M, (2) exacte x86-semantiek: segment:offset memory + zelfmodificerende code-detectie, (3) gouden-frame test (PNG-SHA snapshots) voor P-DET-01 vol bewijs op TECHNO frames 100/500/1000, (4) andere SR-scenes geport: STARFIELD/GLENZ/DOTS/TUNNELI/TWIST/GRID, (5) optionele Driver-mod-tester voor visuele verschillen tussen runs. v0.4.0-Wilkes."
+status: done
+resume: ""
+---
+
+> **Status update 2026-06-08 (latere sessie)**: fase 6 audio+STARFIELD+golden-frame gedaan in `004_fase6_audio_starfield_golden.md` (v0.4.0-Wilkes). Resume-haak doorgeschoven.
+
 ---
 
 # Sessie 2026-06-08 — ASM2Web fase 5 (linker + TECHNO browser-runtime)

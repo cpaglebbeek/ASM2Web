@@ -1,9 +1,9 @@
 {
-  "version": "0.3.0-Rochester",
-  "codename": "Rochester",
-  "codenameSource": "Nathaniel Rochester (1919-2001), schreef de eerste linker/loader voor IBM 701 in 1954. Hier voor cross-file linking.",
+  "version": "0.4.0-Wilkes",
+  "codename": "Wilkes",
+  "codenameSource": "Maurice Wilkes (1913-2010), schreef EDSAC en bedacht microprogrammering (1951). Hier voor audio-bridge + 2e scene + P-DET-01.",
   "released": "2026-06-08",
-  "phase": "phase-5-techno-browser",
+  "phase": "phase-6-audio-starfield-golden-frame",
   "completed": [
     "fase 0 skeleton",
     "fase 1 tokenizer+parser+symtab",

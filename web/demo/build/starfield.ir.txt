@@ -1,0 +1,1127 @@
+; IR module: starfield
+; functions: 23, data: 60, ops: 969, unknown: 0
+
+function poly (near) locals=12
+  r0 = 0x0
+  0x0 = r0
+  r0 = 0x0
+  0x0 = r0
+  jump .polyf
+  ret
+
+function polyf (near) locals=12
+  r0 = 0x0
+  0x0 = r0
+  0x0 = r0
+  r2 = 0x0
+  r0 = r2
+  r0 = shl r0, 0x4
+  r0 = add r0, @OFFSET
+  r0 = 0x0
+  r0 = add r0, 0x1
+  0x0 = 0x77770000
+  r1 = xor r1, r1
+  r4 = @OFFSET
+  r5 = @OFFSET
+  .pfn1:
+  0x0 = 0x0
+  cmp 0x0, 0x0
+  jgt_s .pfn2
+  0x0 = 0x0
+  r1 = r5
+  .pfn2:
+  0x0 = r5
+  r4 = add r4, 0x4
+  r5 = add r5, 0x10
+  loop_dec_cx .pfn1
+  r4 = r1
+  r5 = r1
+  r6 = 0x0
+  r1 = @OFFSET
+  r0 = r6
+  cmp r0, 0x0
+  jge_s .pfn35
+  r0 = 0x0
+  .pfn35:
+  0x0 = r1
+  r1 = add r1, 0x2
+  r2 = 0x10
+  .pfn63:
+  push r2
+  push r1
+  cmp r6, 0x0
+  jlt_s .pfn42
+  push 0x0
+  push r5
+  r5 = r4
+  r5 = sub r5, 0x10
+  cmp r5, 0x0
+  jncf .pfn41
+  r5 = add r5, 0x0
+  .pfn41:
+  r1 = @OFFSET
+  call polyfcalc
+  r2 = add r2, r6
+  0x0 = 0x0
+  0x0 = 0x0
+  r3 = 0x0
+  r3 = sar r3, 0x1
+  0x0 = rcr 0x0, 0x1
+  r1 = xor r1, r1
+  0x0 = sub 0x0, 0x0
+  r0 = sub r0, r3
+  r4 = r5
+  pop r5
+  pop 0x0
+  .pfn42:
+  cmp r6, 0x0
+  jlt_s .pfn52
+  push 0x0
+  push r4
+  r4 = r5
+  r5 = add r5, 0x10
+  cmp r5, 0x0
+  jcf .pfn51
+  r5 = sub r5, 0x0
+  .pfn51:
+  r1 = @OFFSET
+  call polyfcalc
+  r2 = add r2, r6
+  0x0 = 0x0
+  0x0 = 0x0
+  r0 = 0x0
+  r0 = sar r0, 0x1
+  0x0 = rcr 0x0, 0x1
+  r1 = xor r1, r1
+  0x0 = sub 0x0, 0x0
+  r3 = sub r3, r0
+  pop r4
+  pop 0x0
+  .pfn52:
+  r1 = 0x0
+  r2 = 0x0
+  cmp r2, r1
+  jlt_s .pfn61
+  r2 = r1
+  .pfn61:
+  r2 = sub r2, r6
+  pop r1
+  cmp r2, 0x0
+  jgt_s .pfn71
+  .pfn6:
+  pop r2
+  cmp r6, 0x0
+  jgt_s .pfn64
+  cmp r4, r5
+  jzf .pfn64
+  r2 = sub r2, 0x1
+  jzf .pfn64
+  jump .pfn63
+  .pfn64:
+  0x0 = r1
+  r4 = @OFFSET
+  call polyn_disp
+  ret
+  .pfn65:
+  r6 = add r6, r2
+  push r6
+  push r2
+  cmp r6, 0x0
+  jlt_s .pfn66
+  r6 = sub r6, r2
+  r2 = 0x0
+  r2 = sub r2, r6
+  .pfn66:
+  0x0 = r2
+  0x0 = ror 0x0, 0x10
+  0x0 = ror 0x0, 0x10
+  r0 = 0x0
+  0x0 = shl 0x0, 0x10
+  r0 = 0x0
+  imul 0x0
+  r0 = 0x0
+  0x0 = shl 0x0, 0x10
+  r0 = 0x0
+  imul 0x0
+  0x0 = 0x0
+  0x0 = ror 0x0, 0x10
+  0x0 = 0x0
+  0x0 = ror 0x0, 0x10
+  r6 = r2
+  pop r2
+  r2 = sub r2, r6
+  pop r6
+  cmp r2, 0x0
+  jnzf .pfn6b
+  jump .pfn6
+  .pfn6b:
+  r6 = 0x0
+  .pfn71:
+  cmp r6, 0x0
+  jlt_s .pfn65
+  r6 = add r6, r2
+  cmp r6, 0x0
+  jle_s .pfn72
+  r6 = sub r6, r2
+  r2 = 0x0
+  r2 = sub r2, r6
+  r6 = 0x0
+  .pfn72:
+  cmp r2, 0x0
+  jle_s .pfn6
+  push r4
+  push r5
+  push r6
+  0x0 = ror 0x0, 0x10
+  r2 = sub 0x0, r2
+  r1 = r2
+  0x0 = ror 0x0, 0x10
+  0x0 = 0x0
+  0x0 = 0x0
+  r6 = 0x0
+  r2 = 0x0
+  .pfn7:
+  0x0 = add 0x0, 0x0
+  r0 = add r0, r6
+  0x0 = add 0x0, 0x0
+  r3 = add r3, r2
+  0x0 = r1
+  0x0 = r1
+  0x0 = add 0x0, 0x10004
+  jncf .pfn7
+  pop r6
+  pop r5
+  pop r4
+  jump .pfn6
+  .polyfcalc:
+  r2 = 0x0
+  r2 = sub r2, r6
+  jle_s .pfc1
+  r0 = 0x0
+  r0 = sub r0, 0x0
+  jlt_s .pfc2
+  r3 = xor r3, r3
+  div r2
+  0x0 = r1
+  r0 = xor r0, r0
+  div r2
+  0x0 = r1
+  ret
+  .pfc1:
+  r2 = xor r2, r2
+  ret
+  .pfc2:
+  r0 = sub 0x0, r0
+  r3 = xor r3, r3
+  div r2
+  push r0
+  r0 = xor r0, r0
+  div r2
+  pop r3
+  r0 = sub 0x0, r0
+  r3 = add r3, 0x0
+  r3 = sub 0x0, r3
+  0x0 = r1
+  0x0 = r1
+  ret
+
+function polyn_disp (near) locals=12
+  r4 = @OFFSET
+  r1 = 0x0
+  r4 = add r4, 0x2
+  .plnd3:
+  push r2
+  push r1
+  r0 = 0x0
+  cmp r0, 0xffff8001
+  jzf .polyn_dispx
+  r3 = 0x0
+  call hline1
+  pop r1
+  pop r2
+  r1 = add r1, 0x1
+  r4 = add r4, 0x8
+  jump .plnd3
+  .polyn_dispx:
+  pop r1
+  pop r2
+  r3 = 0x3ce
+  r0 = 0xff08
+  io.out r3, r0
+  ret
+
+function hline1 (near) locals=12
+  r1 = sub r1, 0x100
+  cmp r1, 0xc7
+  jgt_u .hlixx
+  cmp r0, r3
+  jlt_s .hli1
+  xchg r0, r3
+  .hli1:
+  r3 = add r3, 0x1
+  r3 = sub r3, 0x1
+  cmp r3, r0
+  jgt_s .hli21
+  .hlixx:
+  ret
+  .hli21:
+  cmp r0, 0x0
+  jge_s .hli2
+  cmp r3, 0x0
+  jlt_s .hli0
+  r0 = xor r0, r0
+  .hli2:
+  cmp r3, 0x0
+  jle_s .hliok
+  cmp r0, 0x0
+  jgt_s .hli0
+  r3 = 0x0
+  .hliok:
+  r5 = r0
+  r5 = sar r5, 0x3
+  r2 = r3
+  r2 = sar r2, 0x3
+  r2 = sub r2, r5
+  r1 = shl r1, 0x1
+  r5 = add r5, 0x0
+  r6 = 0x7
+  r6 = and r6, r0
+  r1.l = 0x0
+  r6 = 0x7
+  r6 = and r6, r3
+  r1.h = 0x0
+  cmp r2, 0x0
+  jzf .hli30
+  r3 = 0x3ce
+  r0.l = 0x8
+  r0.h = r1.l
+  io.out r3, r0
+  r0.h = 0x0
+  0x0 = r5
+  r5 = add r5, 0x1
+  r2 = sub r2, 0x1
+  jcx_zero .hli33
+  r0.h = 0xff
+  io.out r3, r0
+  r0 = 0xffff
+  test r5, 0x1
+  jzf .hli32
+  0x0 = r5
+  r5 = add r5, 0x1
+  r2 = sub r2, 0x1
+  .hli32:
+  r2 = shr r2, 0x1
+  nop ; rep-prefix
+  r2 = add r2, r2
+  nop ; rep-prefix
+  .hli33:
+  r3 = 0x3ce
+  r0.l = 0x8
+  r0.h = r1.h
+  io.out r3, r0
+  r0.h = 0x0
+  0x0 = r5
+  .hli0:
+  ret
+  .hli30:
+  r3 = 0x3ce
+  r0.l = 0x8
+  r0.h = r1.h
+  r0.h = and r0.h, r1.l
+  io.out r3, r0
+  r0.l = 0x0
+  0x0 = r5
+  ret
+
+function random (near) locals=12
+  push 0x0
+  0x0 = 0x343fd
+  mul 0x0
+  0x0 = add 0x0, 0x269ec3
+  r0 = r3
+  pop 0x0
+  ret
+
+function setborder (near) locals=12
+  push r0
+  r3 = 0x3da
+  r0.l = io.in r3
+  r3 = 0x3c0
+  r0.l = 0x11
+  io.out r3, r0.l
+  pop r0
+  io.out r3, r0.l
+  ret
+
+function init_stars (near) locals=12
+  r0 = 0xd
+  int 0x10
+  r3 = 0x3da
+  r0.l = io.in r3
+  r3 = 0x3c0
+  r0.l = xor r0.l, r0.l
+  io.out r3, r0.l
+  io.out r3, r0.l
+  r0.l = add r0.l, 0x1
+  r0.l = 0x20
+  io.out r3, r0.l
+  r3 = 0x3d4
+  r0.l = 0x9
+  io.out r3, r0.l
+  r3 = add r3, 0x1
+  r0.l = io.in r3
+  r0.l = and r0.l, 0x7f
+  io.out r3, r0.l
+  r0 = 0xa000
+  0x0 = r0
+  r5 = xor r5, r5
+  r2 = 0x8000
+  r0 = xor r0, r0
+  nop ; rep-prefix
+  r0.h = 0x43
+  r1 = 0x20
+  int 0x67
+  r0.h = or r0.h, r0.h
+  jzf .@@1
+  r0 = 0x4c00
+  int 0x21
+  .@@1:
+  r0.h = 0x41
+  int 0x67
+  call clearsbu
+  r2 = 0xc8
+  r0 = 0x0
+  r3 = 0x140
+  r1 = @OFFSET
+  .@@4:
+  0x0 = r1
+  r0 = add r0, r3
+  r1 = add r1, 0x2
+  loop_dec_cx .@@4
+  r2 = 0x190
+  r0 = 0x0
+  r3 = 0x140
+  r1 = @OFFSET
+  .@@4b:
+  0x0 = r1
+  r0 = add r0, r3
+  r1 = add r1, 0x2
+  loop_dec_cx .@@4b
+  r0 = 0x0
+  0x0 = r0
+  r5 = @OFFSET
+  r2 = @STARS2
+  .@@3:
+  r0.l = r2.l
+  r0.l = sub r0.l, 0x1
+  r0.h = xor r0.h, r0.h
+  nop ; string-op-stosw
+  call random
+  r0 = and r0, 0x3ff
+  r0 = sub r0, 0x200
+  nop ; string-op-stosw
+  call random
+  r0 = and r0, 0x3ff
+  r0 = sub r0, 0x200
+  nop ; string-op-stosw
+  r0 = xor r0, r0
+  nop ; string-op-stosw
+  loop_dec_cx .@@3
+  r5 = @OFFSET
+  r2 = 0x100
+  r6 = 0x96
+  .@@2b:
+  r3 = 0x6c
+  r0 = xor r0, r0
+  div r6
+  r0 = shr r0, 0x1
+  nop ; string-op-stosw
+  r6 = add r6, 0x4
+  loop_dec_cx .@@2b
+  r5 = @OFFSET
+  r2 = 0x100
+  r6 = 0x96
+  .@@2c:
+  r3 = 0x90
+  r0 = xor r0, r0
+  div r6
+  r0 = shr r0, 0x1
+  nop ; string-op-stosw
+  r6 = add r6, 0x4
+  loop_dec_cx .@@2c
+  r2 = 0x64
+  .@@sa:
+  push r2
+  call starfetch0
+  call staradd
+  pop r2
+  loop_dec_cx .@@sa
+  ret
+
+function deinit_stars (near) locals=12
+  r0.h = 0x45
+  r3 = 0x0
+  int 0x67
+  ret
+
+function fetch4ax (near) locals=12
+  r0 = shl r0, 0x1
+  r1 = r0
+  push r0
+  r0 = 0x4400
+  r1 = shr r1, 0x2
+  r3 = 0x0
+  int 0x67
+  pop r0
+  r0 = and r0, 0x3
+  r0 = shl r0, 0xc
+  r0 = add r0, 0x0
+  ret
+
+function fetch4ax2 (near) locals=12
+  r0 = shl r0, 0x1
+  r1 = r0
+  push r0
+  r0 = 0x4401
+  r1 = shr r1, 0x2
+  r3 = 0x0
+  int 0x67
+  pop r0
+  r0 = and r0, 0x3
+  r0 = shl r0, 0xc
+  r0 = add r0, 0x0
+  r0 = add r0, 0x400
+  ret
+
+function fetch4ax3 (near) locals=12
+  r0 = shl r0, 0x1
+  r1 = r0
+  push r0
+  r0 = 0x4402
+  r1 = shr r1, 0x2
+  r3 = 0x0
+  int 0x67
+  pop r0
+  r0 = and r0, 0x3
+  r0 = shl r0, 0xc
+  r0 = add r0, 0x0
+  r0 = add r0, 0x800
+  ret
+
+function clearsbu (near) locals=12
+  r2 = 0x80
+  r0 = 0x0
+  .@@1:
+  push r2
+  push r0
+  call fetch4ax
+  0x0 = r0
+  r2 = 0x1000
+  0x0 = xor 0x0, 0x0
+  r5 = xor r5, r5
+  nop ; rep-prefix
+  pop r0
+  pop r2
+  r0 = add r0, 0x1
+  loop_dec_cx .@@1
+  ret
+
+function starfetch0 (near) locals=12
+  r0 = 0x0
+  r0 = add r0, 0x1
+  r0 = and r0, 0x3f
+  call fetch4ax
+  0x0 = r0
+  ret
+
+function starfetch1 (near) locals=12
+  r0 = 0x0
+  r0 = add r0, 0x11
+  r0 = and r0, 0x3f
+  call fetch4ax2
+  0x0 = r0
+  ret
+
+function starfetch2 (near) locals=12
+  r0 = 0x0
+  r0 = add r0, 0x2b
+  r0 = and r0, 0x3f
+  call fetch4ax3
+  0x0 = r0
+  ret
+
+function staradd (near) locals=12
+  r0 = 0x0
+  0x0 = r0
+  r0 = 0x0
+  r0 = or r0, r0
+  jzf .@@11
+  r0 = sub r0, 0x1
+  .@@11:
+  r6 = @STARS
+  r4 = @OFFSET
+  .@@1:
+  r1 = 0x0
+  r1.l = sub r1.l, 0x2
+  0x0 = r4
+  jcf .@@4
+  cmp r6, 0x0
+  jcf .@@2
+  r1 = shl r1, 0x1
+  r0 = 0x0
+  imul 0x0
+  r3 = shl r3, ?
+  r3 = add r3, 0x64
+  cmp r3, 0x63
+  jgt_u .@@2
+  r2 = r3
+  r0 = 0x0
+  imul 0x0
+  r1 = r2
+  r3 = shl r3, ?
+  r3 = add r3, 0xa0
+  cmp r3, 0x13f
+  jgt_u .@@2
+  r2.l = r3.l
+  r2.l = and r2.l, 0x7
+  r3 = shr r3, 0x3
+  r1 = shl r1, 0x1
+  r1 = 0x0
+  r1 = add r1, r3
+  r2.h = 0x80
+  r2.h = shr r2.h, r2.l
+  r2.l = 0x0
+  cmp r2.l, 0xb4
+  jcf .@@sc1
+  0x0 = or 0x0, r1
+  jump .@@2
+  .@@sc1:
+  cmp r2.l, 0x6e
+  jcf .@@sc2
+  0x0 = or 0x0, r1
+  jump .@@2
+  .@@sc2:
+  0x0 = or 0x0, r1
+  0x0 = or 0x0, r1
+  .@@2:
+  r4 = add r4, 0x8
+  r6 = sub r6, 0x1
+  jnzf .@@1
+  ret
+  .@@4:
+  call random
+  r0 = and r0, 0x3ff
+  r0 = sub r0, 0x200
+  0x0 = r4
+  call random
+  r0 = and r0, 0x3ff
+  r0 = sub r0, 0x200
+  0x0 = r4
+  jump .@@2
+  ret
+
+function staradd2 (near) locals=12
+  call starfetch1
+  r0 = 0x0
+  0x0 = r0
+  r0 = 0x0
+  r0 = or r0, r0
+  jzf .@@11
+  r0 = sub r0, 0x4
+  .@@11:
+  r6 = @STARS2
+  r4 = @OFFSET
+  .@@1:
+  r1 = 0x0
+  r1.l = sub r1.l, 0x2
+  0x0 = r4
+  jcf .@@4
+  cmp r6, 0x0
+  jcf .@@2
+  r1 = shl r1, 0x1
+  r0 = 0x0
+  imul 0x0
+  r3 = shl r3, ?
+  r3 = add r3, 0x64
+  cmp r3, 0x63
+  jgt_u .@@2
+  r2 = r3
+  r0 = 0x0
+  imul 0x0
+  r1 = r2
+  r3 = shl r3, ?
+  r3 = add r3, 0xa0
+  cmp r3, 0x13f
+  jgt_u .@@2
+  r2.l = r3.l
+  r2.l = and r2.l, 0x7
+  r3 = shr r3, 0x3
+  r1 = shl r1, 0x1
+  r1 = 0x0
+  r1 = add r1, r3
+  r2.h = 0x80
+  r2.h = shr r2.h, r2.l
+  r2.l = 0x0
+  cmp r2.l, 0xb4
+  jcf .@@sc1
+  0x0 = or 0x0, r1
+  0x0 = or 0x0, r1
+  jump .@@2
+  .@@sc1:
+  cmp r2.l, 0x6e
+  jcf .@@sc2
+  0x0 = or 0x0, r1
+  0x0 = or 0x0, r1
+  jump .@@2
+  .@@sc2:
+  0x0 = or 0x0, r1
+  0x0 = or 0x0, r1
+  0x0 = or 0x0, r1
+  0x0 = or 0x0, r1
+  .@@2:
+  r4 = add r4, 0x8
+  r6 = sub r6, 0x1
+  jnzf .@@1
+  ret
+  .@@4:
+  call random
+  r0 = and r0, 0x3ff
+  r0 = sub r0, 0x200
+  0x0 = r4
+  call random
+  r0 = and r0, 0x3ff
+  r0 = sub r0, 0x200
+  0x0 = r4
+  jump .@@2
+  ret
+
+function risetext (near) locals=12
+  r0 = 0x0
+  cmp r0, 0x63
+  jge_s .@@12
+  r0 = add r0, 0x1
+  .@@12:
+  r3 = 0x0
+  cmp r3, 0x0
+  jle_s .@@21
+  r3 = sub r3, 0x1
+  .@@21:
+  cmp r3, r0
+  jge_s .@@22
+  r0 = r3
+  .@@22:
+  cmp r0, 0x0
+  jgt_s .@@tcc
+  jump .@@tc0
+  .@@tcc:
+  cmp r0, 0x1
+  jgt_s .@@tnz
+  r0 = 0x2
+  .@@tnz:
+  push r0
+  r5 = 0x96
+  r5 = sub r5, r0
+  r0 = 0x50
+  mul r5
+  r5 = r0
+  r0 = @SEG
+  0x0 = r0
+  r4 = 0x40
+  r4 = add r4, 0x0
+  pop r2
+  r2 = sub r2, 0x1
+  r5 = sub r5, 0x28
+  r3 = 0x3c4
+  r0 = 0xf02
+  io.out r3, r0
+  0x0 = xor 0x0, 0x0
+  0x0 = r5
+  r5 = add r5, 0x50
+  r2 = sub r2, 0x1
+  jzf .@@tc0c
+  r3 = 0x3c4
+  r0 = 0xf02
+  io.out r3, r0
+  0x0 = 0x0
+  0x0 = r5
+  r5 = add r5, 0x50
+  r2 = sub r2, 0x1
+  jzf .@@tc0
+  r2 = sub r2, 0x1
+  jzf .@@tc0b
+  r3 = 0x3ce
+  r0 = 0x400
+  io.out r3, r0
+  r0 = 0x1
+  io.out r3, r0
+  .@@tc1:
+  r3 = 0x3c4
+  r0 = 0x102
+  io.out r3, r0
+  0x0 = 0x0
+  0x0 = r5
+  r4 = add r4, 0x28
+  r3 = 0x3c4
+  r0 = 0x202
+  io.out r3, r0
+  0x0 = 0x0
+  0x0 = r5
+  r4 = add r4, 0x28
+  r5 = add r5, 0x50
+  r2 = sub r2, 0x1
+  jzf .@@tc0b
+  jump .@@tc1
+  .@@tc0b:
+  r3 = 0x3ce
+  r0 = 0x1
+  io.out r3, r0
+  r3 = 0x3c4
+  r0 = 0xf02
+  io.out r3, r0
+  0x0 = 0x0
+  0x0 = r5
+  r5 = add r5, 0x50
+  r5 = sub r5, 0x1
+  .@@tc0:
+  ret
+  .@@tc0c:
+  r3 = 0x3c4
+  r0 = 0xf02
+  io.out r3, r0
+  0x0 = xor 0x0, 0x0
+  0x0 = r5
+  ret
+
+function do_stars (near) locals=12
+  .@@aga:
+  r0.l = 0x0
+  r3 = 0x3d4
+  r0 = 0x0
+  cmp r0, 0xa000
+  jzf .@@sw1
+  r0 = 0x400c
+  jump .@@sw0
+  .@@sw1:
+  r0 = 0xc
+  .@@sw0:
+  io.out r3, r0
+  call waitb
+  r0.l = 0x1
+  jgt_u .@@p1
+  r1.l = 0x0
+  r1.l = add r1.l, 0x1
+  r1.l = shl r1.l, 0x3
+  jncf .@@p2
+  r1.l = 0xff
+  .@@p2:
+  r3 = 0x3c8
+  r0.l = xor r0.l, r0.l
+  io.out r3, r0.l
+  r3 = add r3, 0x1
+  r0.l = 0x0
+  io.out r3, r0.l
+  r0.l = 0x0
+  io.out r3, r0.l
+  r0.l = 0x0
+  io.out r3, r0.l
+  r0.l = 0x19
+  mul r1.l
+  r0.l = r0.h
+  io.out r3, r0.l
+  r0.l = 0x1f
+  mul r1.l
+  r0.l = r0.h
+  io.out r3, r0.l
+  r0.l = 0x26
+  mul r1.l
+  r0.l = r0.h
+  io.out r3, r0.l
+  r0.l = 0x2d
+  mul r1.l
+  r0.l = r0.h
+  io.out r3, r0.l
+  r0.l = 0x3a
+  mul r1.l
+  r0.l = r0.h
+  io.out r3, r0.l
+  r0.l = 0x45
+  mul r1.l
+  r0.l = r0.h
+  io.out r3, r0.l
+  r0.l = 0x43
+  mul r1.l
+  r0.l = r0.h
+  io.out r3, r0.l
+  r0.l = 0x54
+  mul r1.l
+  r0.l = r0.h
+  io.out r3, r0.l
+  r0.l = 0x63
+  mul r1.l
+  r0.l = r0.h
+  io.out r3, r0.l
+  r0.l = 0x0
+  io.out r3, r0.l
+  r0.l = 0x0
+  io.out r3, r0.l
+  r0.l = 0x0
+  io.out r3, r0.l
+  r0.l = 0xa
+  io.out r3, r0.l
+  r0.l = 0x14
+  io.out r3, r0.l
+  r0.l = 0x23
+  io.out r3, r0.l
+  r0.l = 0x14
+  io.out r3, r0.l
+  r0.l = 0x1e
+  io.out r3, r0.l
+  r0.l = 0x2d
+  io.out r3, r0.l
+  r0.l = 0x1e
+  io.out r3, r0.l
+  r0.l = 0x28
+  io.out r3, r0.l
+  r0.l = 0x3c
+  io.out r3, r0.l
+  .@@p1:
+  r0 = 0x0
+  r0 = add r0, 0x1
+  cmp r0, 0x4b0
+  jnzf .@@st1
+  .@@st1:
+  cmp r0, 0xc80
+  jnzf .@@st2
+  .@@st2:
+  cmp r0, 0x5dc
+  jnzf .@@st3
+  .@@st3:
+  call risetext
+  call starfetch0
+  jgt_u .@@stz
+  jgt_u .@@stz0
+  call staradd
+  jump .@@stz0
+  .@@stz:
+  call staradd2
+  .@@stz0:
+  r0 = 0x0
+  0x0 = r0
+  r0 = 0x0
+  0x0 = r0
+  r5 = xor r5, r5
+  r3 = 0x3c4
+  r0 = 0x102
+  io.out r3, r0
+  r4 = 0x0
+  r2 = 0x64
+  .@@3:
+  .@@3g:
+  0x0 = 0x0
+  0x0 = r5
+  .@@3s:
+  r4 = add r4, 0x28
+  r5 = add r5, 0x50
+  loop_dec_cx .@@3
+  r5 = xor r5, r5
+  r4 = 0x1000
+  r3 = 0x3c4
+  r0 = 0x202
+  io.out r3, r0
+  r2 = 0x64
+  .@@7:
+  .@@7g:
+  0x0 = 0x0
+  0x0 = r5
+  .@@7s:
+  r4 = add r4, 0x28
+  r5 = add r5, 0x50
+  loop_dec_cx .@@7
+  r0 = 0x0
+  r0 = add r0, 0x20
+  r0 = and r0, 0x3f
+  call fetch4ax
+  0x0 = r0
+  r5 = 0xc8
+  r4 = 0x63
+  r3 = 0x3c4
+  r0 = 0x102
+  io.out r3, r0
+  r2 = 0x64
+  .@@5:
+  .@@5g:
+  0x0 = 0x0
+  0x0 = r5
+  .@@5s:
+  r4 = sub r4, 0x28
+  r5 = add r5, 0x50
+  loop_dec_cx .@@5
+  r5 = 0xc8
+  r4 = 0x63
+  r3 = 0x3c4
+  r0 = 0x202
+  io.out r3, r0
+  r2 = 0x64
+  .@@8:
+  .@@8g:
+  0x0 = 0x0
+  0x0 = r5
+  .@@8s:
+  r4 = sub r4, 0x28
+  r5 = add r5, 0x50
+  loop_dec_cx .@@8
+  r1 = 0x2
+  int 0xfc
+  r0 = or r0, r0
+  jzf .@@aga
+  ret
+  r0 = 0xa000
+  0x0 = r0
+  r4 = xor r4, r4
+  r2 = 0x28
+  r3 = 0x0
+  .@@1:
+  nop ; string-op-lodsb
+  r0.l = shl r0.l, 0x1
+  r3 = add r3, 0x0
+  r0.l = shl r0.l, 0x1
+  r3 = add r3, 0x0
+  r0.l = shl r0.l, 0x1
+  r3 = add r3, 0x0
+  r0.l = shl r0.l, 0x1
+  r3 = add r3, 0x0
+  r0.l = shl r0.l, 0x1
+  r3 = add r3, 0x0
+  r0.l = shl r0.l, 0x1
+  r3 = add r3, 0x0
+  r0.l = shl r0.l, 0x1
+  r3 = add r3, 0x0
+  r0.l = shl r0.l, 0x1
+  r3 = add r3, 0x0
+  loop_dec_cx .@@1
+  int 0x3
+  ret
+
+function __init (near) locals=12
+  r3 = 0x3c4
+  r0 = 0x2
+  io.out r3, r0
+  .start:
+  r1 = @SEG
+  r0 = 0x0
+  r1 = sub r1, r0
+  r1 = add r1, 0x40
+  r0.h = 0x4a
+  int 0x21
+  call _dis_partstart
+  call resetmode13
+  call init_stars
+  call do_stars
+  call deinit_stars
+  .@@xit:
+  r0 = 0x3
+  int 0x10
+  r0 = 0x4c00
+  int 0x21
+
+function resetmode13 (near) locals=12
+  r0 = 0xd
+  int 0x10
+  r3 = 0x3da
+  r0.l = io.in r3
+  r3 = 0x3c0
+  r0.l = xor r0.l, r0.l
+  io.out r3, r0.l
+  io.out r3, r0.l
+  r0.l = add r0.l, 0x1
+  r0.l = 0x11
+  io.out r3, r0.l
+  r0.l = 0xff
+  io.out r3, r0.l
+  r0.l = 0x20
+  io.out r3, r0.l
+  r3 = 0x3c8
+  r0.l = xor r0.l, r0.l
+  io.out r3, r0.l
+  r3 = add r3, 0x1
+  r2 = 0x300
+  .@@clp:
+  io.out r3, r0.l
+  loop_dec_cx .@@clp
+  ret
+
+function outpal (near) locals=12
+  r3 = 0x3c8
+  io.out r3, r0.l
+  r0 = 0x0
+  0x0 = r0
+  r3 = add r3, 0x1
+  nop ; rep-prefix
+  ret
+
+function waitb (near) locals=12
+  r1 = 0x1
+  int 0xfc
+  ret
+
+; data:
+  polysides  dw  [{"kind":"num","value":0}]
+  polyxy  dw  [{"kind":"dup","count":16,"inner":{"kind":"num","value":0}}]
+  borders  dw  [{"kind":"dup","count":4096,"inner":{"kind":"num","value":0}}]
+  feax  dd  [{"kind":"num","value":0}]
+  fedx  dd  [{"kind":"num","value":0}]
+  fleftaddl  dd  [{"kind":"num","value":0}]
+  fleftaddh  dw  [{"kind":"num","value":0}]
+  fleftrown  dw  [{"kind":"num","value":0}]
+  fleftzb  dd  [{"kind":"num","value":0}]
+  fleftze  dd  [{"kind":"num","value":0}]
+  flefttx0  dw  [{"kind":"num","value":0}]
+  fleftty0  dw  [{"kind":"num","value":0}]
+  flefttxa  dw  [{"kind":"num","value":0}]
+  flefttya  dw  [{"kind":"num","value":0}]
+  fleftcnt  dw  [{"kind":"num","value":0}]
+  fleftcnta  dw  [{"kind":"num","value":0}]
+  fleftd3a  dw  [{"kind":"num","value":0}]
+  frightaddl  dd  [{"kind":"num","value":0}]
+  frightaddh  dw  [{"kind":"num","value":0}]
+  frightrown  dw  [{"kind":"num","value":0}]
+  frightzb  dd  [{"kind":"num","value":0}]
+  frightze  dd  [{"kind":"num","value":0}]
+  frighttx0  dw  [{"kind":"num","value":0}]
+  frightty0  dw  [{"kind":"num","value":0}]
+  frighttxa  dw  [{"kind":"num","value":0}]
+  frighttya  dw  [{"kind":"num","value":0}]
+  frightcnt  dw  [{"kind":"num","value":0}]
+  frightcnta  dw  [{"kind":"num","value":0}]
+  frightd3a  dw  [{"kind":"num","value":0}]
+  finfolen  dw  [{"kind":"num","value":0}]
+  finfo0  dw  [{"kind":"num","value":0}]
+  finfo1  dw  [{"kind":"num","value":0}]
+  fwmaxy1  dw  [{"kind":"num","value":0}]
+  wminx  dw  [{"kind":"num","value":0}]
+  wmaxx  dw  [{"kind":"num","value":319}]
+  wminy  dw  [{"kind":"num","value":0},{"kind":"raw","value":"+"},{"kind":"num","value":256}]
+  wmaxy  dw  [{"kind":"num","value":399},{"kind":"raw","value":"+"},{"kind":"num","value":256}]
+  finfo  dw  [{"kind":"dup","count":32,"inner":{"kind":"num","value":0}}]
+  leftside  db  [{"kind":"num","value":255},{"kind":"num","value":127},{"kind":"num","value":63},{"kind":"num","value":31},{"kind":"num","value":15},{"kind":"num","value":7},{"kind":"num","value":3},{"kind":"num","value":1}]
+  rightside  db  [{"kind":"num","value":128},{"kind":"num","value":192},{"kind":"num","value":224},{"kind":"num","value":240},{"kind":"num","value":248},{"kind":"num","value":252},{"kind":"num","value":254},{"kind":"num","value":255}]
+  starvram  dw  [{"kind":"num","value":40960}]
+  emmhandle  dw  [{"kind":"num","value":0}]
+  emmseg  dw  [{"kind":"num","value":0}]
+  emmpage4  dw  [{"kind":"num","value":0}]
+  starlimit  dw  [{"kind":"num","value":0}]
+  startxtopen  dw  [{"kind":"num","value":0}]
+  startxtclose  dw  [{"kind":"num","value":0}]
+  startxtp0  dw  [{"kind":"num","value":0}]
+  starframe  dw  [{"kind":"num","value":0}]
+  starpalfade  db  [{"kind":"num","value":0},{"kind":"num","value":0}]
+  _nostar1  dw  [{"kind":"num","value":200}]
+  _nostar2  dw  [{"kind":"num","value":199}]
+  rows1  dw  [{"kind":"dup","count":200,"inner":{"kind":"num","value":0}}]
+  rows  dw  [{"kind":"dup","count":400,"inner":{"kind":"num","value":0}}]
+  star  dw  [{"kind":"ref","value":"STARS2"},{"kind":"ref","value":"dup"},{"kind":"raw","value":"("},{"kind":"num","value":0},{"kind":"num","value":0},{"kind":"num","value":0},{"kind":"num","value":0},{"kind":"raw","value":")"}]
+  muldivx  dw  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  muldivy  dw  [{"kind":"dup","count":256,"inner":{"kind":"num","value":0}}]
+  seed  dd  [{"kind":"num","value":0}]
+  <anon>  db  [{"kind":"dup","count":1024,"inner":{"kind":"num","value":0}}]
+  endcode  db  [{"kind":"dup","count":16,"inner":{"kind":"num","value":0}}]
